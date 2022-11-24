@@ -15,7 +15,7 @@ app.use(
 
 app.use(cors());    
 
-//require('./middlewares/passport')(app);
+require('./middlewares/passport')(app);
 
 // ------------------ //
 
