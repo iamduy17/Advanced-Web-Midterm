@@ -19,8 +19,8 @@ function Dashboard({ classes }) {
         <>
             <Navbar></Navbar>
             <Row className="justify-content-md-center">
-            {classes.map((item)=>{
-                return <Col>
+            {classes.map((item, index)=>{
+                return <Col key={index}>
                         <Classes classData={item} md="auto"></Classes>
                     </Col>
                 
