@@ -5,7 +5,7 @@
 -- Dumped from database version 14.1
 -- Dumped by pg_dump version 14.1
 
--- Started on 2022-11-18 21:42:08
+-- Started on 2022-11-19 12:30:21
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -33,8 +33,8 @@ CREATE TABLE public.account (
     password character varying(100),
     email character varying(100),
     external_id character varying(100),
-    role integer NOT NULL,
-    is_activated boolean
+    is_activated boolean,
+    provider character varying(100)
 );
 
 
@@ -63,7 +63,8 @@ ALTER TABLE public.account ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 CREATE TABLE public.account_group (
     id integer NOT NULL,
     group_id integer NOT NULL,
-    account_id integer NOT NULL
+    account_id integer NOT NULL,
+    role integer NOT NULL
 );
 
 
@@ -210,8 +211,9 @@ ALTER TABLE ONLY public.account_group
     ADD CONSTRAINT group_id FOREIGN KEY (group_id) REFERENCES public."group"(id) NOT VALID;
 
 
--- Completed on 2022-11-18 21:42:09
+-- Completed on 2022-11-19 12:30:21
 
 --
 -- PostgreSQL database dump complete
 --
+

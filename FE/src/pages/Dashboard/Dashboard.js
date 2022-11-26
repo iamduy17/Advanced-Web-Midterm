@@ -6,6 +6,15 @@ import Col from 'react-bootstrap/Col';
 import './styles.css';
 
 function Dashboard({ classes }) {
+    const logOut = (event) => {
+        event.preventDefault();
+
+        localStorage.removeItem("token");    
+        localStorage.removeItem("provider"); 
+        // const {data} = await axios.get(`${API_URL}auth/logout`);
+        // if(data.ReturnCode === 1)       
+        window.location.assign("/login");
+    }
     return (
         <>
             <Navbar></Navbar>
@@ -17,6 +26,7 @@ function Dashboard({ classes }) {
                 
             })}
             </Row>
+            <button onClick={logOut}>Logout</button>
         </>
     )
 }

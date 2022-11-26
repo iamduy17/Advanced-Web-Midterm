@@ -1,4 +1,5 @@
 require('dotenv').config();
+const {CLIENT_URL} = require("./config/index");
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -12,10 +13,14 @@ app.use(
 );
 
 // --- Middlewares --- //
+console.log(CLIENT_URL);
+app.use(cors({
+  origin: CLIENT_URL,
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+}));    
 
-app.use(cors());    
-
-//require('./middlewares/passport')(app);
+require('./middlewares/passport')(app);
 
 // ------------------ //
 

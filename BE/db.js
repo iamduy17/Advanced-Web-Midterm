@@ -7,7 +7,7 @@ const schema = 'public';
 const cn = {
     user: 'postgres',
     host: 'localhost',
-    database: 'registerAdvancedWeb', // điền tên db trên máy của mình vào
+    database: 'Midterm', // điền tên db trên máy của mình vào
     password: '123', // điền password master
     port: 5432,
     max: 30
