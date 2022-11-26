@@ -17,6 +17,8 @@ function Dashboard({ classes }) {
                 
             })}
             </Row>
+            <button onClick={logOut}>Logout</button>
+            
         </>
     )
 }
