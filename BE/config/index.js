@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+// change to production when deploy
+
 exports.JWTInfo = {
     JWTSecretKey: process.env.JWTSecretKey,
     JWTIssuer: process.env.JWTIssuer,
@@ -7,8 +9,7 @@ exports.JWTInfo = {
 }
 
 exports.saltRounds = process.env.SALT_ROUND;
-exports.CLIENT_URL=process.env.CLIENT_URL;
-
+exports.CLIENT_URL= process.env.NODE_ENV === 'development' ? process.env.CLIENT_URL : "";
 exports.GoogleInfo = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET
@@ -21,3 +22,6 @@ exports.EmailInfo = {
     EMAIL_USER: process.env.EMAIL_USER,
     EMAIL_PASS: process.env.EMAIL_PASS
 }
+
+
+

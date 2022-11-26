@@ -10,7 +10,7 @@ const emailHTML = (name, url) => {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 	</head>
-	<body style="font-family:'Work Sans',sans-serif;background: #FAF7F0;">
+	<body style="font-family:'Work Sans',sans-serif;background: #FAF7F0;padding:40px;">
 	<table cellspacing="0" cellpadding="0" align="center">
 	<tbody>
 	<tr>

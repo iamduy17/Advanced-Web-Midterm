@@ -11,8 +11,8 @@ exports.LoginLocal = async (user) => {
     // Check email is verify or not
     if(!user.is_activated) {
         return {
-            'ReturnCode': AuthenticationError.Email_Not_Verify,
-            'Message': "Your email is not verify. Please verify your email before sign in!"
+            ReturnCode: AuthenticationError.Email_Not_Verify,
+            Message: "Your email is not verify. Please verify your email before sign in!"
         }
     }
 
@@ -22,14 +22,17 @@ exports.LoginLocal = async (user) => {
         const token = GenerateToken(user.email, 'local');
 
         return {
-            'ReturnCode': 1,
-            'Message': "Sign in successfully.",
-            'Token': token 
+            ReturnCode: 1,
+            Message: "Sign in successfully.",
+            User: {
+                token: token,
+                provider: "local"
+            },
         }
     }
     return {
-        'ReturnCode': AuthenticationError.Email_Not_Valid,
-        'Message': "Your email is not valid!"
+        ReturnCode: AuthenticationError.Email_Not_Valid,
+        Message: "Your email is not valid!"
     }
 }
 
@@ -40,8 +43,8 @@ exports.Register = async (user) => {
     
             if(account && account.email === user.email) {
                 return {
-                    'ReturnCode': AuthenticationError.Account_Already_Exist,
-                    'Message': "This email is already sign up. Please choose another email!" 
+                    ReturnCode: AuthenticationError.Account_Already_Exist,
+                    Message: "This email is already sign up. Please choose another email!" 
                 };
             }
     
@@ -60,24 +63,24 @@ exports.Register = async (user) => {
                 // Send email to verify
                 let tokenEmail = hexEncode(newUser.email);
                 console.log(tokenEmail);
-                let url = `${CLIENT_URL}${newUser.id}/verify/${tokenEmail}`
+                let url = `${CLIENT_URL}/${newUser.id}/verify/${tokenEmail}`
                 await sendMail(newUser.email, newUser.username, url);
             });        
  
             return {
-                'ReturnCode': 1,
-                'Message': "Sign up successfully."
+                ReturnCode: 1,
+                Message: "Sign up successfully."
             };
         } else {
             return {
-                'ReturnCode': AuthenticationError.Email_Not_Valid,
-                'Message': "Your email is not valid."
+                ReturnCode: AuthenticationError.Email_Not_Valid,
+                Message: "Your email is not valid."
             }
         }
     } catch (error) {
         return {
-            'ReturnCode': AuthenticationError.Error,
-            'Message': "Something is wrong. Please sign up again!"
+            ReturnCode: AuthenticationError.Error,
+            Message: "Something is wrong. Please sign up again!"
         }
     }
 };
@@ -86,29 +89,48 @@ exports.CheckEmailVerified = async (req) => {
     const user = await authModel.getUserByID(req.params.id);
     if (!user) 
         return { 
-            'ReturnCode': AuthenticationError.Error,
-            'Message': "Invalid link" 
+            ReturnCode: AuthenticationError.Error,
+            Message: "Invalid link" 
         };
 
-    const challengeResult = hexDecode(req.params.token) === user.email;
+    const challengeResult = hexDecode(req.params.token) === user.email && user.is_activated === false;
 
     if (!challengeResult) 
         return { 
-            'ReturnCode': AuthenticationError.Error,
-            'Message': "Invalid link" 
+            ReturnCode: AuthenticationError.Error,
+            Message: "Invalid link" 
         };
 
     const userUpdate = await authModel.update(user.id, {is_activated: true});
 
     if(userUpdate) {
         return {
-            'ReturnCode': 1,
-            'Message': "Email verified successfully",
-            'Data': userUpdate
+            ReturnCode: 1,
+            Message: "Email verified successfully",
         }
     }
     return {
-        'ReturnCode': AuthenticationError.Error,
-        'Message': "Invalid link",
+        ReturnCode: AuthenticationError.Error,
+        Message: "Invalid link",
+    }
+}
+
+exports.HandleLoginSuccess = (req) => {
+    if(req.user) {
+        const token = GenerateToken(req.user.email, req.user.provider)
+        return {
+            ReturnCode: 1,
+            Message: "Sign in successfully!",
+            User: {
+                token: token,
+                provider: req.user.provider
+            },
+        };
+    } else {
+        return {
+            ReturnCode: AuthenticationError.Error,
+            Message: "Not Authorized!",
+            User: null 
+        };
     }
 }

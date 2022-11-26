@@ -1,33 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { useEffectOnce } from "../../hooks/useEffectOnce";
 import emailSuccess from "../../assets/images/email-success.png";
 import success from "../../assets/images/success.png";
+import { API_URL } from "../../config";
 import "./style.css";
 
+const EmailVerifyStatusRender = {
+	Not_Fetch: 0,
+	Success: 1,
+	Fail: 2
+}
+
 function Email() {
-    const [validUrl, setValidUrl] = useState(true);
+    const [validUrl, setValidUrl] = useState(EmailVerifyStatusRender.Not_Fetch);
     const param = useParams();
 
-    useEffect(() => {
+    useEffectOnce(() => {
 		const verifyEmailUrl = async () => {
 			try {
-                console.log(param.token);
-				const url = `${process.env.REACT_APP_BACKEND_URL}auth/${param.id}/verify/${param.token}`;
+				const url = `${API_URL}auth/${param.id}/verify/${param.token}`;
 				const {data} = await axios.get(url);
-				console.log(data);
-				setValidUrl(true);
+				if(data.ReturnCode === 1)
+					setValidUrl(EmailVerifyStatusRender.Success);
+				else
+					setValidUrl(EmailVerifyStatusRender.Fail);
 			} catch (error) {
-				console.log(error);
-				setValidUrl(false);
+				setValidUrl(EmailVerifyStatusRender.Fail);
 			}
 		};
 		verifyEmailUrl();
-	}, [param]);
+	});
 
     return (
         <>
-            {validUrl ? (
+            { validUrl === EmailVerifyStatusRender.Not_Fetch ? 
+			(<div className="email__container"></div>) 
+			:				
+			validUrl === EmailVerifyStatusRender.Success? (
 				<div className="email__container">
 					<div className="email__main-content">
 						<h3 className="email__heading">Congratulations</h3>
@@ -42,7 +53,7 @@ function Email() {
 						</Link>
 					</div>
 				</div>
-			) : (
+				) : (
 				<div className="email__container">
 					<h2 className="email__404">
 						404

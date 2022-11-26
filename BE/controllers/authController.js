@@ -12,11 +12,11 @@ router.post('/login', authMiddleware.PassportLocalCheckLogin, async (req, res) =
     try {
         const result = await authService.LoginLocal(req.user);
 
-        res.json(result);
+        return res.json(result);
     } catch (error) {
-        res.status(401).json({
-            'ReturnCode': AuthenticationError.Error,
-            'Message': "Something is wrong. Please sign in again!" 
+        return res.status(401).json({
+            ReturnCode: AuthenticationError.Error,
+            Message: "Something is wrong. Please sign in again!" 
         })
     }
 });
@@ -25,11 +25,11 @@ router.post('/register', async (req, res) => {
     try {
         const result = await authService.Register(req.body);
 
-        res.json(result);
+        return res.json(result);
     } catch (error) {
-        res.status(401).json({
-            'ReturnCode': AuthenticationError.Error,
-            'Message': "Something is wrong. Please sign up again!" 
+        return res.status(401).json({
+            ReturnCode: AuthenticationError.Error,
+            Message: "Something is wrong. Please sign up again!" 
         });
     }
 });
@@ -39,57 +39,52 @@ router.get("/:id/verify/:token", async (req, res) => {
 		const result = await authService.CheckEmailVerified(req);
 
         console.log(result);
-        if(result.ReturnCode == AuthenticationError.Error) {
-            res.status(400).json(result);
-        }
-		res.status(200).json(result);
+        return res.json(result);
 	} catch (error) {
-		res.status(500).json({
-            'ReturnCode': AuthenticationError.Error,
-            'Message': "Something is wrong. Please sign up again!" 
+		return res.json({
+            ReturnCode: AuthenticationError.Error,
+            Message: "Something is wrong. Please sign up again!" 
         });
 	}
 });
 
 router.get('/google',
-  passport.authenticate('google', {session: false,  scope:[ 'email', 'profile' ] }
+  passport.authenticate('google', { scope:[ 'email', 'profile' ] }
 ));
 
 router.get( '/google/callback',
     passport.authenticate( 'google', {
-        session: false,
         successRedirect: CLIENT_URL,
         failureRedirect: '/auth/google/failure'
 }));
 
-router.get('/google/success', (req, res) => {
+router.get('/login/success', (req, res) => {
     try {
-        const token = GenerateToken(req.user.email, 'google')
-        res.status(200).json({
-            'ReturnCode': 1,
-            'Message': "Sign in with Google successfully!",
-            'Token': token,
-        });
+        const result = authService.HandleLoginSuccess(req);
+        //console.log(process.env.NODE_ENV);
+        //console.log(CLIENT_URL);
+        console.log(result);
+        return res.json(result);
     } catch (error) {
-        res.status(401).json({
-            'ReturnCode': AuthenticationError.Error,
-            'Message': "Something is wrong. Please sign in again!" 
-        });
+        return res.json({
+            ReturnCode: AuthenticationError.Error,
+            Message: "Something is wrong!" 
+        })
     }
 });
 
 router.get('/google/failure', (req, res) => {
-    res.status(401).json({
-        'ReturnCode': AuthenticationError.Error,
-        'Message': "Something is wrong. Please sign in again!" 
+    return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!" 
     });
 });
 
 router.get("/logout", (req, res) => {
-    req.logOut();
-    res.status(200).json({
-        'ReturnCode': 1,
-        'Message': "Log out successfully!" 
+    req.user = null;
+    return res.status(200).json({
+        ReturnCode: 1,
+        Message: "Log out successfully!" 
     });
 })
 

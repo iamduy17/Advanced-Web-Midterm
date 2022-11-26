@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import Loader from "../../components/Loader/Loader";
+import { API_URL } from "../../config";
 import "./style.css";
 
 function Register() {                            
@@ -46,7 +47,7 @@ function Register() {
     );
 
     async function postDataRegister() {
-        return await axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/register', user);
+        return await axios.post(API_URL + 'auth/register', user);
     }
 
     function handleChange(event) {
@@ -84,7 +85,7 @@ function Register() {
     function submitUser(event) {
         event.preventDefault();
         checkPassValidate(user.password, user.confirmPass);
-        if(!errorConfirmPassValidate.isErrorValidate) {
+        if(errorConfirmPassValidate.isErrorValidate) {
             mutate();
         }     
     };

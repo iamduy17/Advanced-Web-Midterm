@@ -26,8 +26,11 @@ module.exports = {
     },
     update: async (id, verify) => {
         const condition = ` WHERE "id" = ${id} `;
-        await db.patch(tbName, ['is_activated'], verify, condition);
-        const res = await db.get(tbName, 'id', id);
-        return res[0];
+        try {
+            await db.patch(tbName, ['is_activated'], verify, condition);
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
 };

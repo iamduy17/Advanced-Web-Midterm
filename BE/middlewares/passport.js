@@ -3,6 +3,7 @@ const passport = require('passport'),
     JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt,
     GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const authModel = require('../models/authModel'); 
 const {AuthenticationError} = require('../utils/index');
@@ -37,6 +38,7 @@ module.exports = (app) => {
                         });
                     }
 
+                    req.user = user;
                     return done(null, user);
                 } catch (error) {
                     return done(error);
@@ -52,13 +54,15 @@ module.exports = (app) => {
         issuer : config.JWTInfo.JWTIssuer,
         audience : config.JWTInfo.JWTAudience
     }
-    passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
+    passport.use(new JwtStrategy(opts, async (req, jwt_payload, done) => {
         try {
             const {email, provider} = jwt_payload.data;
             let user = await authModel.getUserByProvider(email, provider);
 
-            if (user)
+            if (user) {
+                req.user = user;
                 done(null, jwt_payload.data);
+            }
             else 
                 done(null, false, {
                     err: AuthenticationError.Account_Not_Exist,
@@ -88,9 +92,11 @@ module.exports = (app) => {
                     external_id: profile.id,
                     is_activated: true,
                     provider: "google"
-                });
+                });     
+          
                 return done(null, userCreate);
             }
+ 
             return done(null, user);
         } catch (error) {
             done(error);
@@ -104,12 +110,21 @@ module.exports = (app) => {
 
     passport.deserializeUser(async (user, done) => {
         try {
-            const u = await authModel.get(user.email);
+            const u = await authModel.getUserByProvider(user.email, user.provider);
             done(null, u);
         } catch (error) {
             done(error);
         }
     });
 
+    app.use(
+        session({
+          secret: "web",
+          resave: false,
+          saveUninitialized: true,
+        })
+    );
+
     app.use(passport.initialize());
+    app.use(passport.session());
 };

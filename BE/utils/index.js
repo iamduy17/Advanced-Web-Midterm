@@ -9,7 +9,7 @@ exports.GenerateToken = (email, provider) => {
         }
       }, config.JWTInfo.JWTSecretKey, 
       { 
-        expiresIn: '20s',
+        expiresIn: '1h',
         issuer: config.JWTInfo.JWTIssuer,
         audience: config.JWTInfo.JWTAudience
     });

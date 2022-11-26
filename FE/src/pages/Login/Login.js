@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import google from "../../assets/images/google.png";
+import { API_URL } from "../../config";
 import "./style.css";
 
 function Login() {
@@ -26,8 +27,14 @@ function Login() {
         postDataLogin,
         {
             onSuccess: (res) => {    
-                if (res.data.ReturnCode === 1) {            
-                    navigate("/");            
+                if (res.data.ReturnCode === 1) {   
+                    localStorage.setItem("token", res.data.User.token);    
+                    localStorage.setItem("provider", res.data.User.provider); 
+                    //window.open("/", "_self");
+                    
+                    console.log(1);
+                    navigate("/");
+                    window.location.reload();                           
                 } else {
                     console.log(res.data.Message);
                     handleErrorResponse(res.data.Message);
@@ -40,25 +47,11 @@ function Login() {
     );
 
     async function postDataLogin() {
-        return await axios.post(process.env.REACT_APP_BACKEND_URL + 'auth/login', user);
+        return await axios.post(API_URL + 'auth/login', user);
     }
 
     function handleSignInGoogle() {
-        // axios.get(process.env.REACT_APP_BACKEND_URL + 'auth/google')
-        //     .then((res) => {
-        //         if (res.data.ReturnCode === 1) {            
-        //             navigate("/");            
-        //         } else {
-        //             console.log(res.data.Message);
-        //             handleErrorResponse(res.data.Message);
-        //         }               
-                
-        //     })
-        //     .catch(function (error) {
-        //         // handle error
-        //         handleErrorResponse(error);
-        //     });
-        window.open(process.env.REACT_APP_BACKEND_URL + 'auth/google', "_self");
+        window.open(API_URL + 'auth/google', "_self");
     }
 
     function handleErrorResponse(error) {
