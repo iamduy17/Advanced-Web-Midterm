@@ -1,0 +1,12 @@
+.person{
+    padding-left: 10px;
+}
+
+.MuiTypography-body2 {
+    letter-spacing: .01785714em !important;
+    font-family: "Google Sans",Roboto,Arial,sans-serif !important;
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    line-height: 1.25rem !important;
+    color: #3c4043 !important;
+}
