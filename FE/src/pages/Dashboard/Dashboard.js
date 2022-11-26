@@ -1,11 +1,23 @@
 import React from "react";
+import Classes from "../../components/Classes/Classes";
+import Navbar from "../../components/Navbar/Navbar";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import './styles.css';
 
-function Dashboard() {
+function Dashboard({ classes }) {
     return (
-        <h1>
-            Hello World
-        </h1>
+        <>
+            <Navbar></Navbar>
+            <Row className="justify-content-md-center">
+            {classes.map((item)=>{
+                return <Col>
+                        <Classes classData={item} md="auto"></Classes>
+                    </Col>
+                
+            })}
+            </Row>
+        </>
     )
 }
 

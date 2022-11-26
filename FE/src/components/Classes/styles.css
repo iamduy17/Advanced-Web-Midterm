@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     padding-left: 1.5rem;
     padding-top: 1.5rem;
+    
   }
   ul,
   ol {
@@ -15,7 +16,6 @@
     flex-direction: column;
     height: 18.375rem;
     margin-bottom: 1.5rem;
-    margin-right: 1.5rem;
     overflow: hidden;
     position: relative;
     text-align: left;
@@ -61,6 +61,7 @@
     color: white;
     font-family: "Roboto";
     text-decoration: none;
+    color: white;
   }
   .class__title h2 {
     font-weight: 400;
@@ -92,4 +93,7 @@
   }
   .class__bottom > * {
     margin-right: 20px;
+  }
+  .class__content a:hover{
+    color: white;
   }

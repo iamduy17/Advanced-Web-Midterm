@@ -1,7 +1,7 @@
 import { Avatar } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 
-import "./style.css";
+import "./styles.css";
 const Announcment = ({ classData }) => {
   const [announcment, setAnnouncment] = useState([]);
   console.log(announcment);

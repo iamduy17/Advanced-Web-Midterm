@@ -2,7 +2,7 @@ import { Avatar } from "@material-ui/core";
 import { FolderOpen, PermContactCalendar } from "@material-ui/icons";
 import React from "react";
 import { Link } from "react-router-dom";
-import "./style.css";
+import "./styles.css";
 const Classes = ({ classData }) => {
   return (
     <li className="class__list">
@@ -13,8 +13,9 @@ const Classes = ({ classData }) => {
           <div className="class__content">
             <Link className="class__title" to={`/${classData.id}`}>
               <h2>{classData.className}</h2>
+              
             </Link>
-            <p className="class__owner">{classData.owner}</p>
+            
           </div>
         </div>
         <Avatar

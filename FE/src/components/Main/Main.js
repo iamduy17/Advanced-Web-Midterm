@@ -1,6 +1,6 @@
 import { Avatar, Button, TextField } from "@material-ui/core";
 import React, { useState } from "react";
-import "./style.css";
+import "./styles.css";
 import {Announcment} from "../Announcment/Announcment"
 const Main = ({ classData }) => {
   const [showInput, setShowInput] = useState(false);
