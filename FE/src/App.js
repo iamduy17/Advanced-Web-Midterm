@@ -10,6 +10,7 @@ import Register from "./pages/Register/Register";
 import Email from "./pages/Email/Email";
 import { useEffectOnce } from "./hooks/useEffectOnce";
 import Profile from "./pages/Profile/Profile";
+import Navbar from "./components/Navbar/Navbar";
 function App() {
   const classes = [
     {
@@ -47,7 +48,6 @@ function App() {
       setIsAuthenticated(false);
     }
   }, [])
-
   return (
     <>
       <BrowserRouter>
