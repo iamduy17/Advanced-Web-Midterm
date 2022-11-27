@@ -14,7 +14,7 @@ export default function Profile() {
                 <div className='user'>
                     <img className='img-user' src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s75-c-fbw=1/photo.jpg" alt="avatar" />
                     <div className='info-user'>
-                        Duong Nam
+                        {id_user}
                     </div>
                 </div>
             </div>

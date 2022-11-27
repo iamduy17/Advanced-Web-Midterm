@@ -9,18 +9,16 @@ import axios from 'axios';
 import React, { useState } from "react";
 import Invitation from "../Invitation/Invitation";
 
-
 function ClassDetail({ classes }) {
     const [isJoined, setIsJoined] = useState(false);
     const { id } = useParams();
     let index = classes.findIndex(element => element.id == id);
 
-
     let token = localStorage.getItem("token");
     var decoded = jwt_decode(token);
 
     const id_User = decoded.data.id;
-    console.log("tokenAcess: ", decoded.data.id);
+    console.log("tokenAcess: ", decoded);
 
     async function doGetRequest() {
         let res = await axios.get(API_URL + 'account_group/t', {
@@ -28,12 +26,10 @@ function ClassDetail({ classes }) {
 
         let data = res.data;
         console.log(data);
-        const id1 = 10;
-        const id_User1 = 1;
 
         let count = 0;
         for (let i = 0; i < data.length; i++) {
-            if (id1 === data[i].group_id && id_User1 === data[i].account_id) {
+            if (id == data[i].group_id && id_User == data[i].account_id) {
                 count++;
             }
         }
@@ -63,3 +59,4 @@ function ClassDetail({ classes }) {
 }
 
 export default ClassDetail;
+// user profile
