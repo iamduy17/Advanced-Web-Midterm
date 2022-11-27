@@ -19,7 +19,7 @@ exports.LoginLocal = async (user) => {
     // Check email
     if(validateEmail(user.email))
     {
-        const token = GenerateToken(user.email, 'local');
+        const token = GenerateToken(user.id, user.email, 'local');
 
         return {
             ReturnCode: 1,
@@ -128,11 +128,11 @@ exports.LoginGoogle = async (user) => {
             is_activated: true,
             provider: "google"
         };
-        await authModel.add(accountAdd);
+        const newUser = await authModel.add(accountAdd);
 
-        token = GenerateToken(accountAdd.email, accountAdd.provider);        
+        token = GenerateToken(newUser.id, newUser.email, newUser.provider);        
     } else {
-        token = GenerateToken(account.email, account.provider)
+        token = GenerateToken(account.id, account.email, account.provider);
     }
 
     return {
