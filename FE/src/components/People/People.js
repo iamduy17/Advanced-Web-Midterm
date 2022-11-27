@@ -1,4 +1,5 @@
 import { Avatar } from "@material-ui/core";
+import LinkInvitation from "../Invitation/LinkInvitation";
 import "./People.css"
 import Person from "./Person";
 
@@ -8,23 +9,27 @@ function People() {
     const co_owners = ["Co-Owner1", "Co-Owner2", "Co-Owner3"]
     const members = ["Member1", "Member2", "Member3"]
     return (
-        
+
         <div className="container">
             <div className="role-item">
-                <h1 className="title">Owner</h1>
+                <div className="owner-title">
+                    <h1 className="title">Owner</h1>
+                    <LinkInvitation />
+                </div>
                 <hr className="divider"></hr>
-                {owners.map(item=><Person name={item}></Person>)}
-                
+
+                {owners.map(item => <Person key={item} id={item} name={item}></Person>)}
+
             </div>
             <div className="role-item">
                 <h1 className="title">Co-Owner</h1>
                 <hr className="divider"></hr>
-                {co_owners.map(item=><Person name={item}></Person>)}
+                {co_owners.map(item => <Person name={item}></Person>)}
             </div>
             <div className="role-item">
                 <h1 className="title">Member</h1>
                 <hr className="divider"></hr>
-                {members.map(item=><Person name={item}></Person>)}
+                {members.map(item => <Person name={item}></Person>)}
             </div>
         </div>
     )

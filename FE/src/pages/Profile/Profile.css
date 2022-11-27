@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;1,300;1,400&display=swap');
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile {
+    width: 70%;
+    margin: auto;
+    margin-top: 10px;
+    background-image: url(https://gstatic.com/classroom/themes/img_backtoschool.jpg);
+    background-size: cover;
+    height: 15rem;
+    border-radius: 10px;
+}
+
+.user {
+    display: flex;
+    flex-direction: row;
+    margin-left: 2rem;
+    margin-top: calc(15rem - 2 * 5.8rem);
+}
+
+.img-user {
+    width: 7rem;
+    height: 7rem;
+    border-radius: 100%;
+}
+
+.activity {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-activity {
+    font-family: 'Poppins', sans-serif;
+}
+
+.info-user {
+    font-weight: bold;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    margin-left: 2rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.img-wallpaper {
+    width: 26rem;
+    height: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.activity {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+}
+
+.info-activity {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
