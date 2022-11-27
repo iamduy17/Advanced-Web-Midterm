@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 const authService = require('../services/authService');
-const { AuthenticationError} = require("../utils/index");
+const { AuthenticationError } = require("../utils/index");
 
 
 router.post('/login', authMiddleware.PassportLocalCheckLogin, async (req, res) => {
@@ -13,12 +13,12 @@ router.post('/login', authMiddleware.PassportLocalCheckLogin, async (req, res) =
     } catch (error) {
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign in again!" 
+            Message: "Something is wrong. Please sign in again!"
         })
     }
 });
 
-router.post('/register', async (req, res) => {    
+router.post('/register', async (req, res) => {
     try {
         const result = await authService.Register(req.body);
 
@@ -26,22 +26,22 @@ router.post('/register', async (req, res) => {
     } catch (error) {
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign up again!" 
+            Message: "Something is wrong. Please sign up again!"
         });
     }
 });
 
 router.get("/:id/verify/:token", async (req, res) => {
-	try {
-		const result = await authService.CheckEmailVerified(req);
+    try {
+        const result = await authService.CheckEmailVerified(req);
 
         return res.json(result);
-	} catch (error) {
-		return res.json({
+    } catch (error) {
+        return res.json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign up again!" 
+            Message: "Something is wrong. Please sign up again!"
         });
-	}
+    }
 });
 
 router.post("/login/google", async (req, res) => {
@@ -52,7 +52,7 @@ router.post("/login/google", async (req, res) => {
     } catch (error) {
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign in again!" 
+            Message: "Something is wrong. Please sign in again!"
         })
     }
 })
