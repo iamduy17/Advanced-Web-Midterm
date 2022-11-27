@@ -22,7 +22,6 @@ function Register() {
         message: ""
     });
     const [isSuccess, setIsSuccess] = useState(false);
-    console.log(isSuccess);
 
     const { isLoading, isError, error, mutate } = useMutation(          
         postDataRegister,
@@ -74,18 +73,21 @@ function Register() {
                 isErrorValidate: true,
                 message: "Passwords do not match, please retype!"
             }); 
+            return true;
         } else {
             setErrorConfirmPassValidate({
                 isErrorValidate: false,
                 message: ""
-            });   
+            }); 
+            
+            return false;
         }     
     }    
 
     function submitUser(event) {
         event.preventDefault();
-        checkPassValidate(user.password, user.confirmPass);
-        if(errorConfirmPassValidate.isErrorValidate) {
+        const checkTrue = checkPassValidate(user.password, user.confirmPass);
+        if(!checkTrue) {
             mutate();
         }     
     };

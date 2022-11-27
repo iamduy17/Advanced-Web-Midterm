@@ -1,9 +1,7 @@
 const passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
     JwtStrategy = require('passport-jwt').Strategy,
-    ExtractJwt = require('passport-jwt').ExtractJwt,
-    GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
-const session = require('express-session');
+    ExtractJwt = require('passport-jwt').ExtractJwt
 const bcrypt = require('bcryptjs');
 const authModel = require('../models/authModel'); 
 const {AuthenticationError} = require('../utils/index');
@@ -74,36 +72,6 @@ module.exports = (app) => {
         }
     }));
 
-    //--------- PASSPORT-GOOGLE ---------//
-    passport.use(new GoogleStrategy({
-        clientID:     config.GoogleInfo.GOOGLE_CLIENT_ID,
-        clientSecret: config.GoogleInfo.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/auth/google/callback",
-      },
-      async (request, accessToken, refreshToken, profile, done) => {
-        try {
-            let user = await authModel.getUserByProvider(profile.email, 'google');
-        
-            if(!user) {
-                let userCreate = await authModel.add({
-                    username: profile.displayName,
-                    email: profile.email,
-                    password: null,
-                    external_id: profile.id,
-                    is_activated: true,
-                    provider: "google"
-                });     
-          
-                return done(null, userCreate);
-            }
- 
-            return done(null, user);
-        } catch (error) {
-            done(error);
-        }
-      }
-    ));
-
     passport.serializeUser(function (user, done) {
         done(null, user);
     });
@@ -117,14 +85,5 @@ module.exports = (app) => {
         }
     });
 
-    app.use(
-        session({
-          secret: "web",
-          resave: false,
-          saveUninitialized: true,
-        })
-    );
-
     app.use(passport.initialize());
-    app.use(passport.session());
 };

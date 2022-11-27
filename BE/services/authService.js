@@ -62,7 +62,6 @@ exports.Register = async (user) => {
 
                 // Send email to verify
                 let tokenEmail = hexEncode(newUser.email);
-                console.log(tokenEmail);
                 let url = `${CLIENT_URL}/${newUser.id}/verify/${tokenEmail}`
                 await sendMail(newUser.email, newUser.username, url);
             });        
@@ -115,22 +114,33 @@ exports.CheckEmailVerified = async (req) => {
     }
 }
 
-exports.HandleLoginSuccess = (req) => {
-    if(req.user) {
-        const token = GenerateToken(req.user.email, req.user.provider)
-        return {
-            ReturnCode: 1,
-            Message: "Sign in successfully!",
-            User: {
-                token: token,
-                provider: req.user.provider
-            },
+exports.LoginGoogle = async (user) => {
+
+    let account = await authModel.getUserByProvider(user.email, "google");
+    let token = "";
+
+    if(!account) {
+        let accountAdd = {
+            username: user.name,
+            email: user.email,
+            password: null,
+            external_id: user.googleId,
+            is_activated: true,
+            provider: "google"
         };
+        await authModel.add(accountAdd);
+
+        token = GenerateToken(accountAdd.email, accountAdd.provider);        
     } else {
-        return {
-            ReturnCode: AuthenticationError.Error,
-            Message: "Not Authorized!",
-            User: null 
-        };
+        token = GenerateToken(account.email, account.provider)
     }
+
+    return {
+        ReturnCode: 1,
+        Message: "Sign in Google successfully!",
+        User: {
+            token: token,
+            provider: "google"
+        },
+    };
 }

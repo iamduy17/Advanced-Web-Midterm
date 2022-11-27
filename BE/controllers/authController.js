@@ -1,11 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
-const passport = require("passport");
 const authService = require('../services/authService');
-const {CLIENT_URL} = require('../config/index');
-const { AuthenticationError, GenerateToken } = require("../utils/index");
-const authModel = require("../models/authModel");
+const { AuthenticationError} = require("../utils/index");
 
 
 router.post('/login', authMiddleware.PassportLocalCheckLogin, async (req, res) => {
@@ -38,7 +35,6 @@ router.get("/:id/verify/:token", async (req, res) => {
 	try {
 		const result = await authService.CheckEmailVerified(req);
 
-        console.log(result);
         return res.json(result);
 	} catch (error) {
 		return res.json({
@@ -48,44 +44,17 @@ router.get("/:id/verify/:token", async (req, res) => {
 	}
 });
 
-router.get('/google',
-  passport.authenticate('google', { scope:[ 'email', 'profile' ] }
-));
-
-router.get( '/google/callback',
-    passport.authenticate( 'google', {
-        successRedirect: CLIENT_URL,
-        failureRedirect: '/auth/google/failure'
-}));
-
-router.get('/login/success', (req, res) => {
+router.post("/login/google", async (req, res) => {
     try {
-        const result = authService.HandleLoginSuccess(req);
-        //console.log(process.env.NODE_ENV);
-        //console.log(CLIENT_URL);
-        console.log(result);
-        return res.json(result);
+        const result = await authService.LoginGoogle(req.body);
+
+        res.json(result);
     } catch (error) {
-        return res.json({
+        return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong!" 
+            Message: "Something is wrong. Please sign in again!" 
         })
     }
-});
-
-router.get('/google/failure', (req, res) => {
-    return res.status(401).json({
-        ReturnCode: AuthenticationError.Error,
-        Message: "Something is wrong. Please sign in again!" 
-    });
-});
-
-router.get("/logout", (req, res) => {
-    req.user = null;
-    return res.status(200).json({
-        ReturnCode: 1,
-        Message: "Log out successfully!" 
-    });
 })
 
 module.exports = router;
