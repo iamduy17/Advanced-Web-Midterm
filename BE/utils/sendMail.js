@@ -67,10 +67,7 @@ module.exports = async (email, name, url) => {
 			subject: "Confirm your email address",
 			html: htmlText,
 		});
-		console.log("email sent successfully");
 	} catch (error) {
-		console.log("email not sent!");
-		console.log(error);
 		return error;
 	}
 };

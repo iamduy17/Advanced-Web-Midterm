@@ -12,4 +12,13 @@ module.exports = {
         if (res.length > 0) return res;
         return null;
     },
+    listByGroupID: async (groupID) => {
+        const res = await db.get(tbName, 'group_id', groupID);
+        if (res.length > 0) return res;
+        return null;
+    },
+    add: async (data) => {
+        const res = await db.add(tbName, data);
+        return res;
+    },
 };

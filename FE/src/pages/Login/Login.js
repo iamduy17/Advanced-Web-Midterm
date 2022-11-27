@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from 'react-query';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
-import google from "../../assets/images/google.png";
 import { API_URL } from "../../config";
+import GoogleButton from "../../components/GoogleButton/GoogleButton";
 import "./style.css";
 
 function Login() {
-    const navigate = useNavigate();    
     const [passwordOpen, setPasswordOpen] = useState(true);
     const [isErrorAuth, setIsErrorAuth] = useState({
         isError: false,
         message: ""
-    });                         
-    
+    });          
+       
     let user = {};
     const { register, handleSubmit } = useForm();               
     const onSubmit = data => {   
@@ -30,13 +28,8 @@ function Login() {
                 if (res.data.ReturnCode === 1) {   
                     localStorage.setItem("token", res.data.User.token);    
                     localStorage.setItem("provider", res.data.User.provider); 
-                    //window.open("/", "_self");
-                    
-                    console.log(1);
-                    navigate("/");
-                    window.location.reload();                           
+                    window.location.reload();                  
                 } else {
-                    console.log(res.data.Message);
                     handleErrorResponse(res.data.Message);
                 }               
             },
@@ -48,10 +41,6 @@ function Login() {
 
     async function postDataLogin() {
         return await axios.post(API_URL + 'auth/login', user);
-    }
-
-    function handleSignInGoogle() {
-        window.open(API_URL + 'auth/google', "_self");
     }
 
     function handleErrorResponse(error) {
@@ -72,7 +61,7 @@ function Login() {
         return <Loader></Loader>
     }
 
-    if (isError) {
+    if (isError ) {
         handleErrorResponse(error.message);
     }
 
@@ -102,12 +91,10 @@ function Login() {
                     <div className="login__text-or">or</div>
                 </div>
 
-                <div className="login__google mt-2">
-                    <button className="login__google-btn btn btn-outline-danger" onClick={handleSignInGoogle}>
-                        <img src={google} alt="Google" className="login__google-img"></img>
-                        <div className="login__google-text">Sign in with Google</div>
-                    </button>
+                <div className="login__google mt-2" >
+                    <GoogleButton setIsErrorAuth={setIsErrorAuth}></GoogleButton>
                 </div>
+                
 
                 <div className="row d-flex justify-content-center mt-5">
                     <p>New member? <a href="/register"> Create Account!</a></p>                 
