@@ -1,18 +1,19 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/index');
 
-exports.GenerateToken = (email, provider) => {
+exports.GenerateToken = (id, email, provider) => {
     return jwt.sign({
         data: {
+            id: id,
             email: email,
             provider: provider
         }
-      }, config.JWTInfo.JWTSecretKey, 
-      { 
-        expiresIn: '1h',
-        issuer: config.JWTInfo.JWTIssuer,
-        audience: config.JWTInfo.JWTAudience
-    });
+    }, config.JWTInfo.JWTSecretKey,
+        {
+            expiresIn: '1h',
+            issuer: config.JWTInfo.JWTIssuer,
+            audience: config.JWTInfo.JWTAudience
+        });
 }
 
 exports.validateEmail = (email) => {
