@@ -1,6 +1,10 @@
 import { Avatar, IconButton, MenuItem, Menu } from "@material-ui/core";
 import { Add, Apps, Menu as MenuIcon } from "@material-ui/icons";
 import React, { useState } from "react";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 //import { useAuthState } from "react-firebase-hooks/auth";
 //import { useRecoilState } from "recoil";
 //import { auth, logout } from "../firebase";
@@ -20,6 +24,13 @@ function Navbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+  const [className, setClassName] = useState("");
+  const [Section, setSection] = useState("");
 
   return (
     <>
@@ -47,7 +58,7 @@ function Navbar() {
             <Apps />
           </IconButton>
           <IconButton>
-            
+
           </IconButton>
           <Menu
             id="simple-menu"
@@ -58,7 +69,7 @@ function Navbar() {
           >
             <MenuItem
               onClick={() => {
-                //setCreateOpened(true);
+                handleShowModal();
                 handleClose();
               }}
             >
@@ -75,6 +86,33 @@ function Navbar() {
           </Menu>
         </div>
       </nav>
+
+      <Modal show={showModal} onHide={handleCloseModal} >
+        <Modal.Header>
+          <Modal.Title>Create Group</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control type="text" placeholder="Enter name" />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control type="text" placeholder="Description" />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCloseModal}>
+            Create Group
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
