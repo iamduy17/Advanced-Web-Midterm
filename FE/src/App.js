@@ -9,52 +9,47 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Email from "./pages/Email/Email";
 import { useEffectOnce } from "./hooks/useEffectOnce";
+import axios from 'axios';
+import { API_URL } from "./config/index"
 function App() {
-  const classes = [
-    {
-      className: "abcd",
-      section: "abcd",
-      id: 1,
-    },
-    {
-      className: "abcd",
-      section: "abcd",
-      id: 2,
-    },
-    {
-      className: "abcd",
-      section: "abcd",
-      id: 3,
-    },
-    {
-      className: "abcd",
-      section: "abcd",
-      id: 4,
-    },
-  ];
+  const [classes, setClasses] = useState([])
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    async function loadGroups() {
+      const res = await axios.get(API_URL + 'groups', {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        }
+       });
+      console.log(res.data.Groups);
+      setClasses(res.data.Groups);
+    }
+    loadGroups();
+  }, [])
+
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffectOnce(() => {
-    if(localStorage.getItem("token")) {
+    if (localStorage.getItem("token")) {
       setIsAuthenticated(true);
     } else {
       setIsAuthenticated(false);
     }
   }, [])
-  
+
   return (
     <>
-    <BrowserRouter>
-      <Routes>
-        <Route index path="/:id/*" element={<ClassDetail classes={classes}/>} />
-        <Route index path="/f" element={<CreateClass/>} />
-        <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes}/> : <Navigate replace to="/login" />}/>
-        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
-        <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
-        <Route path=":id/verify/:token" element={<Email />} />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route index path="/:id/*" element={<ClassDetail classes={classes} />} />
+          <Route index path="/f" element={<CreateClass />} />
+          <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes} /> : <Navigate replace to="/login" />} />
+          <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
+          <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
+          <Route path=":id/verify/:token" element={<Email />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

@@ -30,8 +30,21 @@ function Navbar() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
   const [className, setClassName] = useState("");
-  const [Section, setSection] = useState("");
+  const [description, setDescription] = useState("");
+  const handleCreateGroup = () => {
+    // const token = localStorage.getItem("token");
+    
+    // const res = await axios.post(API_URL + 'groups/create', {
+    //     headers: {
+    //       Authorization: 'Bearer ' + token,
+    //     }
+    //    });
+    //    body: {
 
+    //    }
+    // }
+    console.log({className, description})
+  };
   return (
     <>
       <nav className="navbar">
@@ -95,12 +108,22 @@ function Navbar() {
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter name" />
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                value={className}
+                onChange={e => setClassName(e.target.value)}
+                />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
-              <Form.Control type="text" placeholder="Description" />
+              <Form.Control
+               type="text" 
+               placeholder="Description" 
+               value={description}
+                onChange={e => setDescription(e.target.value)}
+               />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -108,7 +131,7 @@ function Navbar() {
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCloseModal}>
+          <Button variant="primary" onClick={handleCreateGroup}>
             Create Group
           </Button>
         </Modal.Footer>
