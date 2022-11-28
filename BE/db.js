@@ -73,6 +73,48 @@ exports.get = async (tbName, fieldName, value) => {
     }
 };
 
+exports.getAll = async (tbName) => {
+    const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
+    const qStr = pgp.as.format(
+        `SELECT * FROM $1`,
+        table
+    );
+
+    try {
+        const res = await db.any(qStr);
+        return res;
+    } catch (error) {
+        console.log('error db/get: ', error);
+    }
+};
+
+exports.getTowCondition = async (tbName, fieldName1, value1, filedName2, value2) => {
+    const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
+    const qStr = pgp.as.format(
+        `SELECT * FROM $1 WHERE "${fieldName1}"='${value1}' AND "${filedName2}"='${value2}'`,
+        table
+    );
+
+    try {
+        const res = await db.any(qStr);
+        return res;
+    } catch (error) {
+        console.log('error db/get: ', error);
+    }
+};
+
+exports.add = async (tbName, entity) => {
+    const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
+    const qStr = pgp.helpers.insert(entity, null, table) + ' RETURNING *';
+
+    try {
+        const res = await db.one(qStr);
+        return res;
+    } catch (error) {
+        console.log('error db/add: ', error);
+    }
+};
+
 exports.add = async (tbName, entity) => {
     const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
     const qStr = pgp.helpers.insert(entity, null, table) + ' RETURNING *';
@@ -89,7 +131,6 @@ exports.patch = async (tbName, filedName, entity, condition) => {
     const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
     const conditionInput = pgp.as.format(condition, entity);
     const qStr = pgp.helpers.update(entity, filedName, table) + conditionInput;
-    console.log("update", qStr)
     try {
         const res = await db.any(qStr);
         return res;

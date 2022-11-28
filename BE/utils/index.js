@@ -8,12 +8,12 @@ exports.GenerateToken = (id, email, provider) => {
             email: email,
             provider: provider
         }
-      }, config.JWTInfo.JWTSecretKey, 
-      { 
-        expiresIn: '1h',
-        issuer: config.JWTInfo.JWTIssuer,
-        audience: config.JWTInfo.JWTAudience
-    });
+    }, config.JWTInfo.JWTSecretKey,
+        {
+            expiresIn: '1h',
+            issuer: config.JWTInfo.JWTIssuer,
+            audience: config.JWTInfo.JWTAudience
+        });
 }
 
 exports.validateEmail = (email) => {

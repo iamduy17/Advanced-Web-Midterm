@@ -9,7 +9,7 @@ exports.JWTInfo = {
 }
 
 exports.saltRounds = process.env.SALT_ROUND;
-exports.CLIENT_URL= process.env.NODE_ENV === 'development' ? process.env.CLIENT_URL : "";
+exports.CLIENT_URL = process.env.NODE_ENV === 'development' ? process.env.CLIENT_URL : "";
 exports.GoogleInfo = {
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET

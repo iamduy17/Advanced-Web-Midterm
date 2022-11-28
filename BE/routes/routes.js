@@ -1,14 +1,13 @@
 const express = require("express");
-const router = express.Router();    
+const router = express.Router();
 
-const authController = require('../controllers/authController');  
-const groupController = require('../controllers/groupController');          
-const profile = require('../controllers/profile');  
+const authController = require('../controllers/authController');
+const accountgroupController = require('../controllers/account_groupController');
+const groupController = require('../controllers/groupController');
 
 router.use("/auth", authController);
+router.use("/account_group", accountgroupController);
 router.use("/groups", groupController);
-
-router.use("/profile", profile);
 
 router.get('/', (req, res) => {
     res.send("Hello world");

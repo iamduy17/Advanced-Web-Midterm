@@ -1,21 +1,27 @@
-.title{
-    color: rgb(25,103,210);
-    font-family: "Google Sans",Roboto,Arial,sans-serif;
+.title {
+    color: rgb(25, 103, 210);
+    font-family: "Google Sans", Roboto, Arial, sans-serif;
     font-size: 2rem;
     font-weight: 400;
     line-height: 2.5rem;
     padding-left: 10px;
 }
 
-.divider{
-    background-color: rgb(25,103,210);
+.divider {
+    background-color: rgb(25, 103, 210);
 }
 
-.container{
+.container {
     width: 60%;
     margin-top: 40px;
 }
 
-.role-item{
+.role-item {
     margin-bottom: 40px;
+}
+
+.owner-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

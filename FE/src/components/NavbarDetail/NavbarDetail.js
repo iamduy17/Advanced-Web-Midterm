@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
 import "./styles.css";
 
-function NavbarDetail({classData}) {
+function NavbarDetail({ classData }) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {

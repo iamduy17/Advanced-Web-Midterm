@@ -1,4 +1,5 @@
 import { Avatar } from "@material-ui/core";
+import EmailInvitation from "../Invitation/EmailInvitation";
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { API_URL } from "../../config/index"
@@ -32,22 +33,25 @@ function People({ id }) {
 
         <div className="container">
             <div className="role-item">
-                <h1 className="title">Owner</h1>
+                <div className="owner-title">
+                    <h1 className="title">Owner</h1>
+                    <EmailInvitation />
+                </div>
                 <hr className="divider"></hr>
-                {owners.map((item, index) => <Person key = {index} name={item.username}></Person>)}
+                {owners.map((item, index) => <Person key={index} name={item.username}></Person>)}
 
-            </div>
+            </div >
             <div className="role-item">
                 <h1 className="title">Co-Owner</h1>
                 <hr className="divider"></hr>
-                {coOwners.map((item, index) => <Person key = {index} name={item.username}></Person>)}
-            </div>
+                {coOwners.map((item, index) => <Person key={index} name={item.username}></Person>)}
+            </div >
             <div className="role-item">
                 <h1 className="title">Member</h1>
                 <hr className="divider"></hr>
-                {members.map((item, index) => <Person key = {index} name={item.username}></Person>)}
-            </div>
-        </div>
+                {members.map((item, index) => <Person key={index} name={item.username}></Person>)}
+            </div >
+        </div >
     )
 }
 

@@ -9,6 +9,8 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import Email from "./pages/Email/Email";
 import { useEffectOnce } from "./hooks/useEffectOnce";
+import Profile from "./pages/Profile/Profile";
+import Navbar from "./components/Navbar/Navbar";
 import axios from 'axios';
 import { API_URL } from "./config/index"
 function App() {
@@ -20,7 +22,7 @@ function App() {
         headers: {
           Authorization: 'Bearer ' + token,
         }
-       });
+      });
       console.log(res.data.Groups);
       setClasses(res.data.Groups);
     }
@@ -37,7 +39,6 @@ function App() {
       setIsAuthenticated(false);
     }
   }, [])
-
   return (
     <>
       <BrowserRouter>
@@ -48,6 +49,7 @@ function App() {
           <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
           <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
           <Route path=":id/verify/:token" element={<Email />} />
+          <Route path="/profile/:id_user" element={<Profile />} />
         </Routes>
       </BrowserRouter>
     </>
