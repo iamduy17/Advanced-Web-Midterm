@@ -49,7 +49,7 @@ exports.loadCondition = async (tbName, orderBy, condition) => {
         pgp.as.format('SELECT * FROM $1', table) +
         condition +
         ` ORDER BY "${orderBy}" ASC`;
-
+    console.log(qStr);
     try {
         const res = await db.any(qStr);
         return res;
@@ -89,7 +89,7 @@ exports.patch = async (tbName, filedName, entity, condition) => {
     const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
     const conditionInput = pgp.as.format(condition, entity);
     const qStr = pgp.helpers.update(entity, filedName, table) + conditionInput;
-    
+    console.log("update", qStr)
     try {
         const res = await db.any(qStr);
         return res;

@@ -31,9 +31,9 @@ function NavbarDetail({classData}) {
                 <div className="navbar__center">
                     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                         <Tabs value={value} onChange={handleChange} centered>
-                            <Tab label="Bảng tin" component={Link} to={`/${classData.id}`}>
+                            <Tab label="News" component={Link} to={`/${classData.id}`}>
                             </Tab>
-                            <Tab label="Mọi người" component={Link} to={`/${classData.id}/people`}>
+                            <Tab label="People" component={Link} to={`/${classData.id}/people`}>
                             </Tab>
                         </Tabs>
                     </Box>

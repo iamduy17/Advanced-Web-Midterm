@@ -66,7 +66,7 @@ exports.GetGroup = async (id) => {
         Data: {
             Group: group,
             Owners: owners,
-            CoOwner: coOwners,
+            CoOwners: coOwners,
             Members: members
         }
     };
@@ -86,5 +86,20 @@ exports.CreateGroup = async (group, userID) => {
         Data: {
             Group: groupResponse,
         }
+    };
+}
+
+exports.SetRole = async (groupID, userID, role) => {
+    const accountGroupResponse = await accountGroupModel.getByAccountIDAndGroupID(userID, groupID);
+    const account_group = {
+        id: accountGroupResponse.id,
+        account_id: userID,
+        groupID: groupID,
+        role: role
+    }
+    await accountGroupModel.update(accountGroupResponse.id, account_group)
+    return {
+        ReturnCode: 200,
+        Message: "change role successfully",
     };
 }

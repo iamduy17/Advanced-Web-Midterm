@@ -4,11 +4,9 @@ import React, { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import { API_URL } from "../../config/index"
 
-//import { useAuthState } from "react-firebase-hooks/auth";
-//import { useRecoilState } from "recoil";
-//import { auth, logout } from "../firebase";
-//import { createDialogAtom, joinDialogAtom } from "../utils/atoms";
 import "./styles.css";
 
 function Navbar() {
@@ -31,20 +29,18 @@ function Navbar() {
   const handleShowModal = () => setShowModal(true);
   const [className, setClassName] = useState("");
   const [description, setDescription] = useState("");
-  const handleCreateGroup = () => {
-    // const token = localStorage.getItem("token");
+  const handleCreateGroup = async () => {
+    const token = localStorage.getItem("token");
     
-    // const res = await axios.post(API_URL + 'groups/create', {
-    //     headers: {
-    //       Authorization: 'Bearer ' + token,
-    //     }
-    //    });
-    //    body: {
+    const res = await axios.post(API_URL + 'groups/create', { name: className, description: description }, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
 
-    //    }
-    // }
-    console.log({className, description})
+    window.location.reload();
   };
+
   return (
     <>
       <nav className="navbar">
@@ -113,17 +109,17 @@ function Navbar() {
                 placeholder="Enter name"
                 value={className}
                 onChange={e => setClassName(e.target.value)}
-                />
+              />
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>Description</Form.Label>
               <Form.Control
-               type="text" 
-               placeholder="Description" 
-               value={description}
+                type="text"
+                placeholder="Description"
+                value={description}
                 onChange={e => setDescription(e.target.value)}
-               />
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -131,7 +127,7 @@ function Navbar() {
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCreateGroup}>
+          <Button variant="primary" onClick={()=>handleCreateGroup()}>
             Create Group
           </Button>
         </Modal.Footer>

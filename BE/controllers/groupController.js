@@ -52,4 +52,20 @@ router.get('/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     }
 });
 
+router.post('/changeRole', authMiddleware.PassportJWTCheckToken, async (req, res) => {
+    try {
+        const userID = req.user.id;
+        //check permission user.
+        console.log(req.body)
+        const result = await groupService.SetRole(req.body.group_id, req.body.account_id, req.body.role);
+
+        return res.json(result);
+    } catch (error) {
+        return res.status(401).json({
+            ReturnCode: AuthenticationError.Error,
+            Message: "Something is wrong. Please sign in again!" 
+        })
+    }
+});
+
 module.exports = router;
