@@ -8,7 +8,6 @@
 </p>
 
 ## **Mục lục**
-* * *
 ### [Thông tin nhóm](#team)
 ### [Yêu cầu chương trình](#require)
 ### [Cách chạy chương trình](#run)  
@@ -19,7 +18,6 @@
 ### [Video demo](#video)
 
 ## **Thông tin nhóm** <a name="team"></a>
-* * *
 |       Họ và tên      |   MSSV   | Email                           | Công việc | 
 |----------------------|:--------:|---------------------------------|------- | 
 | Thới Hải Đức         | 19120483 | 19120483@student.hcmus.edu.vn   |+ Tạo group.</br> + Hiển thị danh sách các group do user tạo hoặc tham gia. </br> + Hiển thị danh   sách thành viên và người tạo trong group. </br> + Phân quyền owner, co-owner, member cho group đó.
@@ -27,12 +25,10 @@
 | Dương Nam            | 19120593 | 19120593@student.hcmus.edu.vn   | + Tạo link tham gia group và xử lý việc tham gia thông qua nhấn link. </br> + Gửi lời mời vào group bằng email. </br> + Quản lý hồ sơ người dùng. </br> + Quay video demo.
 
 ## **Yêu cầu chương trình** <a name="require"></a>
-* * *
 - Cài đặt Node.js.
-- Cài đặt Visual Studio Code.
+- Cài đặt Visual Studio Code (hoặc các IDE khác).
 - Cài đặt ứng dụng Postgresql.
 ## **Cách chạy chương trình** <a name="run"></a>
-* * *
 ### Cách chạy chương trình FE:
 ```bash
   1. cd Source\FE
@@ -54,7 +50,6 @@
   5. npm start
 ``` 
 ## **Chức năng đã thực hiện** <a name="done"></a>
-* * *
 - Xử lý authentication: Register, Login, Logout.  _(+1 điểm)_
 - Kích hoạt tài khoản vừa tạo qua email. _(+1 điểm)_
 - Tích hợp đăng nhập bằng Google. _(+1 điểm)_
@@ -66,26 +61,22 @@
 - Gửi lời mời vào group bằng email. _(+1 điểm)_
 - Quản lý hồ sơ người dùng. _(+0.5 điểm)_
 - Upload to public host. _(+1 điểm)_
-- UI/UX: phù hợp các tiêu chuẩn cơ bản. _(+0 điểm)_
-- Làm việc nhóm, chia việc và commit các công việc được phân chia trên git *(các commit hiển thị theo branch được chia theo feature trong link github bên dưới)*. _(+0 điểm)_
+- UI/UX: phù hợp các tiêu chuẩn cơ bản. _(-0 điểm)_
+- Làm việc nhóm, chia việc và commit các công việc được phân chia trên git. _(-0 điểm)_
 
 ## **Chức năng chưa thực hiện** <a name="notdone"></a>
-* * *
 - Không có.
 
 ## **Các đường dẫn liên quan** <a name="link"></a>
-* * *
 ### Link github: <https://github.com/iamduy17/Advanced-Web-Midterm>
 ### Link deploy:
 - Deploy FE: <...>
 - Deploy BE: <...> 
 
 ## **Điểm số mong muốn** <a name="score"></a>
-* * *
 - Thới Hải Đức - 19120483: **10 điểm**.
 - Đỗ Thái Duy - 19120492: **10 điểm**.
 - Dương Nam - 19120593: **10 điểm**.
 
 ## **Video demo** <a name="video"></a>
-* * *
 * [Youtube Demo Advanced Web Midterm]()
