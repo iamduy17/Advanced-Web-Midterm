@@ -58,6 +58,11 @@ function ClassDetail({ classes }) {
                     :
                     !isJoined ?
                         <div>
+                            <NavbarDetail classData={classes[index]}></NavbarDetail>
+                            <Routes>
+                                <Route index path="" element={<Main classData={classes[index]} />} />
+                                <Route index path="/people" element={<People id={id}></People>} />
+                            </Routes>
 
                             <Invitation setIsJoined={setIsJoined} />
                         </div>

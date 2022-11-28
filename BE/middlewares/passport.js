@@ -52,13 +52,15 @@ module.exports = (app) => {
         issuer : config.JWTInfo.JWTIssuer,
         audience : config.JWTInfo.JWTAudience
     }
-    passport.use(new JwtStrategy(opts, async (req, jwt_payload, done) => {
+    console.log(opts.jwtFromRequest);
+    passport.use(new JwtStrategy(opts, async (jwt_payload, done) => {
         try {
+            console.log(jwt_payload.data);
             const {email, provider} = jwt_payload.data;
             let user = await authModel.getUserByProvider(email, provider);
 
             if (user) {
-                req.user = user;
+                //req.user = user;
                 done(null, jwt_payload.data);
             }
             else 
@@ -68,7 +70,7 @@ module.exports = (app) => {
                 });
         
         } catch (error) {
-            done(error);
+            console.log(error);
         }
     }));
 

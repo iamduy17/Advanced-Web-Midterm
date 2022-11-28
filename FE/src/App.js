@@ -11,33 +11,24 @@ import Email from "./pages/Email/Email";
 import { useEffectOnce } from "./hooks/useEffectOnce";
 import Profile from "./pages/Profile/Profile";
 import Navbar from "./components/Navbar/Navbar";
+import axios from 'axios';
+import { API_URL } from "./config/index"
 function App() {
-  const classes = [
-    {
-      className: "abcd",
-      section: "abcd",
-      owner: "abcde",
-      id: 1,
-    },
-    {
-      className: "abcd",
-      section: "abcd",
-      owner: "abcde",
-      id: 2,
-    },
-    {
-      className: "abcd",
-      section: "abcd",
-      owner: "abcde",
-      id: 3,
-    },
-    {
-      className: "abcd",
-      section: "abcd",
-      owner: "abcde",
-      id: 4,
-    },
-  ];
+  const [classes, setClasses] = useState([])
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    async function loadGroups() {
+      const res = await axios.get(API_URL + 'groups', {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        }
+      });
+      console.log(res.data.Groups);
+      setClasses(res.data.Groups);
+    }
+    loadGroups();
+  }, [])
+
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 

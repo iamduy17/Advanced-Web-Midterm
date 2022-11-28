@@ -32,3 +32,8 @@
   height: 30px;
   width: auto;
 }
+
+form{
+  width: 100% !important;
+  align-items: inherit !important;
+}
