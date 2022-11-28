@@ -6,11 +6,14 @@ import People from "../../components/People/People";
 import { API_URL } from "../../config";
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Invitation from "../Invitation/Invitation";
+import Loader from "../../components/Loader/Loader";
+
 
 function ClassDetail({ classes }) {
     const [isJoined, setIsJoined] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { id } = useParams();
     let index = classes.findIndex(element => element.id == id);
 
@@ -41,17 +44,31 @@ function ClassDetail({ classes }) {
     }
     doGetRequest();
 
+    useEffect(() => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 1500);
+    }, []);
+
     return (
         <>
             {
-                !isJoined ? <Invitation setIsJoined={setIsJoined} /> :
-                    <div>
-                        <NavbarDetail classData={classes[index]}></NavbarDetail>
-                        <Routes>
-                            <Route index path="" element={<Main classData={classes[index]} />} />
-                            <Route index path="/people" element={<People></People>} />
-                        </Routes>
-                    </div>
+                loading ? <Loader></Loader>
+                    :
+                    !isJoined ?
+                        <div>
+
+                            <Invitation setIsJoined={setIsJoined} />
+                        </div>
+                        :
+                        <div>
+                            <NavbarDetail classData={classes[index]}></NavbarDetail>
+                            <Routes>
+                                <Route index path="" element={<Main classData={classes[index]} />} />
+                                <Route index path="/people" element={<People></People>} />
+                            </Routes>
+                        </div>
             }
 
         </>

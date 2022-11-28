@@ -1,5 +1,5 @@
 import { Avatar } from "@material-ui/core";
-import LinkInvitation from "../Invitation/LinkInvitation";
+import EmailInvitation from "../Invitation/EmailInvitation";
 import "./People.css"
 import Person from "./Person";
 
@@ -14,7 +14,7 @@ function People() {
             <div className="role-item">
                 <div className="owner-title">
                     <h1 className="title">Owner</h1>
-                    <LinkInvitation />
+                    <EmailInvitation />
                 </div>
                 <hr className="divider"></hr>
 

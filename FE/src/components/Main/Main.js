@@ -2,7 +2,7 @@ import { Avatar, Button, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import "./styles.css";
 import { Announcment } from "../Announcment/Announcment"
-import EmailInvitation from "../Invitation/EmailInvitation";
+import LinkInvitation from "../Invitation/LinkInvitation";
 
 const Main = ({ classData }) => {
   const [showInput, setShowInput] = useState(false);
@@ -35,7 +35,7 @@ const Main = ({ classData }) => {
           <div className="main__status">
             <p>Upcoming</p>
             <p className="main__subText">No work due</p>
-            <EmailInvitation />
+            <LinkInvitation />
           </div>
           <div className="main__announcements">
             <div className="main__announcementsWrapper">

@@ -1,9 +1,10 @@
 .header {
     width: 100%;
-    height: 50px;
-    border: 1px solid rgb(77, 74, 74);
+    height: 70px;
+    border: 1px solid rgb(174, 169, 169);
     display: flex;
     align-items: center;
+    background-color: rgb(27, 162, 96);
 }
 
 .textHeader {
@@ -11,6 +12,7 @@
     font-size: 20px;
     font-weight: bold;
     margin-left: 20px;
+    color: white;
 }
 
 .ct {
