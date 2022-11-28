@@ -24,7 +24,7 @@ export default function EmailInvitation() {
     const sendEmail = (e) => {
         e.preventDefault();
 
-        emailjs.sendForm('service_0g4lmqn', 'template_vemz9at', form.current, 'GKzUVk3RmV9i_U1ma')
+        emailjs.sendForm('service_0mi3h52', 'template_x1zg76l', form.current, 'AlXX9Q8VVsirCM8HS')
             .then((result) => {
                 console.log(result.text);
                 console.log("email has been sent");

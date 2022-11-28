@@ -31,7 +31,7 @@ function Navbar() {
   const [description, setDescription] = useState("");
   const handleCreateGroup = async () => {
     const token = localStorage.getItem("token");
-    
+
     const res = await axios.post(API_URL + 'groups/create', { name: className, description: description }, {
       headers: {
         Authorization: 'Bearer ' + token,
@@ -127,7 +127,7 @@ function Navbar() {
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={()=>handleCreateGroup()}>
+          <Button variant="primary" onClick={() => handleCreateGroup()}>
             Create Group
           </Button>
         </Modal.Footer>
