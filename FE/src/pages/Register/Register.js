@@ -134,7 +134,7 @@ function Register() {
             </div>}
             <div className="register__form-container">
                 <h3 className="register__heading">Create Account</h3>
-                <form>
+                <form className="register__form">
                     <div className="form-group">                           
                         <input type="text" name="username" id="username" className="form-control register__input-field" placeholder=" " value={user.username} onChange={handleChange}/>
                         <label htmlFor="username" className="register__label">Username</label>

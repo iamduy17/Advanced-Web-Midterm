@@ -62,7 +62,10 @@ module.exports = async (email, name, url) => {
 
 		const htmlText = emailHTML(name, url);
 		await transporter.sendMail({
-			from: EmailInfo.EMAIL_USER,
+			from: {
+				name: 'DND Group',
+				address: EmailInfo.EMAIL_USER
+			},
 			to: email,
 			subject: "Confirm your email address",
 			html: htmlText,

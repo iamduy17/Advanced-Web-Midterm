@@ -72,7 +72,7 @@ function Login() {
             </div>}
             <div className="login__form-container">
                 <h3 className="login__heading">Login Now</h3>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
                     <div className="form-group">                           
                         <input type="text" name="email" id="email" className="form-control login__input-field" placeholder=" " {...register("email")} autoComplete="off"/>
                         <label htmlFor="email" className="login__label">Email</label>
