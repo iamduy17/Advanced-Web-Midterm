@@ -15,7 +15,7 @@ function ClassDetail({ classes }) {
             <NavbarDetail classData={classes[index]}></NavbarDetail>
             <Routes>
                 <Route index path="" element={<Main classData={classes[index]} />} />
-                <Route index path="/people" element={<People></People>} />
+                <Route index path="/people" element={<People id = {id}></People>} />
             </Routes>
 
 

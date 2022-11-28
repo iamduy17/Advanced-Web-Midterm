@@ -1,10 +1,12 @@
 import { Avatar, IconButton, MenuItem, Menu } from "@material-ui/core";
 import { Add, Apps, Menu as MenuIcon } from "@material-ui/icons";
 import React, { useState } from "react";
-//import { useAuthState } from "react-firebase-hooks/auth";
-//import { useRecoilState } from "recoil";
-//import { auth, logout } from "../firebase";
-//import { createDialogAtom, joinDialogAtom } from "../utils/atoms";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import { API_URL } from "../../config/index"
+
 import "./styles.css";
 
 function Navbar() {
@@ -19,6 +21,24 @@ function Navbar() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+  const [className, setClassName] = useState("");
+  const [description, setDescription] = useState("");
+  const handleCreateGroup = async () => {
+    const token = localStorage.getItem("token");
+    
+    const res = await axios.post(API_URL + 'groups/create', { name: className, description: description }, {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+
+    window.location.reload();
   };
 
   return (
@@ -47,7 +67,7 @@ function Navbar() {
             <Apps />
           </IconButton>
           <IconButton>
-            
+
           </IconButton>
           <Menu
             id="simple-menu"
@@ -58,7 +78,7 @@ function Navbar() {
           >
             <MenuItem
               onClick={() => {
-                //setCreateOpened(true);
+                handleShowModal();
                 handleClose();
               }}
             >
@@ -75,6 +95,43 @@ function Navbar() {
           </Menu>
         </div>
       </nav>
+
+      <Modal show={showModal} onHide={handleCloseModal} >
+        <Modal.Header>
+          <Modal.Title>Create Group</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                value={className}
+                onChange={e => setClassName(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Description"
+                value={description}
+                onChange={e => setDescription(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={()=>handleCreateGroup()}>
+            Create Group
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
