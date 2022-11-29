@@ -33,7 +33,7 @@ export default function EmailInvitation() {
             });
 
         setEmail("");
-        toast("Email đã được gửi!", {
+        toast("Email is sending ... !", {
             autoClose: 1000
         });
     };
@@ -44,7 +44,7 @@ export default function EmailInvitation() {
             <ToastContainer />
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Gửi lời mời tham gia lớp học bằng Email</Modal.Title>
+                    <Modal.Title>Send an invitation to join the group</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form ref={form} className="invitation-form">
