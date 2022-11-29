@@ -7,7 +7,6 @@ function LinkInvitation() {
     const handleCopy = () => {
         const URL = window.location.href;
         navigator.clipboard.writeText(URL);
-        console.log(URL);
         toast("The link has been copied!",
             {
                 autoClose: 1000

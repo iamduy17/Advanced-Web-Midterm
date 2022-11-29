@@ -11,7 +11,8 @@ const Footer = () => <>
         bottom: "0",
         left: "0",
         width: "100%",
-        background: "linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%)"
+        background: "linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%)",
+        maxHeight:"40px",
     }}>
         <Toolbar style={{
             justifyContent: "center",

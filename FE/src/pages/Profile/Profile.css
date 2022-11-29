@@ -48,8 +48,8 @@
 }
 
 .img-wallpaper {
-    width: 26rem;
-    height: 20rem;
+    width: 15rem;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;

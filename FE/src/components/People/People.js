@@ -31,25 +31,25 @@ function People({ id }) {
 
     return (
 
-        <div className="container">
+        <div className="container-people">
             <div className="role-item">
                 <div className="owner-title">
                     <h1 className="title">Owner</h1>
                     <EmailInvitation />
                 </div>
                 <hr className="divider"></hr>
-                {owners.map((item, index) => <Person key={index} name={item.username}></Person>)}
+                {owners.map((item, index) => <Person key={index} name={item.username} id={item.id} classID={id} role={1}></Person>)}
 
             </div >
             <div className="role-item">
                 <h1 className="title">Co-Owner</h1>
                 <hr className="divider"></hr>
-                {coOwners.map((item, index) => <Person key={index} name={item.username}></Person>)}
+                {coOwners.map((item, index) => <Person key={index} name={item.username} id={item.id} classID={id} role={2}></Person>)}
             </div >
             <div className="role-item">
                 <h1 className="title">Member</h1>
                 <hr className="divider"></hr>
-                {members.map((item, index) => <Person key={index} name={item.username}></Person>)}
+                {members.map((item, index) => <Person key={index} name={item.username} id={item.id} classID={id} role={3}></Person>)}
             </div >
         </div >
     )

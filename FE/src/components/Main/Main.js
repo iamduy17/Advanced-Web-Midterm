@@ -27,6 +27,7 @@ const Main = ({ classData }) => {
               <div className="main__wrapper2">
                 <em className="main__code">Class Code :</em>
                 <div className="main__id">{classData.id}</div>
+                <LinkInvitation />
               </div>
             </div>
           </div>
@@ -35,7 +36,7 @@ const Main = ({ classData }) => {
           <div className="main__status">
             <p>Upcoming</p>
             <p className="main__subText">No work due</p>
-            <LinkInvitation />
+            
           </div>
           <div className="main__announcements">
             <div className="main__announcementsWrapper">
