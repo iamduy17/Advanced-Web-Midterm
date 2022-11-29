@@ -11,11 +11,13 @@ import Invitation from "../Invitation/Invitation";
 import Loader from "../../components/Loader/Loader";
 
 
-function ClassDetail({ classes }) {
+function ClassDetail() {
     const [isJoined, setIsJoined] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    let [classes, setClasses] = useState([])
+    let [index, setIndex] = useState(0)
     const { id } = useParams();
-    let index = classes.findIndex(element => element.id == id);
+    //let index = classes.findIndex(element => element.id == id);
 
     let token = localStorage.getItem("token");
     var decoded = jwt_decode(token);
@@ -42,10 +44,28 @@ function ClassDetail({ classes }) {
         }
 
     }
-    doGetRequest();
+    
 
     useEffect(() => {
-        setLoading(true);
+        const token = localStorage.getItem("token");
+        async function loadGroups() {
+            const res = await axios.get(API_URL + 'groups', {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                }
+            });
+            console.log("ClassDetail", res.data.Groups);
+            setClasses(res.data.Groups);
+            //setIndex(classes.findIndex(element => element.id == id));
+            for (let i = 0; i < classes.length; i++) {
+                if (classes[i].id == id) {
+                    setIndex(i);
+                    break;
+                }
+            }
+        }
+        loadGroups();
+        doGetRequest();
         setTimeout(() => {
             setLoading(false);
         }, 1500);
@@ -71,7 +91,7 @@ function ClassDetail({ classes }) {
                             <NavbarDetail classData={classes[index]}></NavbarDetail>
                             <Routes>
                                 <Route index path="" element={<Main classData={classes[index]} />} />
-                                <Route index path="/people" element={<People></People>} />
+                                <Route index path="/people" element={<People id={id}></People>} />
                             </Routes>
                         </div>
             }

@@ -44,7 +44,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index path="/:id/*" element={<ClassDetail classes={classes} />} />
+          <Route index path="/:id/*" element={<ClassDetail />} />
           <Route index path="/f" element={<CreateClass />} />
           <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes} /> : <Navigate replace to="/login" />} />
           <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />

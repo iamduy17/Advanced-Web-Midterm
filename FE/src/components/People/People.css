@@ -11,9 +11,9 @@
     background-color: rgb(25, 103, 210);
 }
 
-.container {
+.container-people {
     width: 60%;
-    margin-top: 40px;
+    margin: 40px auto;
 }
 
 .role-item {
