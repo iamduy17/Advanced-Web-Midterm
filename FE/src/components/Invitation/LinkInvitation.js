@@ -8,7 +8,7 @@ function LinkInvitation() {
         const URL = window.location.href;
         navigator.clipboard.writeText(URL);
         console.log(URL);
-        toast("Đã sao chép đường liên kết!",
+        toast("The link has been copied!",
             {
                 autoClose: 1000
             });

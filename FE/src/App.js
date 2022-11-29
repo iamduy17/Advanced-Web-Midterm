@@ -13,6 +13,7 @@ import Profile from "./pages/Profile/Profile";
 import Navbar from "./components/Navbar/Navbar";
 import axios from 'axios';
 import { API_URL } from "./config/index"
+import Footer from "./components/Footer/Footer";
 function App() {
   const [classes, setClasses] = useState([])
   useEffect(() => {
@@ -51,7 +52,9 @@ function App() {
           <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
           <Route path=":id/verify/:token" element={<Email />} />
           <Route path="/profile/:id_user" element={<Profile />} />
+          {/* <Route path="/footer" element={<Footer />} /> */}
         </Routes>
+        <Footer></Footer>
       </BrowserRouter>
     </>
   );
