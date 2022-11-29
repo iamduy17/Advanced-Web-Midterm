@@ -46,12 +46,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index path="/:id/*" element={<ClassDetail />} />
-          <Route index path="/f" element={<CreateClass />} />
           <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes} /> : <Navigate replace to="/login" />} />
           <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
           <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
           <Route path=":id/verify/:token" element={<Email />} />
-          <Route path="/profile/:id_user" element={<Profile />} />
+          <Route path="/profile/:name" element={isAuthenticated ? <Profile /> : <Navigate replace to="/" />} />
           {/* <Route path="/footer" element={<Footer />} /> */}
         </Routes>
         <Footer></Footer>

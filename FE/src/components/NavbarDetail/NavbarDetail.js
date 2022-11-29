@@ -5,6 +5,7 @@ import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import Box from "@material-ui/core/Box";
 import { Link } from "react-router-dom";
+import logo from "../../assets/images/logo.jpg"
 import "./styles.css";
 
 function NavbarDetail({ classData }) {
@@ -18,15 +19,12 @@ function NavbarDetail({ classData }) {
         <>
             <nav className="navbar">
                 <div className="navbar__left">
-                    <IconButton>
-                        <MenuIcon />
-                    </IconButton>
                     <img
-                        src="https://1000logos.net/wp-content/uploads/2021/05/Google-logo.png"
-                        alt="Google Logo"
-                        className="navbar__logo"
+                        src={logo}
+                        alt="DND Logo"
+                        className="navbardetail__logo"
                     />{" "}
-                    <span>Classroom</span>
+                    <span>DND Group</span>
                 </div>
                 <div className="navbar__center">
                     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>

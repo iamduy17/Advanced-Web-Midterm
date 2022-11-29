@@ -25,7 +25,6 @@ function Person({ id, name, classID, role }) {
             }
             roles.push(i)
         }
-        console.log(roles)
         return roles.map((role) => {
             return (<MenuItem
                 onClick={() => {
@@ -62,7 +61,7 @@ function Person({ id, name, classID, role }) {
 
     return (
         <div className="person">
-            <Link to={`/profile/${id}`}>
+            <Link to={`/profile/${name}`}>
                 <CardHeader className="person-card"
                     avatar={
                         <Avatar />

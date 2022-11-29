@@ -1,11 +1,13 @@
 import { Avatar, IconButton, MenuItem, Menu } from "@material-ui/core";
 import { Add, Apps, Menu as MenuIcon } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { API_URL } from "../../config/index"
+import logo from "../../assets/images/logo.jpg"
+import { GoogleLogout } from 'react-google-login';
 
 import "./styles.css";
 
@@ -14,6 +16,24 @@ function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   //const [createOpened, setCreateOpened] = useRecoilState(createDialogAtom);
   //const [joinOpened, setJoinOpened] = useRecoilState(joinDialogAtom);
+
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
+
+    useEffect(() => {
+        if(localStorage.getItem("provider")?.toString() === 'google') {
+            setIsGoogleSignIn(true);
+        } else {
+            setIsGoogleSignIn(false);
+        }
+    }, []);
+
+    const logOut = () => {
+        localStorage.removeItem("token");    
+        localStorage.removeItem("provider");
+        setIsGoogleSignIn(false);    
+        window.location.reload();
+    }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,15 +65,12 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar__left">
-          <IconButton>
-            <MenuIcon />
-          </IconButton>
           <img
-            src="https://1000logos.net/wp-content/uploads/2021/05/Google-logo.png"
+            src={logo}
             alt="Google Logo"
             className="navbar__logo"
           />{" "}
-          <span>Classroom</span>
+          <span>DND Group</span>
         </div>
         <div className="navbar__right">
           <IconButton
@@ -62,9 +79,6 @@ function Navbar() {
             onClick={handleClick}
           >
             <Add />
-          </IconButton>
-          <IconButton>
-            <Apps />
           </IconButton>
           <IconButton>
 
@@ -82,7 +96,7 @@ function Navbar() {
                 handleClose();
               }}
             >
-              Create Class
+              Create Group
             </MenuItem>
             <MenuItem
               onClick={() => {
@@ -93,6 +107,14 @@ function Navbar() {
               Join Class
             </MenuItem>
           </Menu>
+          {isGoogleSignIn ? 
+            <GoogleLogout clientId={clientId} onLogoutSuccess={logOut} 
+                render={renderProps => (
+                        <Button onClick={renderProps.onClick}>Logout</Button>
+                    )}
+            /> 
+            : 
+            <Button variant="primary" onClick={logOut}>Logout</Button>}
         </div>
       </nav>
 
