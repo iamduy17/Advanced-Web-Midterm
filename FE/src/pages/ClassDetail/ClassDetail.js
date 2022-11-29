@@ -42,7 +42,7 @@ function ClassDetail() {
         }
 
     }
-    
+
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -54,8 +54,8 @@ function ClassDetail() {
             });
             setClasses(res.data.Groups);
             //setIndex(classes.findIndex(element => element.id == id));
-            for (let i = 0; i < classes.length; i++) {
-                if (classes[i].id == id) {
+            for (let i = 0; i < res.data.Groups.length; i++) {
+                if (res.data.Groups[i].id == id) {
                     setIndex(i);
                     break;
                 }
@@ -75,12 +75,6 @@ function ClassDetail() {
                     :
                     !isJoined ?
                         <div>
-                            <NavbarDetail classData={classes[index]}></NavbarDetail>
-                            <Routes>
-                                <Route index path="" element={<Main classData={classes[index]} />} />
-                                <Route index path="/people" element={<People id={id}></People>} />
-                            </Routes>
-
                             <Invitation setIsJoined={setIsJoined} />
                         </div>
                         :

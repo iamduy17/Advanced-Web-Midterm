@@ -24,9 +24,7 @@ function App() {
           Authorization: 'Bearer ' + token,
         }
       });
-      console.log(res.data.Groups);
       setClasses(res.data.Groups);
-      console.log(res.data)
     }
     loadGroups();
   }, [])

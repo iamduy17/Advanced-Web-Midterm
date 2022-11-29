@@ -15,7 +15,7 @@ export default function Invitation({ setIsJoined }) {
     let account_group = {
         group_id: id,
         account_id: id_User,
-        role: 1
+        role: 3
     };
 
     async function JoinHandle() {
@@ -28,21 +28,24 @@ export default function Invitation({ setIsJoined }) {
     return (
         <div>
             <header className='header'>
-                <span className='textHeader'>Tham gia lớp học của bạn</span>
+                <span className='textHeader'>Join your group</span>
             </header>
 
             <div className='ct'>
                 <div className='container'>
                     <div className='header-container'>
                         <img className='img-picture' src="https://www.gstatic.com/classroom/logo_square_rounded.svg" alt="..." />
-                        <img src="https://www.gstatic.com/classroom/product_name.svg" alt="..." />
-                        <span>Lớp học giúp các lớp học giao tiếp, tiết kiệm thời gian và</span>
-                        <span>luôn có tổ chức.</span>
+                        <span style={{
+                            fontSize: "30px",
+                            fontWeight: "bold"
+                        }}>DND Group</span>
+                        <span style={{ fontSize: "20px" }}>Group help classes communicate, save time and</span>
+                        <span style={{ fontSize: "20px" }} >always organized.</span>
                     </div>
 
                     <div className='content-container'>
-                        <span className='txt-content'>Bạn đang tham gia lớp học với tư cách thành viên.</span>
-                        <button className='btn-join' onClick={JoinHandle}><span className='txt-btn'>Tham gia lớp học</span></button>
+                        <span className='txt-content' style={{ fontSize: "20px" }}>You are joining the group as a member.</span>
+                        <button className='btn-join' onClick={JoinHandle}><span className='txt-btn'>Join Group Now!</span></button>
                     </div>
                 </div>
             </div>

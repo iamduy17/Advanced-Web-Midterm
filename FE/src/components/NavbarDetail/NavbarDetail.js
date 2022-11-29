@@ -15,15 +15,20 @@ function NavbarDetail({ classData }) {
         setValue(newValue);
     };
 
+
     return (
         <>
             <nav className="navbar">
                 <div className="navbar__left">
-                    <img
-                        src={logo}
-                        alt="DND Logo"
-                        className="navbardetail__logo"
-                    />{" "}
+                    <a href="/">
+                        <img
+                            src={logo}
+                            alt="DND Logo"
+                            className="navbardetail__logo"
+                            // onClick={handleClick}
+                            style={{ cursor: "pointer" }}
+                        />
+                    </a>{" "}
                     <span>DND Group</span>
                 </div>
                 <div className="navbar__center">

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 const Announcment = ({ classData }) => {
   const [announcment, setAnnouncment] = useState([]);
-  console.log(announcment);
   return (
     <div>
       {announcment.map((item) => (
