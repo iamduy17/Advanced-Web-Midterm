@@ -23,14 +23,12 @@ function ClassDetail() {
     var decoded = jwt_decode(token);
 
     const id_User = decoded.data.id;
-    console.log("tokenAcess: ", decoded);
 
     async function doGetRequest() {
         let res = await axios.get(API_URL + 'account_group/t', {
         });
 
         let data = res.data;
-        console.log(data);
 
         let count = 0;
         for (let i = 0; i < data.length; i++) {
@@ -54,7 +52,6 @@ function ClassDetail() {
                     Authorization: 'Bearer ' + token,
                 }
             });
-            console.log("ClassDetail", res.data.Groups);
             setClasses(res.data.Groups);
             //setIndex(classes.findIndex(element => element.id == id));
             for (let i = 0; i < classes.length; i++) {

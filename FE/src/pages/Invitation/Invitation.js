@@ -22,7 +22,6 @@ export default function Invitation({ setIsJoined }) {
         setIsJoined(true);
         await axios.post(API_URL + 'account_group', account_group)
             .then((res) => {
-                console.log(res);
             });
     }
 
