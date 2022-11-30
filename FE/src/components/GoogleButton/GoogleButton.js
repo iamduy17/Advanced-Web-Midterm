@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
 import axios from 'axios';
-import {API_URL} from "../../config/index"
+import {API_URL, GOOGLE_ID} from "../../config/index"
 import google from "../../assets/images/google.png";
 import "./style.css";
 
 
 const GoogleButton = ({setIsErrorAuth}) => {
-    const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const clientId = GOOGLE_ID;
 
     useEffect(() => {
         const initClient = () => {

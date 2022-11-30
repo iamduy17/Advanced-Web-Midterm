@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-import { API_URL } from "../../config/index"
+import { API_URL, GOOGLE_ID } from "../../config/index"
 import logo from "../../assets/images/logo.jpg"
 import { GoogleLogout } from 'react-google-login';
 
@@ -17,7 +17,7 @@ function Navbar() {
   //const [createOpened, setCreateOpened] = useRecoilState(createDialogAtom);
   //const [joinOpened, setJoinOpened] = useRecoilState(joinDialogAtom);
 
-  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  const clientId = GOOGLE_ID;
     const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
 
     useEffect(() => {
