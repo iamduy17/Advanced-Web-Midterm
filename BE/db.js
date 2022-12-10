@@ -130,7 +130,8 @@ exports.add = async (tbName, entity) => {
 exports.patch = async (tbName, filedName, entity, condition) => {
     const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
     const conditionInput = pgp.as.format(condition, entity);
-    const qStr = pgp.helpers.update(entity, filedName, table) + conditionInput;
+    const qStr = pgp.helpers.update(entity, filedName, table) + conditionInput + ' RETURNING *';
+    console.log("query:", qStr);
     try {
         const res = await db.any(qStr);
         return res;
