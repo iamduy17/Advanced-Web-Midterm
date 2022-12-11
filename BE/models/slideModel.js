@@ -11,7 +11,7 @@ module.exports = {
         const res = await db.add(tbName, data);
         return res;
     },
-    listPresentationID: async (presentationID) => {
+    listByPresentationID: async (presentationID) => {
         const res = await db.get(tbName, 'presentation_id', presentationID);
         if (res.length > 0) return res;
         return null;

@@ -24,15 +24,16 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
     }
 });
 
-router.post('/delete', authMiddleware.PassportJWTCheckToken, async (req, res) => {
+router.post('/delete/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
         console.log("delete slide with req:", {req});
-
-        const slideID = req.body.slide_id;
+        const userID = req.user.id;
+        const slideID = req.params.id;
         const result = await slideService.DeleteSlide(userID, slideID);
 
         return res.json(result);
     } catch (error) {
+        console.log(error);
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 

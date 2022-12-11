@@ -7,6 +7,10 @@ module.exports = {
         if (res.length > 0) return res[0];
         return null;
     },
+    add: async (data) => {
+        const res = await db.add(tbName, data);
+        return res;
+    },
     listByOwnerID: async (ownerID) => {
         const condition = `WHERE "owner_id" = '${ownerID}' and "is_deleted" = false`;
         const res = await db.loadCondition(tbName, 'id', condition);

@@ -65,7 +65,7 @@ exports.DeletePresentation = async (userID, presentationID) => {
         ReturnCode: 200,
         Message: "delete presentation successfully",
         Data: {
-            Presentation: presentationResponse,
+            Presentation: presentationResponse[0],
         }
     };
 }
@@ -86,21 +86,19 @@ exports.EditPresentation = async (userID, presentationID, presentationName) => {
         ReturnCode: 200,
         Message: "edit presentation successfully",
         Data: {
-            Presentation: presentationResponse,
+            Presentation: presentationResponse[0],
         }
     };
 }
 
 exports.GetPresentation = async (presentationID) => {
-    const presentation = await presentationModel.getByID(presentationID);
-    if(!presentation){
-        return{
-            ReturnCode: 404,
-            Message: "presentation not found",
-        }
+    let err = await isPresentationExisted(presentationID);
+    if (err != null) {
+        return err;
     }
-    //const presentationResponse = await presentationModel.update(presentationID, {name: presentationName});
-    let slides = await slideModel.listPresentationID(presentationID);
+
+    const presentation = await presentationModel.getByID(presentationID);
+    let slides = await slideModel.listByPresentationID(presentationID);
     return {
         ReturnCode: 200,
         Message: "get presentation successfully",

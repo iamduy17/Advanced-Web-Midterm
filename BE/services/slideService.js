@@ -1,5 +1,6 @@
 const presentationModel = require('../models/presentationModel');
 const slideModel = require('../models/slideModel');
+const slideTypeModel = require('../models/slideTypeModel');
 
 const isSlideExisted = async (slideID) => {
     const slide = await slideModel.getByID(slideID);
@@ -18,6 +19,17 @@ const isPresentationExisted = async (presentationID) => {
         return {
             ReturnCode: 404,
             Message: "presentation not found",
+        }
+    }
+    return null;
+}
+
+const isSlideTypeExisted = async (slideTypeID) => {
+    const slideType = await slideTypeModel.getByID(slideTypeID);
+    if (!slideType) {
+        return {
+            ReturnCode: 404,
+            Message: "slide type not existed",
         }
     }
     return null;
@@ -45,6 +57,11 @@ exports.CreateSlide = async (userID, slide) => {
         return err;
     }
 
+    err = await isSlideTypeExisted(userID, slide.slide_type_id);
+    if (err != null) {
+        return err;
+    }
+
     const slideResponse = await slideModel.add(slide);
     return {
         ReturnCode: 200,
@@ -62,22 +79,17 @@ exports.DeleteSlide = async (userID, slideID) => {
     }
 
     const slide = await slideModel.getByID(slideID);
-    err = await isPresentationExisted(slide.presentation_id);
-    if (err != null) {
-        return err;
-    }
-
     err = await isValidPermission(userID, slide.presentation_id);
     if (err != null) {
         return err;
     }
 
-    const presentationResponse = await presentationModel.delete(slideID, { is_deleted: isDeleted });
+    const slideResponse = await slideModel.delete(slideID, { is_deleted: true });
     return {
         ReturnCode: 200,
-        Message: "delete presentation successfully",
+        Message: "delete slide successfully",
         Data: {
-            Presentation: presentationResponse[0],
+            Slide: slideResponse[0],
         }
     };
 }
@@ -88,18 +100,12 @@ exports.EditSlide = async (slideID, content) => {
         return err;
     }
 
-    const slide = await slideModel.getByID(slideID);
-    err = await isPresentationExisted(slide.presentation_id);
-    if (err != null) {
-        return err;
-    }
-
-    const presentationResponse = await presentationModel.update(presentationID, { content: content });
+    const slideResponse = await slideModel.update(slideID, { content: content });
     return {
         ReturnCode: 200,
-        Message: "edit presentation successfully",
+        Message: "edit slide successfully",
         Data: {
-            Presentation: presentationResponse[0],
+            Slide: slideResponse[0],
         }
     };
 }

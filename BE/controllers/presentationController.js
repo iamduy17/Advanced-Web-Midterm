@@ -35,6 +35,7 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
 
         return res.json(result);
     } catch (error) {
+        console.log(error)
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -45,9 +46,9 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
 router.post('/delete/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
         console.log("delete presentation with req:", {req});
-
+        const userID = req.user.id;
         const presentationID = req.params.id;
-        const result = await presentationService.DeletePresentation(presentationID);
+        const result = await presentationService.DeletePresentation(userID, presentationID);
 
         return res.json(result);
     } catch (error) {
@@ -83,6 +84,7 @@ router.get('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) =
 
         return res.json(result);
     } catch (error) {
+        console.log(error);
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
