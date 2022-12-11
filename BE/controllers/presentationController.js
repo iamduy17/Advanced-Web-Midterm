@@ -21,6 +21,7 @@ router.get('/', authMiddleware.PassportJWTCheckToken, async (req, res) => {
 
 router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
+        console.log("create presentation with req:", {req});
         const userID = req.user.id;
         const presentation = {
             name: req.body.name,
@@ -41,12 +42,12 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
     }
 });
 
-router.post('/delete', authMiddleware.PassportJWTCheckToken, async (req, res) => {
+router.post('/delete/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        //add check permission
-        const presentationID = req.body.presentation_id;
-        const isDeleted = true;
-        const result = await presentationService.DeletePresentation(presentationID, isDeleted);
+        console.log("delete presentation with req:", {req});
+
+        const presentationID = req.params.id;
+        const result = await presentationService.DeletePresentation(presentationID);
 
         return res.json(result);
     } catch (error) {
@@ -59,10 +60,11 @@ router.post('/delete', authMiddleware.PassportJWTCheckToken, async (req, res) =>
 
 router.post('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        //add check permission
+        console.log("edit presentation with req:", {req});
+        const userID = req.user.id;
         const presentationID = req.params.id;
         const presentationName = req.body.name;
-        const result = await presentationService.EditPresentation(presentationID, presentationName);
+        const result = await presentationService.EditPresentation(userID, presentationID, presentationName);
 
         return res.json(result);
     } catch (error) {
@@ -75,7 +77,7 @@ router.post('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) 
 
 router.get('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        //add check permission
+        console.log("get presentation with req:", {req});
         const presentationID = req.params.id;
         const result = await presentationService.GetPresentation(presentationID);
 

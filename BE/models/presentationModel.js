@@ -8,7 +8,8 @@ module.exports = {
         return null;
     },
     listByOwnerID: async (ownerID) => {
-        const res = await db.get(tbName, 'owner_id', ownerID);
+        const condition = `WHERE "owner_id" = '${ownerID}' and "is_deleted" = false`;
+        const res = await db.loadCondition(tbName, 'id', condition);
         if (res.length > 0) return res;
         return null;
     },

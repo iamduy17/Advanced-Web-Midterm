@@ -1,6 +1,28 @@
 const presentationModel = require('../models/presentationModel');
 const slideModel = require('../models/slideModel');
 
+const isPresentationExisted = async (presentationID) => {
+    const presentation = await presentationModel.getByID(presentationID);
+    if (!presentation) {
+        return {
+            ReturnCode: 404,
+            Message: "presentation not found",
+        }
+    }
+    return null;
+}
+
+const isValidPermission = async (userID, presentationID) => {
+    const presentation = await presentationModel.getByID(presentationID);
+    if (userID !== presentation.owner_id) {
+        return {
+            ReturnCode: 401,
+            Message: "invalid permission",
+        }
+    }
+    return null;
+}
+
 exports.ListPresentations = async (user) => {
     let presentations = await presentationModel.listByOwnerID(user.id);
     return {
@@ -27,15 +49,18 @@ exports.CreatePresentation = async (presentation) => {
     };
 }
 
-exports.DeletePresentation = async (presentationID, isDeleted) => {
-    const presentation = await presentationModel.getByID(presentationID);
-    if(!presentation){
-        return{
-            ReturnCode: 404,
-            Message: "presentation not found",
-        }
+exports.DeletePresentation = async (userID, presentationID) => {
+    let err = await isPresentationExisted(presentationID);
+    if (err != null) {
+        return err;
     }
-    const presentationResponse = await presentationModel.delete(presentationID, {is_deleted: isDeleted});
+
+    err = await isValidPermission(userID, presentationID);
+    if (err != null) {
+        return err;
+    }
+
+    const presentationResponse = await presentationModel.delete(presentationID, {is_deleted: true});
     return {
         ReturnCode: 200,
         Message: "delete presentation successfully",
@@ -45,14 +70,17 @@ exports.DeletePresentation = async (presentationID, isDeleted) => {
     };
 }
 
-exports.EditPresentation = async (presentationID, presentationName) => {
-    const presentation = await presentationModel.getByID(presentationID);
-    if(!presentation){
-        return{
-            ReturnCode: 404,
-            Message: "presentation not found",
-        }
+exports.EditPresentation = async (userID, presentationID, presentationName) => {
+    let err = await isPresentationExisted(presentationID);
+    if (err != null) {
+        return err;
     }
+
+    err = await isValidPermission(userID, presentationID);
+    if (err != null) {
+        return err;
+    }
+
     const presentationResponse = await presentationModel.update(presentationID, {name: presentationName});
     return {
         ReturnCode: 200,

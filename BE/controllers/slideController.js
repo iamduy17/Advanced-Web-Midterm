@@ -6,13 +6,14 @@ const { AuthenticationError} = require("../utils/index");
 
 router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
+        console.log("create slide with req:", {req});
         const userID = req.user.id;
         const slide = {
             presentation_id: req.body.presentation_id,
             slide_type_id: req.body.slide_type_id,
             content: req.body.content
         }
-        const result = await slideService.CreateSlide(slide);
+        const result = await slideService.CreateSlide(userID, slide);
 
         return res.json(result);
     } catch (error) {
@@ -25,10 +26,10 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
 
 router.post('/delete', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        //add check permission
-        const presentationID = req.body.presentation_id;
-        const isDeleted = true;
-        const result = await presentationService.DeletePresentation(presentationID, isDeleted);
+        console.log("delete slide with req:", {req});
+
+        const slideID = req.body.slide_id;
+        const result = await slideService.DeleteSlide(userID, slideID);
 
         return res.json(result);
     } catch (error) {
@@ -41,10 +42,11 @@ router.post('/delete', authMiddleware.PassportJWTCheckToken, async (req, res) =>
 
 router.post('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        //add check permission
-        const presentationID = req.params.id;
-        const presentationName = req.body.name;
-        const result = await presentationService.EditPresentation(presentationID, presentationName);
+        console.log("edit slide with req:", {req});
+
+        const slideID = req.params.id;
+        const content = req.body.content;
+        const result = await slideService.EditSlide(slideID, content);
 
         return res.json(result);
     } catch (error) {
@@ -54,12 +56,12 @@ router.post('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) 
         })
     }
 });
-
-router.get('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
+router.get('/edit/:id/slideshow', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        //add check permission
-        const presentationID = req.params.id;
-        const result = await presentationService.GetPresentation(presentationID);
+        console.log("get slide with req:", {req});
+
+        const slideID = req.params.id;
+        const result = await slideService.GetSlide(slideID);
 
         return res.json(result);
     } catch (error) {
@@ -69,6 +71,5 @@ router.get('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) =
         })
     }
 });
-
 
 module.exports = router;
