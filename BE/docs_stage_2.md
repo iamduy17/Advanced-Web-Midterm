@@ -4,7 +4,7 @@
 ```bash
 curl --location --request GET 'http://localhost:5000/presentation' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzgxMDU3LCJleHAiOjE2NzA3ODQ2NTcsImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.0mkQnynEEiQsgK0vC8HHxvVruIsgZJfn1g7rb2QHvRM' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "presentation_id": 4
 }'
@@ -44,7 +44,7 @@ curl --location --request GET 'http://localhost:5000/presentation' \
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/create' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzgxMDU3LCJleHAiOjE2NzA3ODQ2NTcsImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.0mkQnynEEiQsgK0vC8HHxvVruIsgZJfn1g7rb2QHvRM' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "name": "test",
     "created_at": "2011-01-01 10:01:00"
@@ -75,7 +75,7 @@ curl --location --request POST 'http://localhost:5000/presentation/create' \
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/delete/1' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzgxMDU3LCJleHAiOjE2NzA3ODQ2NTcsImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.0mkQnynEEiQsgK0vC8HHxvVruIsgZJfn1g7rb2QHvRM' \
+--header 'Authorization: Bearer <token>' \
 --data-raw ''
 ```
 * Response:
@@ -118,7 +118,7 @@ curl --location --request POST 'http://localhost:5000/presentation/delete/1' \
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzgxMDU3LCJleHAiOjE2NzA3ODQ2NTcsImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.0mkQnynEEiQsgK0vC8HHxvVruIsgZJfn1g7rb2QHvRM' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "name": "test_edit"
 }'
@@ -162,7 +162,7 @@ curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzgxMDU3LCJleHAiOjE2NzA3ODQ2NTcsImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.0mkQnynEEiQsgK0vC8HHxvVruIsgZJfn1g7rb2QHvRM' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "name": "test_edit"
 }'
@@ -208,7 +208,7 @@ curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzgxMDU3LCJleHAiOjE2NzA3ODQ2NTcsImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.0mkQnynEEiQsgK0vC8HHxvVruIsgZJfn1g7rb2QHvRM' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "name": "test_edit"
 }'
@@ -256,7 +256,7 @@ curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
 ```bash
 curl --location --request POST 'http://localhost:5000/slide/edit/5' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzg0ODg5LCJleHAiOjE2NzA3ODg0ODksImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.jhKOuwvPYlnl5yvTpMUmQa1yi_C0OjQIREgkDqhUB2g' \
+--header 'Authorization: Bearer <token>' \
 --data-raw '{
     "content": "json edited"
 }'
@@ -291,7 +291,7 @@ curl --location --request POST 'http://localhost:5000/slide/edit/5' \
 ```bash
 curl --location --request POST 'http://localhost:5000/slide/delete/5' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo2LCJlbWFpbCI6ImhhaWR1YzAxNDdAZ21haWwuY29tIiwicHJvdmlkZXIiOiJnb29nbGUifSwiaWF0IjoxNjcwNzg0ODg5LCJleHAiOjE2NzA3ODg0ODksImF1ZCI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSIsImlzcyI6InRoYWlkdXlkbzE3QGdtYWlsLmNvbSJ9.jhKOuwvPYlnl5yvTpMUmQa1yi_C0OjQIREgkDqhUB2g' \
+--header 'Authorization: Bearer <token>' \
 --data-raw ''
 ```
 * Response:
