@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import logo from "../../assets/images/logo.jpg"
 import "../Presentations/Presentations.css"
 import imgPresentaion from "../../assets/images/nopresentation.jpg"
@@ -8,25 +8,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ListPresentation from '../../components/ListPresentation/ListPresentation';
 
 export default function Presentations() {
-    const [presentations, setPresentations] = useState([{
-        name: "namePresentation",
-        owner: "me",
-        date: "11/12/2022"
-    }]);
     const [lgShow, setLgShow] = useState(false);
     const [namePresentation, setNamePresentation] = useState("")
     const form = useRef();
+    const [presentations, setPresentations] = useState([
+        {
+            id: "3",
+            name: "namePresentation",
+            slideNumber: 3,
+            dateCreated: "12/12/2022"
+        }
+    ]);
+
     const handleClose = () => setLgShow(false);
 
     const handleCreate = () => {
-        setPresentations(
-            presentations.push({
-                name: namePresentation,
-                owner: "me",
-                date: "11/12/2022"
-            }));
+        setPresentations([presentations, {
+            id: "3",
+            name: "namePresentation",
+            slideNumber: 3,
+            dateCreated: "12/12/2022"
+        }]);
         setNamePresentation("");
-        console.log(presentations);
         setLgShow(false);
     };
 
@@ -48,7 +51,9 @@ export default function Presentations() {
 
             <div className='presentation'>
                 <div className='menu-presentations'>
-                    <span className='btn-menu'>My presentations</span>
+                    <div className='btn-menu'><span className='title-btn-menu'>My presentations</span></div>
+                    <div className='btn-menu'><span className='title-btn-menu'>Tempalates</span></div>
+                    <div className='btn-menu'><span className='title-btn-menu'>Logout</span></div>
                 </div>
 
                 <div className='content-presentations'>
