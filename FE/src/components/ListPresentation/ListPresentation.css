@@ -1,0 +1,106 @@
+.header-list-presentation {
+    margin-left: 2rem;
+}
+
+.header-text {
+    font-family: MentiText,
+        Arial,
+        sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.btn-add-presentation {
+    height: 40px;
+    width: 180px;
+    border-radius: 3px;
+    background-color: #196cff;
+    color: white;
+    font-weight: bold;
+    border: 0px;
+    margin: 25px auto;
+}
+
+.btn-add-presentation:hover {
+    background-color: #054fce;
+}
+
+.thead {
+    height: 60px;
+}
+
+.tr {
+    height: 55px;
+    border-bottom: #f1f1f1;
+}
+
+.card {
+    border-radius: 0;
+    box-shadow: 0 2px 2px 0 rgba(51, 56, 59, 0.08);
+    margin-bottom: 30px;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    margin-left: 20px;
+    margin-top: 30px;
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 20px 25px;
+    position: relative;
+}
+
+.card-title {
+    color: #000;
+    font-size: 20px;
+    line-height: 1.1;
+    position: relative;
+    font-weight: bold;
+}
+
+.list-presentation {
+    margin-left: 20px;
+    width: 1200px;
+}
+
+.table {
+    width: 95%;
+    margin-bottom: 1rem;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color: grey;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
+
+.btn-more {
+    border: 0px;
+    background-color: white;
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    width: 0px;
+}
+
+.btn-edit {
+    color: rgb(33, 88, 230);
+}
+
+.btn-edit:hover {
+    width: 100%;
+    background-color: rgb(33, 88, 230);
+    color: white;
+    border-radius: 5px;
+}
+
+.btn-del {
+    color: rgb(253, 75, 75);
+}
+
+.btn-del:hover {
+    width: 100%;
+    background-color: rgb(253, 75, 75);
+    color: white;
+    border-radius: 5px;
+}

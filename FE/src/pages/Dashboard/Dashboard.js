@@ -7,19 +7,18 @@ import Col from 'react-bootstrap/Col';
 import './styles.css';
 
 function Dashboard({ classes }) {
-    
     return (
         <>
             <Navbar></Navbar>
             <Row>
-            {classes.map((item, index)=>{
-                return <Col key={index}>
+                {classes.map((item, index) => {
+                    return <Col key={index}>
                         <Classes classData={item} md="auto"></Classes>
                     </Col>
-                
-            })}
+
+                })}
             </Row>
-            
+
         </>
     )
 }
