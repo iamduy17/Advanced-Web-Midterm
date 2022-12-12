@@ -33,9 +33,11 @@
 ```bash
   1. cd Source\FE
 
-  2. npm install
+  2. npm config set legacy-peer-deps true
 
-  3. npm start
+  3. npm install
+
+  4. npm start
 ```
 ### Cách chạy chương trình BE:
 ```bash
@@ -70,8 +72,8 @@
 ## **Các đường dẫn liên quan** <a name="link"></a>
 ### Link github: <https://github.com/iamduy17/Advanced-Web-Midterm>
 ### Link deploy:
-- Deploy FE: <...>
-- Deploy BE: <...> 
+- Deploy FE: <https://advanced-web-midterm-fe.netlify.app/>
+- Deploy BE: <https://advanced-web-midterm-be.onrender.com/> 
 
 ## **Điểm số mong muốn** <a name="score"></a>
 - Thới Hải Đức - 19120483: **10 điểm**.
@@ -79,4 +81,4 @@
 - Dương Nam - 19120593: **10 điểm**.
 
 ## **Video demo** <a name="video"></a>
-* [Youtube Demo Advanced Web Midterm]()
+* [Youtube Demo Advanced Web Midterm](https://youtu.be/eiN43c1CJ40)
