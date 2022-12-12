@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import "../ListPresentation/ListPresentation.css"
 import Table from 'react-bootstrap/Table';
 import { MdOutlineMoreHoriz, MdDelete } from 'react-icons/md';
@@ -8,40 +8,82 @@ import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { API_URL } from "../../config";
+import axios from 'axios';
 
 export default function ListPresentation() {
-    const [presentations, setPresentations] = useState([
-        {
-            id: "1",
-            name: "presentation",
-            slideNumber: 2,
-            dateCreated: "12/12/2022"
-        },
-        {
-            id: "2",
-            name: "abc",
-            slideNumber: 3,
-            dateCreated: "12/12/2022"
-        },
-    ]);
-
+    const [presentations, setPresentations] = useState([]);
     const [lgShow, setLgShow] = useState(false);
-    const [namePresentation, setNamePresentation] = useState("")
-    const form = useRef();
     const handleClose = () => setLgShow(false);
+    const [idEdit, setIdEdit] = useState(0);
 
-    const handleCreate = () => {
-        setPresentations([...presentations, {
-            id: "3",
-            name: namePresentation,
-            slideNumber: 3,
-            dateCreated: "12/12/2022"
-        }]);
-        setNamePresentation("");
+    const [editShow, setEditShow] = useState(false);
+    const handleCloseEdit = () => setEditShow(false);
+
+    const [namePresentation, setNamePresentation] = useState("");
+    const [renamePresentation, setRenamePresentation] = useState("")
+
+    const form = useRef();
+    const date = new Date();
+    const currentDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    const token = localStorage.getItem("token");
+
+    useEffect(() => {
+        async function loadGroups() {
+            const res = await axios.get(API_URL + 'presentation', {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                }
+            });
+            setPresentations(res.data.Presentations);
+        }
+        loadGroups();
+
+    }, []);
+
+
+    // Create a presentation
+    const handleCreate = async () => {
         setLgShow(false);
-        console.log(presentations);
+
+        const res = await axios.post(API_URL + 'presentation/create', { name: namePresentation, created_at: currentDate }, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        });
+
+        window.location.reload();
     };
 
+    // Rename a spresentation
+    const handleEdit = async (e) => {
+        const idEdit = e.target.id;
+        setEditShow(false);
+
+        const res = await axios.post(API_URL + `presentation/edit/${idEdit}`, { name: renamePresentation }, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        });
+
+        window.location.reload();
+        console.log(res);
+    }
+
+    const handleDelete = async (id) => {
+        const res = await axios.post(API_URL + `presentation/delete/${id}`, {}, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        });
+        window.location.reload();
+    };
+
+    const handleLink = (id) => {
+        window.location.replace(window.location.href + `/${id}`);
+    };
+
+    console.log(presentations);
 
     return (
         <div>
@@ -99,14 +141,44 @@ export default function ListPresentation() {
                             {
                                 presentations.map((presentation, index) => (
                                     <tr className='tr' key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{presentation.name}</td>
-                                        <td>{presentation.slideNumber}</td>
-                                        <td>{presentation.dateCreated}</td>
+                                        <td onClick={() => handleLink(presentation.id)}>{index + 1}</td>
+                                        <td onClick={() => handleLink(presentation.id)}>{presentation.name}</td>
+                                        <td onClick={() => handleLink(presentation.id)}>{presentation.slide_count}</td>
+                                        <td onClick={() => handleLink(presentation.id)}>{presentation.created_at}</td>
                                         <td>
                                             <Menu menuButton={<MenuButton className='btn-more'><MdOutlineMoreHoriz /></MenuButton>} transition>
-                                                <MenuItem className='btn-edit'><AiFillEdit style={{ "marginRight": "7px", "fontSize": "20px" }} />Edit</MenuItem>
-                                                <MenuItem className='btn-del'><MdDelete style={{ "marginRight": "7px", "fontSize": "20px" }} />Detele</MenuItem>
+                                                <MenuItem className='btn-edit' onClick={() => { setEditShow(true) }}><AiFillEdit
+                                                    style={{ "marginRight": "7px", "fontSize": "20px" }} />Edit</MenuItem>
+                                                <MenuItem className='btn-del' onClick={() => handleDelete(presentation.id)}><MdDelete
+                                                    style={{ "marginRight": "7px", "fontSize": "20px" }} />Detele</MenuItem>
+                                                <Modal
+                                                    size=""
+                                                    show={editShow}
+                                                    onHide={() => setEditShow(false)}
+                                                    aria-labelledby="example-modal-sizes-title-lg"
+                                                >
+                                                    <Modal.Header closeButton>
+                                                        <Modal.Title id="example-modal-sizes-title-lg">
+                                                            Rename presentation
+                                                        </Modal.Title>
+                                                    </Modal.Header>
+                                                    <Modal.Body>
+                                                        <form ref={form} className="invitation-form">
+                                                            <input className='btn_input' type="text" name="name-presentation" value={renamePresentation}
+                                                                onChange={(e) => setRenamePresentation(e.target.value)}
+                                                                placeholder="Rename presentation"
+                                                            />
+                                                        </form>
+                                                    </Modal.Body>
+                                                    <Modal.Footer>
+                                                        <Button variant="danger" onClick={handleCloseEdit}>
+                                                            Close
+                                                        </Button>
+                                                        <Button variant="primary" id={presentation.id} onClick={handleEdit}>
+                                                            Save
+                                                        </Button>
+                                                    </Modal.Footer>
+                                                </Modal>
                                             </Menu>
                                         </td>
                                     </tr>
@@ -116,6 +188,6 @@ export default function ListPresentation() {
                     </Table>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

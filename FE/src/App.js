@@ -51,6 +51,7 @@ function App() {
           <Route path=":id/verify/:token" element={<Email />} />
           <Route path="/profile/:name" element={isAuthenticated ? <Profile /> : <Navigate replace to="/" />} />
           <Route path="/presentation" element={<Presentations />} />
+          <Route path="/presentation/:id" />
           {/* <Route path="/footer" element={<Footer />} /> */}
         </Routes>
         <Footer></Footer>

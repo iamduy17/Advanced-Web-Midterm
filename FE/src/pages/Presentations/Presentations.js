@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import logo from "../../assets/images/logo.jpg"
 import "../Presentations/Presentations.css"
 import imgPresentaion from "../../assets/images/nopresentation.jpg"
@@ -6,10 +6,12 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ListPresentation from '../../components/ListPresentation/ListPresentation';
+import axios from 'axios';
+import { API_URL } from "../../config";
 
 export default function Presentations() {
     const [lgShow, setLgShow] = useState(false);
-    const [namePresentation, setNamePresentation] = useState("")
+    const [namePresentation, setNamePresentation] = useState("");
     const form = useRef();
     const [presentations, setPresentations] = useState([
         {
@@ -20,17 +22,35 @@ export default function Presentations() {
         }
     ]);
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        async function loadGroups() {
+            const res = await axios.get(API_URL + 'presentation', {
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                }
+            });
+            setPresentations(res.data.Presentations);
+        }
+        loadGroups();
+
+    }, []);
+
+    const date = new Date();
+    const currentDate = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
     const handleClose = () => setLgShow(false);
 
-    const handleCreate = () => {
-        setPresentations([presentations, {
-            id: "3",
-            name: "namePresentation",
-            slideNumber: 3,
-            dateCreated: "12/12/2022"
-        }]);
-        setNamePresentation("");
-        setLgShow(false);
+    const handleCreate = async () => {
+        const token = localStorage.getItem("token");
+
+        const res = axios.post(API_URL + "presentation/create", { name: namePresentation, created_at: currentDate }, {
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        })
+
+        window.location.reload();
     };
 
     return (

@@ -7,7 +7,7 @@
         Arial,
         sans-serif;
     font-size: 18px;
-    font-weight: bold;
+    font-weight: bold
 }
 
 .btn-add-presentation {
@@ -27,11 +27,20 @@
 
 .thead {
     height: 60px;
+    text-align: center;
 }
 
 .tr {
     height: 55px;
     border-bottom: #f1f1f1;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.tr:hover {
+    height: 60px;
+    box-shadow: 3px 3px 3px 3px #adabab;
 }
 
 .card {
@@ -81,6 +90,11 @@
     font-size: 25px;
     font-weight: bold;
     width: 0px;
+    margin-right: 20px;
+}
+
+.btn-more:hover {
+    color: rgb(246, 2, 2);
 }
 
 .btn-edit {
