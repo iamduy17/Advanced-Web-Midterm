@@ -3,7 +3,8 @@ const db = require('../db');
 const tbName = 'slide';
 module.exports = {
     getByID: async (id) => {
-        const res = await db.get(tbName, 'id', id);
+        const condition = `WHERE "id" = '${id}' and "is_deleted" = false`;
+        const res = await db.loadCondition(tbName, 'id', condition);
         if (res.length > 0) return res[0];
         return null;
     },
@@ -12,7 +13,8 @@ module.exports = {
         return res;
     },
     listByPresentationID: async (presentationID) => {
-        const res = await db.get(tbName, 'presentation_id', presentationID);
+        const condition = `WHERE "presentation_id" = '${presentationID}' and "is_deleted" = false`;
+        const res = await db.loadCondition(tbName, 'id', condition);
         if (res.length > 0) return res;
         return null;
     },

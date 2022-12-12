@@ -1,5 +1,6 @@
 const presentationModel = require('../models/presentationModel');
 const slideModel = require('../models/slideModel');
+const slideService = require('./slideService');
 
 const isPresentationExisted = async (presentationID) => {
     const presentation = await presentationModel.getByID(presentationID);
@@ -58,6 +59,13 @@ exports.DeletePresentation = async (userID, presentationID) => {
     err = await isValidPermission(userID, presentationID);
     if (err != null) {
         return err;
+    }
+
+    slides = await slideModel.listByPresentationID(presentationID);
+    if(slides){
+        for(let i = 0; i < slides.length; i++){
+            slideService.DeleteSlide(userID, slides[i].id);
+        }
     }
 
     const presentationResponse = await presentationModel.delete(presentationID, {is_deleted: true});

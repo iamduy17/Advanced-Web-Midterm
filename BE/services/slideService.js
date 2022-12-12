@@ -25,7 +25,9 @@ const isPresentationExisted = async (presentationID) => {
 }
 
 const isSlideTypeExisted = async (slideTypeID) => {
+    console.log(slideTypeID);
     const slideType = await slideTypeModel.getByID(slideTypeID);
+    
     if (!slideType) {
         return {
             ReturnCode: 404,
@@ -56,11 +58,16 @@ exports.CreateSlide = async (userID, slide) => {
     if (err != null) {
         return err;
     }
-
-    err = await isSlideTypeExisted(userID, slide.slide_type_id);
+    console.log({slide});
+    err = await isSlideTypeExisted(slide.slide_type_id);
+    
     if (err != null) {
         return err;
     }
+
+    const presentation = await presentationModel.getByID(slide.presentation_id);
+    console.log(presentation.slide_count+1);
+    presentationModel.updateSlideCount(slide.presentation_id, {slide_count: presentation.slide_count+1})
 
     const slideResponse = await slideModel.add(slide);
     return {
@@ -83,6 +90,9 @@ exports.DeleteSlide = async (userID, slideID) => {
     if (err != null) {
         return err;
     }
+
+    const presentation = await presentationModel.getByID(slide.presentation_id);
+    presentationModel.updateSlideCount(slide.presentation_id, {slide_count: presentation.slide_count-1})
 
     const slideResponse = await slideModel.delete(slideID, { is_deleted: true });
     return {

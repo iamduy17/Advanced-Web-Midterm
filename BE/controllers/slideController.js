@@ -17,6 +17,7 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
 
         return res.json(result);
     } catch (error) {
+        console.log("create slide failed with error: ", error);
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -33,7 +34,7 @@ router.post('/delete/:id', authMiddleware.PassportJWTCheckToken, async (req, res
 
         return res.json(result);
     } catch (error) {
-        console.log(error);
+        console.log("delete slide failed with error: ", error);
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -51,6 +52,7 @@ router.post('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) 
 
         return res.json(result);
     } catch (error) {
+        console.log("edit slide failed with error: ", error);
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -66,6 +68,7 @@ router.get('/edit/:id/slideshow', authMiddleware.PassportJWTCheckToken, async (r
 
         return res.json(result);
     } catch (error) {
+        console.log("get slide failed with error: ", error);
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 

@@ -12,6 +12,8 @@ router.get('/', authMiddleware.PassportJWTCheckToken, async (req, res) => {
 
         return res.json(result);
     } catch (error) {
+        console.log("list presentations failed with error: ", error);
+        
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -35,7 +37,8 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
 
         return res.json(result);
     } catch (error) {
-        console.log(error)
+        console.log("create presentation failed with error: ", error);
+
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -52,6 +55,8 @@ router.post('/delete/:id', authMiddleware.PassportJWTCheckToken, async (req, res
 
         return res.json(result);
     } catch (error) {
+        console.log("delete presentation failed with error: ", error);
+
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -69,6 +74,8 @@ router.post('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) 
 
         return res.json(result);
     } catch (error) {
+        console.log("edit presentation failed with error: ", error);
+
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 
@@ -84,7 +91,8 @@ router.get('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) =
 
         return res.json(result);
     } catch (error) {
-        console.log(error);
+        console.log("get presentation failed with error: ", error);
+
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
             Message: "Something is wrong. Please sign in again!" 

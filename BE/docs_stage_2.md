@@ -1,6 +1,6 @@
 ### List presentations:
-* Request:
 
+* Request:
 ```bash
 curl --location --request GET 'http://localhost:5000/presentation' \
 --header 'Content-Type: application/json' \
@@ -9,8 +9,8 @@ curl --location --request GET 'http://localhost:5000/presentation' \
     "presentation_id": 4
 }'
 ```
-* Response:
 
+* Response:
 ```json
 {
     "ReturnCode": 200,
@@ -38,9 +38,10 @@ curl --location --request GET 'http://localhost:5000/presentation' \
 }
 ```
 
-### Create presentation:
-* Request:
 
+### Create presentation:
+
+* Request:
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/create' \
 --header 'Content-Type: application/json' \
@@ -70,13 +71,14 @@ curl --location --request POST 'http://localhost:5000/presentation/create' \
 }
 ```
 
+
 ### Delete presentation:
+
 * Request
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/delete/1' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer <token>' \
---data-raw ''
 ```
 * Response:
     * Presentation not found:
@@ -114,6 +116,7 @@ curl --location --request POST 'http://localhost:5000/presentation/delete/1' \
     ```
 
 ### Edit presentation:
+
 * Request
 ```bash
 curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
@@ -123,6 +126,7 @@ curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
     "name": "test_edit"
 }'
 ```
+
 * Response:
     * Presentation not found:
     ```json
@@ -157,16 +161,16 @@ curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
     }
     ```
 
+
 ### Get presentation:
-* Request wrong
+
+* Request
 ```bash
-curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
+curl --location --request GET 'http://localhost:5000/presentation/edit/6' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer <token>' \
---data-raw '{
-    "name": "test_edit"
-}'
 ```
+
 * Response:
     * Presentation not found:
     ```json
@@ -204,15 +208,19 @@ curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
     ```
 
 ### Create slide:
-* Request wrong
+
+* Request
 ```bash
-curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
+curl --location --request POST 'http://localhost:5000/slide/create' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer <token>' \
 --data-raw '{
-    "name": "test_edit"
+    "presentation_id": 5,
+    "slide_type_id": 1,
+    "content": "json"
 }'
 ```
+
 * Response:
     * Presentation not found:
     ```json
@@ -252,6 +260,7 @@ curl --location --request POST 'http://localhost:5000/presentation/edit/1' \
     ```
 
 ### Edit slide:
+
 * Request
 ```bash
 curl --location --request POST 'http://localhost:5000/slide/edit/5' \
@@ -261,6 +270,7 @@ curl --location --request POST 'http://localhost:5000/slide/edit/5' \
     "content": "json edited"
 }'
 ```
+
 * Response:
     * Slide not found:
     ```json
@@ -287,12 +297,12 @@ curl --location --request POST 'http://localhost:5000/slide/edit/5' \
     ```
 
 ### Delete slide:
+
 * Request
 ```bash
 curl --location --request POST 'http://localhost:5000/slide/delete/5' \
 --header 'Content-Type: application/json' \
 --header 'Authorization: Bearer <token>' \
---data-raw ''
 ```
 * Response:
     * Slide not found:
@@ -321,6 +331,38 @@ curl --location --request POST 'http://localhost:5000/slide/delete/5' \
                 "presentation_id": 5,
                 "content": "json edited",
                 "is_deleted": true
+            }
+        }
+    }
+    ```
+
+### Get slide:
+* Request
+```bash
+curl --location --request GET 'http://localhost:5000/slide/edit/7/slideshow' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+```
+* Response:
+    * Slide not found:
+    ```json
+    {
+        "ReturnCode": 404,
+        "Message": "slide not found"
+    }
+    ```
+     * Get slide successfully:
+    ```json
+    {
+        "ReturnCode": 200,
+        "Message": "get presentation successfully",
+        "Data": {
+            "Slide": {
+                "id": 7,
+                "slide_type_id": 1,
+                "presentation_id": 5,
+                "content": "json string",
+                "is_deleted": false
             }
         }
     }
