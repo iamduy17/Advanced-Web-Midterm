@@ -49,8 +49,8 @@ exports.loadCondition = async (tbName, orderBy, condition) => {
         pgp.as.format('SELECT * FROM $1', table) +
         condition +
         ` ORDER BY "${orderBy}" ASC`;
-    console.log(qStr);
     try {
+        console.log("load condition, query string: ", qStr);
         const res = await db.any(qStr);
         return res;
     } catch (error) {
@@ -66,6 +66,7 @@ exports.get = async (tbName, fieldName, value) => {
     );
 
     try {
+        console.log("get, query string: ", qStr);
         const res = await db.any(qStr);
         return res;
     } catch (error) {
@@ -108,6 +109,7 @@ exports.add = async (tbName, entity) => {
     const qStr = pgp.helpers.insert(entity, null, table) + ' RETURNING *';
 
     try {
+        console.log("add, query string: ", qStr);
         const res = await db.one(qStr);
         return res;
     } catch (error) {
@@ -130,8 +132,10 @@ exports.add = async (tbName, entity) => {
 exports.patch = async (tbName, filedName, entity, condition) => {
     const table = new pgp.helpers.TableName({ table: tbName, schema: schema });
     const conditionInput = pgp.as.format(condition, entity);
-    const qStr = pgp.helpers.update(entity, filedName, table) + conditionInput;
+    const qStr = pgp.helpers.update(entity, filedName, table) + conditionInput + ' RETURNING *';
     try {
+        console.log("patch, query string: ", qStr);
+
         const res = await db.any(qStr);
         return res;
     } catch (error) {
@@ -145,6 +149,8 @@ exports.del = async (tbName, condition) => {
     const qStr = pgp.as.format(`DELETE FROM $1 `, table) + condition;
 
     try {
+        console.log("delete, query string: ", qStr);
+
         const res = await db.any(qStr);
         return res;
     } catch (error) {

@@ -5,7 +5,7 @@
 -- Dumped from database version 14.1
 -- Dumped by pg_dump version 14.1
 
--- Started on 2022-12-10 15:57:08
+-- Started on 2022-12-11 15:37:18
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -123,11 +123,11 @@ ALTER TABLE public."group" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 CREATE TABLE public.presentation (
     id integer NOT NULL,
     name character varying(100) NOT NULL,
-    created_at time with time zone NOT NULL,
-    updated_at time with time zone,
     is_deleted boolean DEFAULT false NOT NULL,
     slide_count integer NOT NULL,
-    owner_id integer NOT NULL
+    owner_id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
 );
 
 
@@ -157,7 +157,8 @@ CREATE TABLE public.slide (
     id integer NOT NULL,
     slide_type_id integer NOT NULL,
     presentation_id integer NOT NULL,
-    content text NOT NULL
+    content text NOT NULL,
+    is_deleted boolean DEFAULT false
 );
 
 
@@ -207,7 +208,7 @@ ALTER TABLE public.slide_type ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
 
 
 --
--- TOC entry 3346 (class 0 OID 28161)
+-- TOC entry 3348 (class 0 OID 28161)
 -- Dependencies: 210
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -217,7 +218,7 @@ INSERT INTO public.account (id, username, password, email, external_id, is_activ
 
 
 --
--- TOC entry 3349 (class 0 OID 28172)
+-- TOC entry 3351 (class 0 OID 28172)
 -- Dependencies: 213
 -- Data for Name: account_group; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -229,7 +230,7 @@ INSERT INTO public.account_group (id, group_id, account_id, role) OVERRIDING SYS
 
 
 --
--- TOC entry 3348 (class 0 OID 28167)
+-- TOC entry 3350 (class 0 OID 28167)
 -- Dependencies: 212
 -- Data for Name: group; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -242,15 +243,16 @@ INSERT INTO public."group" (id, name, description, invitation_link) OVERRIDING S
 
 
 --
--- TOC entry 3352 (class 0 OID 28223)
+-- TOC entry 3354 (class 0 OID 28223)
 -- Dependencies: 216
 -- Data for Name: presentation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.presentation (id, name, is_deleted, slide_count, owner_id, created_at, updated_at) OVERRIDING SYSTEM VALUE VALUES (4, 'abcd', true, 1, 6, '2011-01-01 10:01:00', '2011-01-01 10:01:00');
 
 
 --
--- TOC entry 3356 (class 0 OID 28244)
+-- TOC entry 3358 (class 0 OID 28244)
 -- Dependencies: 220
 -- Data for Name: slide; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -258,15 +260,16 @@ INSERT INTO public."group" (id, name, description, invitation_link) OVERRIDING S
 
 
 --
--- TOC entry 3354 (class 0 OID 28230)
+-- TOC entry 3356 (class 0 OID 28230)
 -- Dependencies: 218
 -- Data for Name: slide_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.slide_type (id, name) OVERRIDING SYSTEM VALUE VALUES (1, 'Multiple Choice');
 
 
 --
--- TOC entry 3362 (class 0 OID 0)
+-- TOC entry 3364 (class 0 OID 0)
 -- Dependencies: 209
 -- Name: Account_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -275,7 +278,7 @@ SELECT pg_catalog.setval('public."Account_id_seq"', 7, true);
 
 
 --
--- TOC entry 3363 (class 0 OID 0)
+-- TOC entry 3365 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: account_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -284,7 +287,7 @@ SELECT pg_catalog.setval('public.account_group_id_seq', 17, true);
 
 
 --
--- TOC entry 3364 (class 0 OID 0)
+-- TOC entry 3366 (class 0 OID 0)
 -- Dependencies: 211
 -- Name: group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -293,34 +296,34 @@ SELECT pg_catalog.setval('public.group_id_seq', 11, true);
 
 
 --
--- TOC entry 3365 (class 0 OID 0)
+-- TOC entry 3367 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: presentation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.presentation_id_seq', 1, false);
+SELECT pg_catalog.setval('public.presentation_id_seq', 4, true);
 
 
 --
--- TOC entry 3366 (class 0 OID 0)
+-- TOC entry 3368 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: slide_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.slide_id_seq', 1, false);
+SELECT pg_catalog.setval('public.slide_id_seq', 4, true);
 
 
 --
--- TOC entry 3367 (class 0 OID 0)
+-- TOC entry 3369 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: slide_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.slide_type_id_seq', 1, false);
+SELECT pg_catalog.setval('public.slide_type_id_seq', 1, true);
 
 
 --
--- TOC entry 3191 (class 2606 OID 28165)
+-- TOC entry 3192 (class 2606 OID 28165)
 -- Name: account Account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -329,7 +332,7 @@ ALTER TABLE ONLY public.account
 
 
 --
--- TOC entry 3195 (class 2606 OID 28180)
+-- TOC entry 3196 (class 2606 OID 28180)
 -- Name: account_group account_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -338,7 +341,7 @@ ALTER TABLE ONLY public.account_group
 
 
 --
--- TOC entry 3193 (class 2606 OID 28171)
+-- TOC entry 3194 (class 2606 OID 28171)
 -- Name: group group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -347,7 +350,7 @@ ALTER TABLE ONLY public."group"
 
 
 --
--- TOC entry 3197 (class 2606 OID 28228)
+-- TOC entry 3198 (class 2606 OID 28228)
 -- Name: presentation presentation_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -356,7 +359,7 @@ ALTER TABLE ONLY public.presentation
 
 
 --
--- TOC entry 3201 (class 2606 OID 28250)
+-- TOC entry 3202 (class 2606 OID 28250)
 -- Name: slide slide_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -365,7 +368,7 @@ ALTER TABLE ONLY public.slide
 
 
 --
--- TOC entry 3199 (class 2606 OID 28234)
+-- TOC entry 3200 (class 2606 OID 28234)
 -- Name: slide_type slide_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -374,7 +377,7 @@ ALTER TABLE ONLY public.slide_type
 
 
 --
--- TOC entry 3202 (class 2606 OID 28181)
+-- TOC entry 3203 (class 2606 OID 28181)
 -- Name: account_group account_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -383,7 +386,7 @@ ALTER TABLE ONLY public.account_group
 
 
 --
--- TOC entry 3203 (class 2606 OID 28186)
+-- TOC entry 3204 (class 2606 OID 28186)
 -- Name: account_group group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -392,7 +395,7 @@ ALTER TABLE ONLY public.account_group
 
 
 --
--- TOC entry 3205 (class 2606 OID 28256)
+-- TOC entry 3207 (class 2606 OID 28256)
 -- Name: slide presentation_id_foreign_key; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -401,7 +404,16 @@ ALTER TABLE ONLY public.slide
 
 
 --
--- TOC entry 3204 (class 2606 OID 28251)
+-- TOC entry 3205 (class 2606 OID 28261)
+-- Name: presentation presentation_owner_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.presentation
+    ADD CONSTRAINT presentation_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES public.account(id) NOT VALID;
+
+
+--
+-- TOC entry 3206 (class 2606 OID 28251)
 -- Name: slide slide_type_id_foreign_key; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -409,7 +421,7 @@ ALTER TABLE ONLY public.slide
     ADD CONSTRAINT slide_type_id_foreign_key FOREIGN KEY (slide_type_id) REFERENCES public.slide_type(id);
 
 
--- Completed on 2022-12-10 15:57:08
+-- Completed on 2022-12-11 15:37:19
 
 --
 -- PostgreSQL database dump complete
