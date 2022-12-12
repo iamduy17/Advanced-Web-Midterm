@@ -14,6 +14,7 @@ import Navbar from "./components/Navbar/Navbar";
 import axios from 'axios';
 import { API_URL } from "./config/index"
 import Footer from "./components/Footer/Footer";
+import Presentations from "./pages/Presentations/Presentations";
 function App() {
   const [classes, setClasses] = useState([])
   useEffect(() => {
@@ -49,6 +50,8 @@ function App() {
           <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
           <Route path=":id/verify/:token" element={<Email />} />
           <Route path="/profile/:name" element={isAuthenticated ? <Profile /> : <Navigate replace to="/" />} />
+          <Route path="/presentation" element={<Presentations />} />
+          <Route path="/presentation/:id" />
           {/* <Route path="/footer" element={<Footer />} /> */}
         </Routes>
         <Footer></Footer>

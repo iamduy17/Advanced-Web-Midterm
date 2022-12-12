@@ -8,7 +8,7 @@ export default function Profile() {
     const { name } = useParams()
     return (
         <div className='main'>
-            
+
             <div className='profile'>
                 <div className='user'>
                     <img className='img-user'

@@ -2,19 +2,19 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 const groupService = require('../services/groupService');
-const { AuthenticationError} = require("../utils/index");
+const { AuthenticationError } = require("../utils/index");
 
 
 router.get('/', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        console.log({req});
+        console.log({ req });
         const result = await groupService.ListGroups(req.user);
 
         return res.json(result);
     } catch (error) {
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign in again!" 
+            Message: "Something is wrong. Please sign in again!"
         })
     }
 });
@@ -33,7 +33,7 @@ router.post('/create', authMiddleware.PassportJWTCheckToken, async (req, res) =>
     } catch (error) {
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign in again!" 
+            Message: "Something is wrong. Please sign in again!"
         })
     }
 });
@@ -47,7 +47,7 @@ router.get('/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     } catch (error) {
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign in again!" 
+            Message: "Something is wrong. Please sign in again!"
         })
     }
 });
@@ -63,7 +63,7 @@ router.post('/changeRole', authMiddleware.PassportJWTCheckToken, async (req, res
     } catch (error) {
         return res.status(401).json({
             ReturnCode: AuthenticationError.Error,
-            Message: "Something is wrong. Please sign in again!" 
+            Message: "Something is wrong. Please sign in again!"
         })
     }
 });
