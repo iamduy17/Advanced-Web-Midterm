@@ -15,7 +15,6 @@ export default function ListPresentation() {
     const [presentations, setPresentations] = useState([]);
     const [lgShow, setLgShow] = useState(false);
     const handleClose = () => setLgShow(false);
-    const [idEdit, setIdEdit] = useState(0);
 
     const [editShow, setEditShow] = useState(false);
     const handleCloseEdit = () => setEditShow(false);
@@ -56,11 +55,8 @@ export default function ListPresentation() {
     };
 
     // Rename a spresentation
-    const handleEdit = async (e) => {
-        const idEdit = e.target.id;
-        setEditShow(false);
-
-        const res = await axios.post(API_URL + `presentation/edit/${idEdit}`, { name: renamePresentation }, {
+    const handleEdit = async (id) => {
+        const res = await axios.post(API_URL + `presentation/edit/${id}`, { name: renamePresentation }, {
             headers: {
                 Authorization: 'Bearer ' + token,
             },
@@ -74,9 +70,12 @@ export default function ListPresentation() {
         const res = await axios.post(API_URL + `presentation/delete/${id}`, {}, {
             headers: {
                 Authorization: 'Bearer ' + token,
+
             },
         });
+
         window.location.reload();
+        console.log(res);
     };
 
     const handleLink = (id) => {
@@ -172,7 +171,7 @@ export default function ListPresentation() {
                                                         <Button variant="danger" onClick={handleCloseEdit}>
                                                             Close
                                                         </Button>
-                                                        <Button variant="primary" id={presentation.id} onClick={handleEdit}>
+                                                        <Button variant="primary" onClick={() => handleEdit(presentation.id)}>
                                                             Save
                                                         </Button>
                                                     </Modal.Footer>
