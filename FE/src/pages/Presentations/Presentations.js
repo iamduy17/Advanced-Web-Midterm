@@ -13,14 +13,7 @@ export default function Presentations() {
     const [lgShow, setLgShow] = useState(false);
     const [namePresentation, setNamePresentation] = useState("");
     const form = useRef();
-    const [presentations, setPresentations] = useState([
-        {
-            id: "3",
-            name: "namePresentation",
-            slideNumber: 3,
-            dateCreated: "12/12/2022"
-        }
-    ]);
+    const [presentations, setPresentations] = useState([{ name: "namduong" }]);
 
     useEffect(() => {
         const token = localStorage.getItem("token");

@@ -83,8 +83,6 @@ export default function ListPresentation() {
         window.location.replace(window.location.href + `/${id}`);
     };
 
-    console.log(presentations);
-
     return (
         <div>
             <div className='header-list-presentation'>
