@@ -30,7 +30,7 @@ module.exports = {
     update: async (id, name) => {
         const condition = ` WHERE "id" = ${id} `;
         try {
-            const res = await db.patch(tbName, ['name'], name, condition);
+            const res = await db.patch(tbName, ['name', 'updated_at'], name, condition);
             return res;
         } catch (error) {
             return false;

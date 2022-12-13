@@ -26,7 +26,6 @@
 }
 
 .thead {
-    height: 60px;
     text-align: center;
 }
 
@@ -38,19 +37,12 @@
     transition: 0.5s;
 }
 
-.tr:hover {
-    height: 60px;
-    box-shadow: 3px 3px 3px 3px #adabab;
-}
-
 .card {
     border-radius: 0;
     box-shadow: 0 2px 2px 0 rgba(51, 56, 59, 0.08);
-    margin-bottom: 30px;
+    margin: 30px;
     -webkit-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
-    margin-left: 20px;
-    margin-top: 30px;
 }
 
 .card-header {
@@ -69,52 +61,13 @@
 }
 
 .list-presentation {
-    margin-left: 20px;
-    width: 1200px;
-}
-
-.table {
-    width: 95%;
-    margin-bottom: 1rem;
-    text-indent: initial;
-    border-spacing: 2px;
-    border-color: grey;
-    margin-left: 30px;
-    margin-bottom: 30px;
-}
-
-.btn-more {
-    border: 0px;
-    background-color: white;
-    color: black;
-    font-size: 25px;
-    font-weight: bold;
-    width: 0px;
-    margin-right: 20px;
-}
-
-.btn-more:hover {
-    color: rgb(246, 2, 2);
-}
-
-.btn-edit {
-    color: rgb(33, 88, 230);
-}
-
-.btn-edit:hover {
     width: 100%;
-    background-color: rgb(33, 88, 230);
-    color: white;
-    border-radius: 5px;
 }
 
-.btn-del {
-    color: rgb(253, 75, 75);
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #b3dbf3;
 }
 
-.btn-del:hover {
-    width: 100%;
-    background-color: rgb(253, 75, 75);
-    color: white;
-    border-radius: 5px;
+.table td {
+    vertical-align: baseline;
 }

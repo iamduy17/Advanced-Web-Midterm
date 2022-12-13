@@ -7,7 +7,6 @@ const { AuthenticationError} = require("../utils/index");
 
 router.get('/', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        console.log("list presentations with req:", {req});
         const result = await presentationService.ListPresentations(req.user);
 
         return res.json(result);
@@ -66,11 +65,12 @@ router.post('/delete/:id', authMiddleware.PassportJWTCheckToken, async (req, res
 
 router.post('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
     try {
-        console.log("edit presentation with req:", {req});
         const userID = req.user.id;
         const presentationID = req.params.id;
         const presentationName = req.body.name;
-        const result = await presentationService.EditPresentation(userID, presentationID, presentationName);
+        const updatedTime = req.body.updated_at;
+        console.log(updatedTime);
+        const result = await presentationService.EditPresentation(userID, presentationID, presentationName, updatedTime);
 
         return res.json(result);
     } catch (error) {
@@ -100,5 +100,20 @@ router.get('/edit/:id', authMiddleware.PassportJWTCheckToken, async (req, res) =
     }
 });
 
+router.get('/get/:id', authMiddleware.PassportJWTCheckToken, async (req, res) => {
+    try {
+        const presentationID = req.params.id;
+        const result = await presentationService.GetAllSlideOfPresentation(presentationID);
+
+        return res.json(result);
+    } catch (error) {
+        console.log("get presentation failed with error: ", error);
+
+        return res.status(401).json({
+            ReturnCode: AuthenticationError.Error,
+            Message: "Something is wrong. Please sign in again!" 
+        })
+    }
+})
 
 module.exports = router;

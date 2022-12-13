@@ -1,0 +1,21 @@
+.nbSlide__title{
+    color: red;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.nbSlide__share {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+}
+
+.inbSlide__text {
+    border: 1px solid rgba(25, 118, 210, 0.5);
+    border-radius: 5px;
+    padding: 0.5rem;
+    width: 65%;
+    overflow: hidden;
+}

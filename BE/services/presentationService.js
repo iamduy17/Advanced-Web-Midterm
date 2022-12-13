@@ -26,6 +26,17 @@ const isValidPermission = async (userID, presentationID) => {
 
 exports.ListPresentations = async (user) => {
     let presentations = await presentationModel.listByOwnerID(user.id);
+
+    presentations?.map((item) => {
+        let toCreateDateList = new Date(item.created_at).toISOString().split('T');
+        item.created_at = toCreateDateList[0] + " " + toCreateDateList[1].split('.')[0];
+
+        let toUpdateDateList = new Date(item.updated_at).toISOString().split('T');
+        item.updated_at = toUpdateDateList[0] + " " + toUpdateDateList[1].split('.')[0];        
+    });
+
+    //console.log(presentations);
+
     return {
         ReturnCode: 200,
         Message: "list presentations successfully",
@@ -35,10 +46,28 @@ exports.ListPresentations = async (user) => {
 
 exports.CreatePresentation = async (presentation) => {
     const presentationResponse = await presentationModel.add(presentation);
+    const content = {
+        title: "Multiple Choice",
+        data: [
+            {
+                'name': 'Option 1',
+                'count': 0
+            },
+            {
+                'name': 'Option 2',
+                'count': 0
+            },
+            {
+                'name': 'Option 3',
+                'count': 0
+            }
+        ]
+    };
+
     const slide = {
         slide_type_id: 1,
         presentation_id: presentationResponse.id,
-        content: ""
+        content: JSON.stringify(content)
     }
     await slideModel.add(slide);
     return {
@@ -61,7 +90,7 @@ exports.DeletePresentation = async (userID, presentationID) => {
         return err;
     }
 
-    slides = await slideModel.listByPresentationID(presentationID);
+    const slides = await slideModel.listByPresentationID(presentationID);
     if(slides){
         for(let i = 0; i < slides.length; i++){
             slideService.DeleteSlide(userID, slides[i].id);
@@ -78,7 +107,7 @@ exports.DeletePresentation = async (userID, presentationID) => {
     };
 }
 
-exports.EditPresentation = async (userID, presentationID, presentationName) => {
+exports.EditPresentation = async (userID, presentationID, presentationName, updatedTime) => {
     let err = await isPresentationExisted(presentationID);
     if (err != null) {
         return err;
@@ -89,7 +118,7 @@ exports.EditPresentation = async (userID, presentationID, presentationName) => {
         return err;
     }
 
-    const presentationResponse = await presentationModel.update(presentationID, {name: presentationName});
+    const presentationResponse = await presentationModel.update(presentationID, {name: presentationName, updated_at: updatedTime});
     return {
         ReturnCode: 200,
         Message: "edit presentation successfully",
@@ -113,6 +142,22 @@ exports.GetPresentation = async (presentationID) => {
         Data: {
             Presentation: presentation,
             Slides: slides
+        }
+    };
+}
+
+exports.GetAllSlideOfPresentation = async (presentationId) => {
+    let err = await isPresentationExisted(presentationId);
+    if (err != null) {
+        return err;
+    }
+
+    const slide = await slideModel.getAllByID(presentationId);
+    return {
+        ReturnCode: 200,
+        Message: "get presentation successfully",
+        Data: {
+            Slide: slide
         }
     };
 }

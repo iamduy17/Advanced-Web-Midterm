@@ -1,46 +1,34 @@
-.navbar {
-    width: 100vw;
-    height: 50px;
-    border-bottom: 1px solid #dcdcdc;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .navbar__left {
-    display: flex;
-    align-items: center;
-    flex: 1;
-  }
-  
-  .navbar__left img {
-    margin-right: 20px;
-    margin-left: 20px;
-  }
-  
-  .navbar__left span {
-    font-size: 20px;
-  }
-  
-  .navbar__center {
-    display: flex;
-    flex: 2;
-  }
-  
-  .navbardetail__logo {
-    height: 45px;
-    width: auto;
-  }
-  .MuiPaper-elevation1 {
-    box-shadow: none !important;
-  }
-  .Mui-selected {
-    outline: 'none' !important;                                                               
-  }
-  
-  .Mui-selected button:focus {
-    outline: 'none'!important;    
+.navbar__left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
 }
-  
+
+.navbar__left img {
+  margin-left: 20px;
+}
+
+.navbar__left span {
+  font-size: 20px;
+}
+
+.navbar__center {
+  display: flex;
+  flex: 2 1;
+}
+
+.navbardetail__logo {
+  height: 45px;
+  width: auto;
+}
+.MuiPaper-elevation1 {
+  box-shadow: none !important;
+}
+.Mui-selected {
+  outline: "none" !important;
+}
+
+.Mui-selected button:focus {
+  outline: "none" !important;
+}

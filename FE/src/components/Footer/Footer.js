@@ -7,12 +7,10 @@ import {
 
 const Footer = () => <>
     <AppBar position="static" elevation={0} component="footer" color="default" style={{
-        position: "fixed",
+        position: "absolute",
         bottom: "0",
-        left: "0",
         width: "100%",
-        background: "linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%)",
-        maxHeight: "50px",
+        background: "white"       
     }}>
         <Toolbar style={{
             justifyContent: "center",

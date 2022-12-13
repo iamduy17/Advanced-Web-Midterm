@@ -2,6 +2,12 @@ const db = require('../db');
 
 const tbName = 'slide';
 module.exports = {
+    getAllByID: async (id) => {
+        const condition = `WHERE "presentation_id" = '${id}' and "is_deleted" = false`;
+        const res = await db.loadCondition(tbName, 'id', condition);
+        if (res.length > 0) return res;
+        return null;
+    },
     getByID: async (id) => {
         const condition = `WHERE "id" = '${id}' and "is_deleted" = false`;
         const res = await db.loadCondition(tbName, 'id', condition);

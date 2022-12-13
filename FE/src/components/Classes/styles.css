@@ -34,7 +34,9 @@
     background-color: #174ea6;
   }
   .class__image {
-    background-image: url(https://gstatic.com/classroom/themes/Physics.jpg);
+    background-image: url(../../assets/images/group.png);
+    background-position: center;
+    opacity: 0.2;
     height: 100%;
     left: 0;
     position: absolute;
@@ -51,17 +53,22 @@
     display: flex;
     -webkit-flex-direction: column;
     flex-direction: column;
-    -webkit-justify-content: space-between;
-    justify-content: space-between;
+    -webkit-justify-content: center;
+    justify-content: center;
     height: 4.5rem;
-    padding: 1rem 1rem 0.75rem;
+    padding: 1rem;
     position: relative;
   }
   .class__title {
     color: white;
-    font-family: "Roboto";
     text-decoration: none;
-    color: white;
+    font-family: "Open Sans", Roboto, Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+    line-height: 24px;
+    min-width: 0;
+    margin: 1rem 0;
   }
   .class__title h2 {
     font-weight: 400;
@@ -76,12 +83,13 @@
   }
   .class__avatar {
     float: right;
-    height: 4.6875rem !important;
+    height: 3.5rem !important;
     position: relative !important;
-    margin-top: -3.09375rem !important;
-    width: 4.6875rem !important;
+    margin-top: -2rem !important;
+    width: 3.5rem !important;
     text-align: left;
     margin: 10px;
+    border: 1px solid red;
   }
   .class__bottom {
     margin-top: 40%;
