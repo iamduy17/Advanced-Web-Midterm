@@ -20,16 +20,16 @@ function NavbarDetail({ classData }) {
         <>
             <nav className="navbar">
                 <div className="navbar__left">
-                    <a href="/">
+                    <a href="/" className="navbar__logo-link">
                         <img
                             src={logo}
                             alt="DND Logo"
                             className="navbardetail__logo"
                             // onClick={handleClick}
                             style={{ cursor: "pointer" }}
-                        />
-                    </a>{" "}
-                    <span>DND Group</span>
+                        />                   
+                        <span style={{fontWeight: "500"}}>DND Group</span>
+                    </a>
                 </div>
                 <div className="navbar__center">
                     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -41,6 +41,7 @@ function NavbarDetail({ classData }) {
                         </Tabs>
                     </Box>
                 </div>
+                <div className="navbar__right"></div>
             </nav>
         </>
     );

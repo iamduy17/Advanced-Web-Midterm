@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import CreateClass from "./components/CreateClass/CreateClass";
@@ -14,6 +14,22 @@ import Navbar from "./components/Navbar/Navbar";
 import axios from 'axios';
 import { API_URL } from "./config/index"
 import Footer from "./components/Footer/Footer";
+import Presentations from "./pages/Presentations/Presentations";
+import PresentationDetail from "./pages/PresentationDetail/PresentationDetail";
+import SlideDetail from "./components/SlideDetail/SlideDetail";
+import SlideMember from "./pages/SlideMember/SlideMember";
+import { Context } from "./pages/PresentationDetail/PresentationDetail";
+import SlideShow from "./pages/SlideShow/SlideShow";
+
+function Layout() {
+  return (
+    <>
+      <Outlet />
+      <Footer />
+    </>
+  )
+}
+
 function App() {
   const [classes, setClasses] = useState([])
   useEffect(() => {
@@ -29,29 +45,29 @@ function App() {
     loadGroups();
   }, [])
 
+  const isAuthenticated = localStorage.getItem("token") ? true : false;
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffectOnce(() => {
-    if (localStorage.getItem("token")) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  }, [])
+  console.log(isAuthenticated);
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route index path="/:id/*" element={<ClassDetail />} />
-          <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes} /> : <Navigate replace to="/login" />} />
-          <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
-          <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
-          <Route path=":id/verify/:token" element={<Email />} />
+        <Route path="/" element={<Layout />} > 
+          <Route index path="/:id/*" element={isAuthenticated ? <ClassDetail /> : <Navigate replace to="/login" /> } />
+          <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes} /> : <Navigate replace to="/login" />} />                  
           <Route path="/profile/:name" element={isAuthenticated ? <Profile /> : <Navigate replace to="/" />} />
-          {/* <Route path="/footer" element={<Footer />} /> */}
+          <Route path="/presentation" element={isAuthenticated ? <Presentations /> : <Navigate replace to="/" />} />
+          <Route path="/presentation/:id/slide/:id_slide" element={isAuthenticated ? <PresentationDetail /> : <Navigate replace to="/" />}/>
+          <Route path="/presentation/:id/slide/:id_slide/slideshow" element={isAuthenticated ? <SlideShow /> : <Navigate replace to="/" />}/>
+          <Route path="/presentation/:id/slide/:id_slide/slideshow/member" element={<SlideMember /> }/>
+        </Route>
+
+        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
+        <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} /> 
+        <Route path=":id/verify/:token" element={<Email />} />
+        
+        
         </Routes>
-        <Footer></Footer>
       </BrowserRouter>
     </>
   );

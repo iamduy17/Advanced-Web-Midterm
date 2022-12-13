@@ -26,7 +26,7 @@ const CreateClass = () => {
           <Form />
         ) : (
           <>
-            <div className="class__title">
+            <div className="create-class__title">
               Using Classroom at a school with students?
             </div>
             <DialogContent className="class__content">

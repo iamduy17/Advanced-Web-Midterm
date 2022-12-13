@@ -49,6 +49,6 @@ export default function Invitation({ setIsJoined }) {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }

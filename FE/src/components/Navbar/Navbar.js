@@ -1,46 +1,42 @@
-import { Avatar, IconButton, MenuItem, Menu } from "@material-ui/core";
-import { Add, Apps, Menu as MenuIcon } from "@material-ui/icons";
+import { IconButton, MenuItem, Menu, Button } from "@material-ui/core";
+import { Add, Slideshow, Group, ExitToApp } from "@material-ui/icons";
 import React, { useState, useEffect } from "react";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import axios from 'axios';
-import { API_URL, GOOGLE_ID } from "../../config/index"
-import logo from "../../assets/images/logo.jpg"
-import { GoogleLogout } from 'react-google-login';
+import Modal from "react-bootstrap/Modal";
+//import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import axios from "axios";
+
+import { API_URL, GOOGLE_ID } from "../../config/index";
+import logo from "../../assets/images/logo.jpg";
+import { GoogleLogout } from "react-google-login";
 
 import "./styles.css";
 
 function Navbar() {
-  //const [user, loading, error] = useAuthState(auth);
-  const [anchorEl, setAnchorEl] = useState(null);
-  //const [createOpened, setCreateOpened] = useRecoilState(createDialogAtom);
-  //const [joinOpened, setJoinOpened] = useRecoilState(joinDialogAtom);
+  const [value, setValue] = useState(0);
 
   const clientId = GOOGLE_ID;
-    const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
+  const [isGoogleSignIn, setIsGoogleSignIn] = useState(false);
 
-    useEffect(() => {
-        if(localStorage.getItem("provider")?.toString() === 'google') {
-            setIsGoogleSignIn(true);
-        } else {
-            setIsGoogleSignIn(false);
-        }
-    }, []);
-
-    const logOut = () => {
-        localStorage.removeItem("token");    
-        localStorage.removeItem("provider");
-        setIsGoogleSignIn(false);    
-        window.location.reload();
+  useEffect(() => {
+    if (localStorage.getItem("provider")?.toString() === "google") {
+      setIsGoogleSignIn(true);
+    } else {
+      setIsGoogleSignIn(false);
     }
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    if(window.location.href.includes("presentation")) {
+      setValue(1);
+    } else {
+      setValue(0);
+    }
+  }, []);
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const logOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("provider");
+    setIsGoogleSignIn(false);
+    window.location.reload();
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -49,14 +45,19 @@ function Navbar() {
   const handleShowModal = () => setShowModal(true);
   const [className, setClassName] = useState("");
   const [description, setDescription] = useState("");
+  
   const handleCreateGroup = async () => {
     const token = localStorage.getItem("token");
 
-    const res = await axios.post(API_URL + 'groups/create', { name: className, description: description }, {
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
+    const res = await axios.post(
+      API_URL + "groups/create",
+      { name: className, description: description },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
 
     window.location.reload();
   };
@@ -65,60 +66,59 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar__left">
-          <img
-            src={logo}
-            alt="Google Logo"
-            className="navbar__logo"
-          />{" "}
-          <span>DND Group</span>
+          <a
+            href="/"
+            className="navbar__logo-link"
+            style={{ textDecoration: "none" }}
+          >
+            <img src={logo} alt="Google Logo" className="navbar__logo" />{" "}
+            <span style={{fontWeight: "500"}}>DND Group</span>
+          </a>
+        </div>
+        <div className="navbar__center" style={{flex: "1"}}>
+        {value === 0 ? 
+        <Button variant="contained" href="/presentation" color="primary" style={{textTransform: "none"}} startIcon={<Slideshow />}>
+          My Presentations
+        </Button>
+        :
+        <Button variant="contained" href="/" color="primary" style={{textTransform: "none"}} startIcon={<Group />}>
+          My Groups
+        </Button>
+        }
         </div>
         <div className="navbar__right">
-          <IconButton
+          {value === 0 && <> <Button
             aria-controls="simple-menu"
             aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <Add />
-          </IconButton>
-          <IconButton>
-
-          </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem
-              onClick={() => {
+            variant="contained"
+            color="secondary"
+            onClick={() => {
                 handleShowModal();
-                handleClose();
               }}
-            >
-              Create Group
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                //setJoinOpened(true);
-                handleClose();
-              }}
-            >
-              Join Class
-            </MenuItem>
-          </Menu>
-          {isGoogleSignIn ? 
-            <GoogleLogout clientId={clientId} onLogoutSuccess={logOut} 
-                render={renderProps => (
-                        <Button onClick={renderProps.onClick}>Logout</Button>
-                    )}
-            /> 
-            : 
-            <Button variant="primary" onClick={logOut}>Logout</Button>}
+            startIcon={<Add />}
+            style={{textTransform: "none", marginRight: "1.5rem"}}
+          >
+            Create Group
+          </Button>
+          </>}
+
+          {isGoogleSignIn ? (
+            <GoogleLogout
+              clientId={clientId}
+              onLogoutSuccess={logOut}
+              render={(renderProps) => (
+                <Button startIcon={<ExitToApp />} variant="contained" color="primary" style={{textTransform: "none"}} onClick={renderProps.onClick}>Logout</Button>
+              )}
+            />
+          ) : (
+            <Button startIcon={<ExitToApp />} variant="contained" color="primary" style={{textTransform: "none"}} onClick={logOut}>
+              Logout
+            </Button>
+          )}
         </div>
       </nav>
 
-      <Modal show={showModal} onHide={handleCloseModal} >
+      <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header>
           <Modal.Title>Create Group</Modal.Title>
         </Modal.Header>
@@ -130,7 +130,7 @@ function Navbar() {
                 type="text"
                 placeholder="Enter name"
                 value={className}
-                onChange={e => setClassName(e.target.value)}
+                onChange={(e) => setClassName(e.target.value)}
               />
             </Form.Group>
 
@@ -140,16 +140,16 @@ function Navbar() {
                 type="text"
                 placeholder="Description"
                 value={description}
-                onChange={e => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
+          <Button variant="contained" color="secondary" style={{textTransform: "none"}} onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => handleCreateGroup()}>
+          <Button variant="contained" color="primary" style={{textTransform: "none"}} onClick={() => handleCreateGroup()}>
             Create Group
           </Button>
         </Modal.Footer>

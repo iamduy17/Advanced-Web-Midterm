@@ -38,20 +38,20 @@ function People({ id }) {
                     <EmailInvitation />
                 </div>
                 <hr className="divider"></hr>
-                {owners.map((item, index) => <Person key={index} name={item.username} id={item.id} classID={id} role={1}></Person>)}
+                {owners.map((item, index) => <Person key={index.toString()+ "owner"} name={item.username} id={item.id} classID={id} role={1}></Person>)}
 
-            </div >
+            </div>
             <div className="role-item">
                 <h1 className="title">Co-Owner</h1>
                 <hr className="divider"></hr>
-                {coOwners.map((item, index) => <Person key={index} name={item.username} id={item.id} classID={id} role={2}></Person>)}
-            </div >
+                {coOwners.map((item, index) => <Person key={index.toString()+ "coOwner"} name={item.username} id={item.id} classID={id} role={2}></Person>)}
+            </div>
             <div className="role-item">
                 <h1 className="title">Member</h1>
                 <hr className="divider"></hr>
-                {members.map((item, index) => <Person key={index} name={item.username} id={item.id} classID={id} role={3}></Person>)}
-            </div >
-        </div >
+                {members.map((item, index) => <Person key={index.toString()+ "members"} name={item.username} id={item.id} classID={id} role={3}></Person>)}
+            </div>
+        </div>
     )
 }
 

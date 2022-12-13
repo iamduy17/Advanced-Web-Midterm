@@ -27,6 +27,7 @@
     width: 7rem;
     height: 7rem;
     border-radius: 100%;
+    background-position: center;
 }
 
 .activity {
@@ -48,7 +49,7 @@
 }
 
 .img-wallpaper {
-    width: 15rem;
+    width: 35rem;
     height: auto;
     display: flex;
     justify-content: center;

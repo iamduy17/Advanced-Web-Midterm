@@ -1,9 +1,11 @@
 h1 {
     color: yellow;
 }
+
 .col {
     flex-grow: unset;
 }
-.row{
+
+.row {
     margin: 0;
 }

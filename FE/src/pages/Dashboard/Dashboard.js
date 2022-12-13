@@ -7,20 +7,19 @@ import Col from 'react-bootstrap/Col';
 import './styles.css';
 
 function Dashboard({ classes }) {
-    
     return (
-        <>
+        <div id="root-content">
             <Navbar></Navbar>
-            <Row>
-            {classes.map((item, index)=>{
-                return <Col key={index}>
+            <Row style={{margin: "0!important"}}>
+                {classes.map((item, index) => {
+                    return <Col key={index}>
                         <Classes classData={item} md="auto"></Classes>
                     </Col>
-                
-            })}
+
+                })}
             </Row>
             
-        </>
+        </div>
     )
 }
 

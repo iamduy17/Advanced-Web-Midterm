@@ -78,7 +78,7 @@ function ClassDetail() {
                             <Invitation setIsJoined={setIsJoined} />
                         </div>
                         :
-                        <div>
+                        <div id="root-content">
                             <NavbarDetail classData={classes[index]}></NavbarDetail>
                             <Routes>
                                 <Route index path="" element={<Main classData={classes[index]} />} />

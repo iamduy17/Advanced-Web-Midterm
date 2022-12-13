@@ -2,7 +2,11 @@ import { Avatar } from "@material-ui/core";
 import { FolderOpen, PermContactCalendar } from "@material-ui/icons";
 import React from "react";
 import { Link } from "react-router-dom";
+
+import group from "../../assets/images/training.jpg";
 import "./styles.css";
+
+
 const Classes = ({ classData }) => {
   return (
     <li className="class__list">
@@ -11,8 +15,8 @@ const Classes = ({ classData }) => {
           <div className="class__imgWrapper" />
           <div className="class__image" />
           <div className="class__content">
-            <Link className="class__title" to={`/${classData.id}`}>
-              <h2>{classData.className}</h2>
+            <Link className="class__title" to={`/${classData.id}`} style={{textDecoration: "none"}}>
+              {classData.className}
               
             </Link>
             
@@ -20,7 +24,7 @@ const Classes = ({ classData }) => {
         </div>
         <Avatar
           className="class__avatar"
-          src="https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/s75-c-fbw=1/photo.jpg"
+          src={group}
         />
       </div>
       <div className="class__bottom">
