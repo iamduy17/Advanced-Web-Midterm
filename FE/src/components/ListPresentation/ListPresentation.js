@@ -35,6 +35,7 @@ export default function ListPresentation() {
             });
             setPresentations(res.data.Presentations);
         }
+        
         loadGroups();
 
     }, []);

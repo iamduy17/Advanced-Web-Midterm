@@ -28,11 +28,8 @@ exports.ListPresentations = async (user) => {
     let presentations = await presentationModel.listByOwnerID(user.id);
 
     presentations?.map((item) => {
-        let toCreateDateList = new Date(item.created_at).toISOString().split('T');
-        item.created_at = toCreateDateList[0] + " " + toCreateDateList[1].split('.')[0];
-
-        let toUpdateDateList = new Date(item.updated_at).toISOString().split('T');
-        item.updated_at = toUpdateDateList[0] + " " + toUpdateDateList[1].split('.')[0];        
+        item.created_at = new Date(item.created_at).toLocaleString("es-ES",{year:"2-digit",month:"2-digit",day:"2-digit", hour:"2-digit",minute:"2-digit",second:"2-digit"}, {timeZone: "Asia/Bangkok"});
+        item.updated_at = new Date(item.updated_at).toLocaleString("es-ES",{year:"2-digit",month:"2-digit",day:"2-digit", hour:"2-digit",minute:"2-digit",second:"2-digit"}, {timeZone: "Asia/Bangkok"});
     });
 
     return {
