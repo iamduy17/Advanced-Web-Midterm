@@ -5,7 +5,6 @@ import axios from "axios";
 import {Button} from "@mui/material";
 import {ArrowCircleRightRounded, ArrowCircleLeftRounded} from '@mui/icons-material';
 
-import SlideDetail from "../../components/SlideDetail/SlideDetail";
 import { API_URL } from "../../config";
 
 import logo from "../../assets/images/logo.jpg";
@@ -40,7 +39,9 @@ function SlideMember() {
         let newSlideArr = [...list];
         if(newSlideArr.length !== 0) {
             newSlideArr.map(item => {
-                item.content = JSON.parse(item.content);
+                if(typeof item.content !== 'object') {
+                    item.content = JSON.parse(item.content);
+                }
             });
         }
 

@@ -29,7 +29,6 @@ const dataChartShow = [
 
 function PresentationDetail() {
     const { id, id_slide } = useParams();
-    //let index = classes.findIndex(element => element.id == id);
 
     let token = localStorage.getItem("token");
     
@@ -38,9 +37,7 @@ function PresentationDetail() {
     const [dataChart, setDataChart] = useState(dataChartShow);
     const [slides, setSlides] = useState([]);
     const [error, setError] = useState("");
-    const [currentSlide, setCurrentSlide] = useState(0);
 
-    //useEffect để gọi xuống core mỗi lần dataChart đổi
     useEffect(() => {
         async function loadSlides() {
             const {data} = await axios.get(API_URL + `presentation/edit/${id}`, {
@@ -71,21 +68,13 @@ function PresentationDetail() {
         setDataChart(currentSlide[0].content.data);       
     }
 
-    console.log(slides);
-
     const handleClickSlideItem = index => e => {
         let newSlideArr = [...slides];
         newSlideArr.map(item => item.active = false);
         newSlideArr[index].active = true;
 
         setSlides(newSlideArr);
-        setCurrentSlide(newSlideArr[index].id);
-        // const currentUrl = window.location.href;
-        // let newURL = currentUrl.substring(0, currentUrl.length - 2) + newSlideArr[index].id;
-        // window.location.assign(newURL);
     }
-
-    console.log(currentSlide);
 
     const handleTitleChange = e => {
         if(e.target.value.length !== 0) {
@@ -118,8 +107,6 @@ function PresentationDetail() {
     }
 
     const handleEditSlide = async () => {
-        //const index = slides?.filter(item => item.id == id_slide);
-
         const newContent = {
             title: title,
             data: dataChart
