@@ -86,13 +86,13 @@ export default function ListPresentation() {
     };
 
     const handleLink = async (id) => {
-        const {data} = await axios.get(API_URL + `presentation/get/${id}`, {
+        const {data} = await axios.get(API_URL + `presentation/edit/${id}`, {
             headers: {
                 Authorization: 'Bearer ' + token,
             },
         });
 
-        window.location.replace(window.location.href + `/${id}/slide/${data.Data.Slide[0].id}`);
+        window.location.replace(window.location.href + `/${id}/slide/${data.Data.Slides[0].id}`);
     };
 
     const IsolatedMenu = props => {

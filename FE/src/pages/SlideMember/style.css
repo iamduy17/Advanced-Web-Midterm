@@ -28,6 +28,7 @@
     align-items: center;
     margin: 1rem 0;
     width: 100%;
+    z-index: 1;
 }
 
 .slideMember__form {
@@ -74,4 +75,5 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
 }

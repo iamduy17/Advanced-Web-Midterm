@@ -58,7 +58,9 @@ function PresentationDetail() {
         let newSlideArr = [...list];
         if(newSlideArr.length !== 0) {
             newSlideArr.map(item => {
-                item.content = JSON.parse(item.content);
+                if(typeof item.content !== 'object') {
+                    item.content = JSON.parse(item.content);
+                }
             });
         }
 
@@ -188,7 +190,7 @@ function PresentationDetail() {
                                 <span className="slide__slide-item-text">{index + 1}</span>
                                 <div className="slide__slide-item">
                                     <img alt="multiple-choice" src={multiple}></img>
-                                    <p style={{margin: "0.5rem", textAlign: "center"}}>{item.content.title}</p>
+                                    <p style={{margin: "0.5rem", textAlign: "center", textTransform: "none"}}>{item.content.title}</p>
                                 </div>
                             </Button>
                             ))}    
