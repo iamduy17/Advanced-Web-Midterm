@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import {Button} from "@mui/material";
@@ -6,10 +6,13 @@ import {ArrowCircleRightRounded, ArrowCircleLeftRounded} from '@mui/icons-materi
 
 import SlideDetail from "../../components/SlideDetail/SlideDetail";
 import { API_URL } from "../../config";
+import {SocketContext} from '../../context/socket';
 
 import './style.css';
 
 function SlideShow() {
+    const socket = useContext(SocketContext);
+    console.log("abcdef", socket);
     const { id, id_slide } = useParams();
     let token = localStorage.getItem("token");
 
@@ -19,6 +22,8 @@ function SlideShow() {
     const [nextURL, setNextURL] = useState("");
     const [isPrevShow, setIsPrevShow] = useState(true);
     const [isNextShow, setIsNextShow] = useState(true);
+    
+    const [isConnected, setIsConnected] = useState(socket.connected);
 
     useEffect(() => {
         async function loadSlides() {
@@ -45,10 +50,34 @@ function SlideShow() {
         const currentSlide = newSlideArr.filter(item => item.id == id_slide);
         setTitle(currentSlide[0].content.title);
         setDataChart(currentSlide[0].content.data);
-
         handleNext(newSlideArr);
         handlePrevious(newSlideArr);
     }
+
+    useEffect(() => {
+        socket.on('connect', () => {
+          setIsConnected(true);
+        });
+        socket.on('received submit', (data) => {
+          const temp = [...dataChart];
+          for(let i = 0; i < temp.length; i++){
+              if(temp[i].name === data){
+                  temp[i].count++;
+                  break;
+              }
+          }
+          setDataChart(temp);
+        });
+    
+        socket.on('disconnect', () => {
+          setIsConnected(false);
+        });
+    
+        return () => {
+          socket.off('connect');
+          socket.off('disconnect');
+        };
+      }, []);
 
     const handlePrevious = (slideList) => {
         let currentIndex = 0;
