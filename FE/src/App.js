@@ -47,7 +47,6 @@ function App() {
 
   const isAuthenticated = localStorage.getItem("token") ? true : false;
 
-  console.log(isAuthenticated);
   return (
     <>
       <BrowserRouter>
