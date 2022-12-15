@@ -145,9 +145,9 @@ function SlideShow() {
                     </Button>
                     
                 </div>
-                
+                <BootstrapButton className="btn btn-danger slideShow__btn-finish" onClick={() => handleFinishSlide()}>Stop Presentation</BootstrapButton>
             </div>
-            <BootstrapButton className="slideShow__btn-finish" onClick={() => handleFinishSlide()}>Finish</BootstrapButton>
+            
         </div>
     )
 }
