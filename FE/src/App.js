@@ -20,6 +20,8 @@ import SlideDetail from "./components/SlideDetail/SlideDetail";
 import SlideMember from "./pages/SlideMember/SlideMember";
 import { Context } from "./pages/PresentationDetail/PresentationDetail";
 import SlideShow from "./pages/SlideShow/SlideShow";
+import ThanksForVoting from "./pages/ThanksForVoting/ThanksForVoting";
+import { SocketContext, socket } from './context/socket';
 
 function Layout() {
   return (
@@ -49,25 +51,28 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-        <Route path="/" element={<Layout />} > 
-          <Route index path="/:id/*" element={isAuthenticated ? <ClassDetail /> : <Navigate replace to="/login" /> } />
-          <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes} /> : <Navigate replace to="/login" />} />                  
-          <Route path="/profile/:name" element={isAuthenticated ? <Profile /> : <Navigate replace to="/" />} />
-          <Route path="/presentation" element={isAuthenticated ? <Presentations /> : <Navigate replace to="/" />} />
-          <Route path="/presentation/:id/slide/:id_slide" element={isAuthenticated ? <PresentationDetail /> : <Navigate replace to="/" />}/>
-          <Route path="/presentation/:id/slide/:id_slide/slideshow" element={isAuthenticated ? <SlideShow /> : <Navigate replace to="/" />}/>
-          <Route path="/presentation/:id/slide/:id_slide/slideshow/member" element={<SlideMember /> }/>
-        </Route>
+      <SocketContext.Provider value={socket}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />} >
+              <Route index path="/:id/*" element={isAuthenticated ? <ClassDetail /> : <Navigate replace to="/login" />} />
+              <Route index path="/" element={isAuthenticated ? <Dashboard classes={classes} /> : <Navigate replace to="/login" />} />
+              <Route path="/profile/:name" element={isAuthenticated ? <Profile /> : <Navigate replace to="/" />} />
+              <Route path="/presentation" element={isAuthenticated ? <Presentations /> : <Navigate replace to="/" />} />
+              <Route path="/presentation/:id/slide/:id_slide" element={isAuthenticated ? <PresentationDetail /> : <Navigate replace to="/" />} />
+              <Route path="/presentation/:id/slide/:id_slide/slideshow" element={isAuthenticated ? <SlideShow /> : <Navigate replace to="/" />} />
+              <Route path="/presentation/:id/slide/:id_slide/slideshow/member" element={<SlideMember />} />
+            </Route>
 
-        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
-        <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} /> 
-        <Route path=":id/verify/:token" element={<Email />} />
-        
-        
-        </Routes>
-      </BrowserRouter>
+            <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate replace to="/" />} />
+            <Route path="/register" element={!isAuthenticated ? <Register /> : <Navigate replace to="/" />} />
+            <Route path=":id/verify/:token" element={<Email />} />
+            <Route path="/ThanksForVoting" element={<ThanksForVoting />} />
+
+
+          </Routes>
+        </BrowserRouter>
+      </SocketContext.Provider>
     </>
   );
 }

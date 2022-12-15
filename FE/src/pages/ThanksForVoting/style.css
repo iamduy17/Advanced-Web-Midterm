@@ -1,0 +1,11 @@
+.ThanksForVoting__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.ThanksForVoting__img {
+    height: 90vh;
+    padding: 20px;
+}
