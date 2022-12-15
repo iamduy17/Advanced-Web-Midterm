@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import img from "../../assets/images/thank-you-for-voting.png";
+import {Button} from 'react-bootstrap';
 import './style.css';
 
 function ThanksForVoting() {
   return (
-    <div img="container__thanks_for_voting">
-      <img src={img} width="100%" height="100%" className="img__thanks_for_voting"></img>
+    <div className="ThanksForVoting__container">
+      <img src={img} className="ThanksForVoting__img"></img>
       <a href="/">
-        <button type="button" name="button" className="btn__thanks_for_voting">Go to homepage</button>
+        <Button type="button" name="button" className="ThanksForVoting__btn">Go to homepage</Button>
       </a>
     </div>
   )

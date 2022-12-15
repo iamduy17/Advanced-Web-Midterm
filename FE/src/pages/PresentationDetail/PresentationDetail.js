@@ -69,8 +69,6 @@ function PresentationDetail() {
         setDataChart(currentSlide[0].content.data);       
     }
 
-    console.log(slides);
-
     const handleClickSlideItem = index => e => {
         let newSlideArr = [...slides];
         newSlideArr.map(item => item.active = false);
@@ -82,8 +80,6 @@ function PresentationDetail() {
         // let newURL = currentUrl.substring(0, currentUrl.length - 2) + newSlideArr[index].id;
         // window.location.assign(newURL);
     }
-
-    console.log(currentSlide);
 
     const handleTitleChange = e => {
         if(e.target.value.length !== 0) {

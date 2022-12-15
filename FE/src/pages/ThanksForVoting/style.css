@@ -1,24 +1,11 @@
-.container__thanks_for_voting {
-    border: solid green;
-    position: relative;
-    /* Add this */
-    width: 1024px;
+.ThanksForVoting__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
-.img__thanks_for_voting {
-    position: relative;
-    z-index: -1;
-    width: 100%;
-    height: auto;
-}
-
-/* Create button style */
-.btn__thanks_for_voting {
-    padding: 30px;
-    position: absolute;
-    /* Add this */
-    left: 50px;
-    /* Also add this for position: absolute to work properly */
-    top: 50px;
-    /* Also add this for position: absolute to work properly */
+.ThanksForVoting__img {
+    height: 90vh;
+    padding: 20px;
 }
