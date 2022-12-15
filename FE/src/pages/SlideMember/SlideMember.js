@@ -4,8 +4,6 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@mui/material";
 import { ArrowCircleRightRounded, ArrowCircleLeftRounded } from '@mui/icons-material';
-import {Button} from "@mui/material";
-import {ArrowCircleRightRounded, ArrowCircleLeftRounded} from '@mui/icons-material';
 
 import { API_URL } from "../../config";
 import { SocketContext } from '../../context/socket';
@@ -129,8 +127,6 @@ function SlideMember() {
 
     const handleSubmit = e => {
         e.preventDefault();
-        // set count + 1 của value đó
-        //alert(`${value}`);
         socket.emit("submit", value);
         window.location.href = '/ThanksForVoting';
     };
