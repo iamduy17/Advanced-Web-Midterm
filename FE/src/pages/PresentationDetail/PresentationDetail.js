@@ -29,7 +29,6 @@ const dataChartShow = [
 
 function PresentationDetail() {
     const { id, id_slide } = useParams();
-    //let index = classes.findIndex(element => element.id == id);
 
     let token = localStorage.getItem("token");
     
@@ -38,9 +37,7 @@ function PresentationDetail() {
     const [dataChart, setDataChart] = useState(dataChartShow);
     const [slides, setSlides] = useState([]);
     const [error, setError] = useState("");
-    const [currentSlide, setCurrentSlide] = useState(0);
 
-    //useEffect để gọi xuống core mỗi lần dataChart đổi
     useEffect(() => {
         async function loadSlides() {
             const {data} = await axios.get(API_URL + `presentation/edit/${id}`, {
@@ -58,7 +55,9 @@ function PresentationDetail() {
         let newSlideArr = [...list];
         if(newSlideArr.length !== 0) {
             newSlideArr.map(item => {
-                item.content = JSON.parse(item.content);
+                if(typeof item.content !== 'object') {
+                    item.content = JSON.parse(item.content);
+                }
             });
         }
 
@@ -75,10 +74,6 @@ function PresentationDetail() {
         newSlideArr[index].active = true;
 
         setSlides(newSlideArr);
-        setCurrentSlide(newSlideArr[index].id);
-        // const currentUrl = window.location.href;
-        // let newURL = currentUrl.substring(0, currentUrl.length - 2) + newSlideArr[index].id;
-        // window.location.assign(newURL);
     }
 
     const handleTitleChange = e => {
@@ -112,8 +107,6 @@ function PresentationDetail() {
     }
 
     const handleEditSlide = async () => {
-        //const index = slides?.filter(item => item.id == id_slide);
-
         const newContent = {
             title: title,
             data: dataChart
@@ -184,7 +177,7 @@ function PresentationDetail() {
                                 <span className="slide__slide-item-text">{index + 1}</span>
                                 <div className="slide__slide-item">
                                     <img alt="multiple-choice" src={multiple}></img>
-                                    <p style={{margin: "0.5rem", textAlign: "center"}}>{item.content.title}</p>
+                                    <p style={{margin: "0.5rem", textAlign: "center", textTransform: "none"}}>{item.content.title}</p>
                                 </div>
                             </Button>
                             ))}    

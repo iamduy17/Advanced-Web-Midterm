@@ -32,7 +32,6 @@ function SlideShow() {
                     Authorization: 'Bearer ' + token,
                 },
             });
-
             ConfigSlides(data.Data.Slide);
         }
         loadSlides();
@@ -42,7 +41,9 @@ function SlideShow() {
         let newSlideArr = [...list];
         if (newSlideArr.length !== 0) {
             newSlideArr.map(item => {
-                item.content = JSON.parse(item.content);
+                if(typeof item.content !== 'object') {
+                    item.content = JSON.parse(item.content);
+                }
             });
         }
 
