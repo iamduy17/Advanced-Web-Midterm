@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import group from "../../assets/images/training.jpg";
 import "./styles.css";
 
-
-const Classes = ({ classData }) => {
+function Classes({ classData }) {
+  // eslint-disable-line
   return (
     <li className="class__list">
       <div className="class__wrapper">
@@ -15,17 +15,16 @@ const Classes = ({ classData }) => {
           <div className="class__imgWrapper" />
           <div className="class__image" />
           <div className="class__content">
-            <Link className="class__title" to={`/${classData.id}`} style={{textDecoration: "none"}}>
+            <Link
+              className="class__title"
+              to={`/${classData.id}`}
+              style={{ textDecoration: "none" }}
+            >
               {classData.className}
-              
             </Link>
-            
           </div>
         </div>
-        <Avatar
-          className="class__avatar"
-          src={group}
-        />
+        <Avatar className="class__avatar" src={group} />
       </div>
       <div className="class__bottom">
         <PermContactCalendar />
@@ -33,6 +32,6 @@ const Classes = ({ classData }) => {
       </div>
     </li>
   );
-};
+}
 
 export default Classes;

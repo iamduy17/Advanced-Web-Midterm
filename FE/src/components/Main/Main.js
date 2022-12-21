@@ -1,13 +1,11 @@
 import { Avatar, Button, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import "./styles.css";
-import { Announcment } from "../Announcment/Announcment"
 import LinkInvitation from "../Invitation/LinkInvitation";
 
-const Main = ({ classData }) => {
+function Main({ classData }) {
   const [showInput, setShowInput] = useState(false);
   const [inputValue, setInput] = useState("");
-  const [image, setImage] = useState(null);
 
   return (
     <div className="main">
@@ -36,7 +34,6 @@ const Main = ({ classData }) => {
           <div className="main__status">
             <p>Upcoming</p>
             <p className="main__subText">No work due</p>
-
           </div>
           <div className="main__announcements">
             <div className="main__announcementsWrapper">
@@ -53,8 +50,7 @@ const Main = ({ classData }) => {
                     />
                     <div className="main__buttons">
                       <input
-                        //onChange={handleChange}
-                        variant="outlined"
+                        // onChange={handleChange}
                         color="primary"
                         type="file"
                       />
@@ -65,7 +61,7 @@ const Main = ({ classData }) => {
                         </Button>
 
                         <Button
-                          //onClick={handleUpload}
+                          // onClick={handleUpload}
                           color="primary"
                           variant="contained"
                         >
@@ -85,12 +81,11 @@ const Main = ({ classData }) => {
                 )}
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Main;

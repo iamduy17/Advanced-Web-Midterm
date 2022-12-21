@@ -37,9 +37,11 @@
   position: absolute;
   top: 0;
   width: 100%;
-  background-image: radial-gradient(25rem 18.75rem ellipse at bottom right,
-      #4285f4,
-      transparent);
+  background-image: radial-gradient(
+    25rem 18.75rem ellipse at bottom right,
+    #4285f4,
+    transparent
+  );
 }
 
 .main__text {
@@ -132,7 +134,7 @@
   align-items: center;
 }
 
-.main__wrapper100>* {
+.main__wrapper100 > * {
   margin-right: 20px;
 }
 

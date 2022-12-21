@@ -1,13 +1,14 @@
 import { Avatar } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import "./styles.css";
-const Announcment = ({ classData }) => {
-  const [announcment, setAnnouncment] = useState([]);
+
+function Announcment() {
+  const [announcment, setAnnouncment] = useState([]); // eslint-disable-line
   return (
     <div>
-      {announcment.map((item) => (
-        <div className="amt">
+      {announcment.map((item, index) => (
+        <div className="amt" key={index}>
           <div className="amt__Cnt">
             <div className="amt__top">
               <Avatar />
@@ -20,6 +21,6 @@ const Announcment = ({ classData }) => {
       ))}
     </div>
   );
-};
+}
 
 export default Announcment;

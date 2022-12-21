@@ -3,22 +3,23 @@ import {
   Checkbox,
   Dialog,
   DialogActions,
-  DialogContent,
+  DialogContent
 } from "@material-ui/core";
 import React, { useState } from "react";
-//import { useLocalContext } from "../../context/context";
+// import { useLocalContext } from "../../context/context";
 import Form from "./Form";
 import "./styles.css";
-const CreateClass = () => {
-  //const { createClassDialog, setCreateClassDialog } = useLocalContext();
+
+function CreateClass() {
+  // const { createClassDialog, setCreateClassDialog } = useLocalContext();
   const [check, setChecked] = useState(false);
   const [showForm, setShowForm] = useState(true);
   return (
     <div>
       <Dialog
-        //onClose={() => setCreateClassDialog(false)}
+        // onClose={() => setCreateClassDialog(false)}
         aria-labelledby="customized-dialog-title"
-        //open={createClassDialog}
+        // open={createClassDialog}
         maxWidth={showForm ? "lg" : "xs"}
         className="form__dialog"
       >
@@ -53,15 +54,13 @@ const CreateClass = () => {
               <div className="class__checkboxWrapper">
                 <Checkbox color="primary" onChange={() => setChecked(!check)} />
                 <p>
-                  I've read and understand the above notice, and I'm not using
-                  Classroom at a school with students
+                  I&apos;ve read and understand the above notice, and I&apos;m
+                  not using Classroom at a school with students
                 </p>
               </div>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus>
-                Close
-              </Button>
+              <Button autoFocus>Close</Button>
 
               <Button
                 autoFocus
@@ -77,6 +76,6 @@ const CreateClass = () => {
       </Dialog>
     </div>
   );
-};
+}
 
 export default CreateClass;

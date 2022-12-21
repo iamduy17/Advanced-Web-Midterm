@@ -1,7 +1,7 @@
 import { Button, DialogActions, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 
-const Form = () => {
+function Form() {
   const [className, setClassName] = useState("");
   const [Section, setSection] = useState("");
   const [Room, setRoom] = useState("");
@@ -9,7 +9,7 @@ const Form = () => {
 
   const addClass = (e) => {
     e.preventDefault();
-    //const id = uuidV4();
+    // const id = uuidV4();
 
     // db.collection("CreatedClasses")
     //   .doc(loggedInMail)
@@ -71,6 +71,6 @@ const Form = () => {
       </DialogActions>
     </div>
   );
-};
+}
 
 export default Form;
