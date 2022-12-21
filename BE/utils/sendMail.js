@@ -1,8 +1,8 @@
 const nodemailer = require("nodemailer");
-const {EmailInfo} = require("../config/index");
+const { EmailInfo } = require("../config/index");
 
 const emailHTML = (name, url) => {
-	return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 	<html lang="en">
 	<head>
 	<meta charset="UTF-8">
@@ -44,33 +44,33 @@ const emailHTML = (name, url) => {
 	</tbody>
 	</table>
 	</body>
-	</html>`
+	</html>`;
 };
 
 module.exports = async (email, name, url) => {
-	try {
-		const transporter = nodemailer.createTransport({
-			host: EmailInfo.EMAIL_HOST,
-			service: EmailInfo.EMAIL_SERVICE,
-			port: Number(EmailInfo.EMAIL_PORT),
-			secure: true,
-			auth: {
-				user: EmailInfo.EMAIL_USER,
-				pass: EmailInfo.EMAIL_PASS,
-			},
-		});
+  try {
+    const transporter = nodemailer.createTransport({
+      host: EmailInfo.EMAIL_HOST,
+      service: EmailInfo.EMAIL_SERVICE,
+      port: Number(EmailInfo.EMAIL_PORT),
+      secure: true,
+      auth: {
+        user: EmailInfo.EMAIL_USER,
+        pass: EmailInfo.EMAIL_PASS
+      }
+    });
 
-		const htmlText = emailHTML(name, url);
-		await transporter.sendMail({
-			from: {
-				name: 'DND Group',
-				address: EmailInfo.EMAIL_USER
-			},
-			to: email,
-			subject: "Confirm your email address",
-			html: htmlText,
-		});
-	} catch (error) {
-		return error;
-	}
+    const htmlText = emailHTML(name, url);
+    await transporter.sendMail({
+      from: {
+        name: "DND Group",
+        address: EmailInfo.EMAIL_USER
+      },
+      to: email,
+      subject: "Confirm your email address",
+      html: htmlText
+    });
+  } catch (error) {
+    return error;
+  }
 };
