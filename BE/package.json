@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "_lint": "eslint --config ./.eslintrc.json --ext js --ext jsx --ext tsx --ext ts",
+    "lint": "npm run _lint -- ./",
+    "lint:fix": "npm run _lint -- --fix ./",
+    "format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,scss,md,json}\" --config ./.prettierrc"
   },
   "keywords": [],
   "author": "",
@@ -28,5 +32,12 @@
   },
   "engines": {
     "node": "16.13.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.11",
+    "prettier": "^2.8.1"
   }
 }
