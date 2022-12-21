@@ -1,107 +1,106 @@
 .class {
-    display: flex;
-    flex-wrap: wrap;
-    padding-left: 1.5rem;
-    padding-top: 1.5rem;
-    
-  }
-  ul,
-  ol {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .class__list {
-    display: flex;
-    flex-direction: column;
-    height: 18.375rem;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
-    position: relative;
-    text-align: left;
-    width: 18.75rem;
-    background-color: #fff;
-    border: 0.0625rem solid #dadce0;
-    -webkit-border-radius: 0.5rem;
-    border-radius: 0.5rem;
-  }
-  .class__imgWrapper {
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    background-color: #174ea6;
-  }
-  .class__image {
-    background-image: url(../../assets/images/group.png);
-    background-position: center;
-    opacity: 0.2;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    background-repeat: no-repeat;
-    -webkit-background-size: cover;
-    background-size: cover;
-  }
-  .class__container {
-    position: relative;
-  }
-  .class__content {
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-    -webkit-justify-content: center;
-    justify-content: center;
-    height: 4.5rem;
-    padding: 1rem;
-    position: relative;
-  }
-  .class__title {
-    color: white;
-    text-decoration: none;
-    font-family: "Open Sans", Roboto, Arial, sans-serif;
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: 0.1px;
-    line-height: 24px;
-    min-width: 0;
-    margin: 1rem 0;
-  }
-  .class__title h2 {
-    font-weight: 400;
-  }
-  .class__title h2:hover {
-    text-decoration: underline;
-  }
-  .class__owner {
-    color: white;
-    font-weight: 400 !important;
-    font-size: 15px !important;
-  }
-  .class__avatar {
-    float: right;
-    height: 3.5rem !important;
-    position: relative !important;
-    margin-top: -2rem !important;
-    width: 3.5rem !important;
-    text-align: left;
-    margin: 10px;
-    border: 1px solid red;
-  }
-  .class__bottom {
-    margin-top: 40%;
-    display: flex;
-    color: #5f6368;
-    justify-content: flex-end;
-    border-top: 0.2px solid #e0e0e0;
-    padding: 10px;
-  }
-  .class__bottom > * {
-    margin-right: 20px;
-  }
-  .class__content a:hover{
-    color: white;
-  }
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 1.5rem;
+  padding-top: 1.5rem;
+}
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.class__list {
+  display: flex;
+  flex-direction: column;
+  height: 18.375rem;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  text-align: left;
+  width: 18.75rem;
+  background-color: #fff;
+  border: 0.0625rem solid #dadce0;
+  -webkit-border-radius: 0.5rem;
+  border-radius: 0.5rem;
+}
+.class__imgWrapper {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-color: #174ea6;
+}
+.class__image {
+  background-image: url(../../assets/images/group.png);
+  background-position: center;
+  opacity: 0.2;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+.class__container {
+  position: relative;
+}
+.class__content {
+  display: flex;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: center;
+  justify-content: center;
+  height: 4.5rem;
+  padding: 1rem;
+  position: relative;
+}
+.class__title {
+  color: white;
+  text-decoration: none;
+  font-family: "Open Sans", Roboto, Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+  line-height: 24px;
+  min-width: 0;
+  margin: 1rem 0;
+}
+.class__title h2 {
+  font-weight: 400;
+}
+.class__title h2:hover {
+  text-decoration: underline;
+}
+.class__owner {
+  color: white;
+  font-weight: 400 !important;
+  font-size: 15px !important;
+}
+.class__avatar {
+  float: right;
+  height: 3.5rem !important;
+  position: relative !important;
+  margin-top: -2rem !important;
+  width: 3.5rem !important;
+  text-align: left;
+  margin: 10px;
+  border: 1px solid red;
+}
+.class__bottom {
+  margin-top: 40%;
+  display: flex;
+  color: #5f6368;
+  justify-content: flex-end;
+  border-top: 0.2px solid #e0e0e0;
+  padding: 10px;
+}
+.class__bottom > * {
+  margin-right: 20px;
+}
+.class__content a:hover {
+  color: white;
+}

@@ -11,7 +11,6 @@ export const useEffectOnce = (effect) => {
   }
 
   useEffect(() => {
-
     if (!effectCalled.current) {
       destroyFunc.current = effect();
       effectCalled.current = true;
@@ -20,8 +19,12 @@ export const useEffectOnce = (effect) => {
     setVal(1);
 
     return () => {
-      if (!renderAfterCalled.current) { return; }
-      if (destroyFunc.current) { destroyFunc.current(); }
+      if (!renderAfterCalled.current) {
+        return;
+      }
+      if (destroyFunc.current) {
+        destroyFunc.current();
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

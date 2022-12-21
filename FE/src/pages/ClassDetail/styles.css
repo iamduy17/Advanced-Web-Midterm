@@ -1,9 +1,9 @@
 h1 {
-    color: yellow;
+  color: yellow;
 }
 .col {
-    flex-grow: unset;
+  flex-grow: unset;
 }
-.row{
-    margin: 0;
+.row {
+  margin: 0;
 }

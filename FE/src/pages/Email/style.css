@@ -1,93 +1,93 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,500');
+@import url("https://fonts.googleapis.com/css?family=Roboto+Mono:300,500");
 
 .email__container {
-    background: linear-gradient(to right, #77A1D3 0%, #79CBCA  51%, #77A1D3  100%);
-    min-width: 350px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  background: linear-gradient(to right, #77a1d3 0%, #79cbca 51%, #77a1d3 100%);
+  min-width: 350px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .email__main-content {
-    position: relative;
-    box-sizing: content-box;
-    width: max-content;
-    margin: 10px auto;
-    background: #fff;
-    padding: 15px;
-    border-radius: 20px;
-    box-shadow: 0 1px 5px rgb(138, 137, 137);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  box-sizing: content-box;
+  width: max-content;
+  margin: 10px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.email__heading{
-    margin: 3rem 0 1rem;
+.email__heading {
+  margin: 3rem 0 1rem;
 }
 
 .email__img-success {
-    width: 20%;
-    position: absolute;
-    top: -3rem;
+  width: 20%;
+  position: absolute;
+  top: -3rem;
 }
 
 .email__img-email-success {
-    width: 40%;
-    margin: 20px 0;
+  width: 40%;
+  margin: 20px 0;
 }
 
 .email__message1 {
-    text-align: center;
-    font-size: 1.3rem;
-    font-weight: 400;
-    margin: 5px 0;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin: 5px 0;
 }
 
 .email__message2 {
-    text-align: center;
-    font-size: 1rem;
-    margin: 5px 0;
+  text-align: center;
+  font-size: 1rem;
+  margin: 5px 0;
 }
 
 .email___login {
-    border-radius: 15px;
-    padding: 0.5rem 2rem;
-    margin: 2rem 0;
-    font-size: larger;
+  border-radius: 15px;
+  padding: 0.5rem 2rem;
+  margin: 2rem 0;
+  font-size: larger;
 }
 
 .email__404 {
-    font-family: "Roboto Mono", "Liberation Mono", Consolas, monospace;
-    text-align: center;
-    font-size: 5rem;
-    font-weight: 400;
-    margin: 5px 0;
+  font-family: "Roboto Mono", "Liberation Mono", Consolas, monospace;
+  text-align: center;
+  font-size: 5rem;
+  font-weight: 400;
+  margin: 5px 0;
 }
 
 .email__404-des {
-    font-family: "Roboto Mono", "Liberation Mono", Consolas, monospace;
-    text-align: center;
-    font-size: 2rem;
-    margin: 5px 0;
+  font-family: "Roboto Mono", "Liberation Mono", Consolas, monospace;
+  text-align: center;
+  font-size: 2rem;
+  margin: 5px 0;
 }
 
 .email__404-des1 {
-    font-family: "Roboto Mono", "Liberation Mono", Consolas, monospace;
-    text-align: center;
-    font-size: 1rem;
-    margin: 5px 0;
+  font-family: "Roboto Mono", "Liberation Mono", Consolas, monospace;
+  text-align: center;
+  font-size: 1rem;
+  margin: 5px 0;
 }
 
-@media  screen and (max-width: 480px) {
-    .email__main-content {
-        width: 80%;
-    }
+@media screen and (max-width: 480px) {
+  .email__main-content {
+    width: 80%;
+  }
 
-    .email__img-success {
-        top: -2rem;
-    }
+  .email__img-success {
+    top: -2rem;
+  }
 }
