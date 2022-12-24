@@ -124,6 +124,50 @@ router.get(
   }
 );
 
+router.post(
+  "/addCollaborator/:id",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("add collaborator with req:", { req });
+      const userID = req.user.id;
+      const presentationID = req.params.id;
+      const accountID = req.body.account_id;
+      const result = await presentationService.AddCollaborator(presentationID, accountID, userID);
+      return res.json(result);
+    } catch (error) {
+      console.log("add collaborator failed with error: ", error);
+
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
+router.post(
+  "/removeCollaborator/:id",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("add collaborator with req:", { req });
+      const userID = req.user.id;
+      const presentationID = req.params.id;
+      const accountID = req.body.account_id;
+      const result = await presentationService.RemoveCollaborator(presentationID, accountID, userID);
+      return res.json(result);
+    } catch (error) {
+      console.log("add collaborator failed with error: ", error);
+
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
 router.get(
   "/get/:id",
   authMiddleware.PassportJWTCheckToken,

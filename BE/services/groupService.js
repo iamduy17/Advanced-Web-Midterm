@@ -1,8 +1,13 @@
 const groupModel = require("../models/groupModel");
 const accountGroupModel = require("../models/accountGroupModel");
 const authModel = require("../models/authModel");
+const presentationModel = require("../models/presentationModel");
+const presentationService = require("./presentationService");
 
 const ROLE_OWNER = 1;
+const ROLE_COOWNER = 2;
+const ROLE_MEMBER = 3;
+
 
 exports.ListGroups = async (user) => {
   const groups = [];
@@ -48,13 +53,13 @@ exports.GetGroup = async (id) => {
     const account = await authModel.getUserByID(accountGroups[i].account_id);
     const { id, username } = account;
     switch (accountGroups[i].role) {
-      case 1:
+      case ROLE_OWNER:
         owners.push({ id, username });
         break;
-      case 2:
+      case ROLE_COOWNER:
         coOwners.push({ id, username });
         break;
-      case 3:
+      case ROLE_MEMBER:
         members.push({ id, username });
         break;
     }
@@ -89,11 +94,52 @@ exports.CreateGroup = async (group, userID) => {
   };
 };
 
-exports.SetRole = async (groupID, userID, role) => {
+const isValidRole = async (groupID, userID, roles) => {
   const accountGroupResponse = await accountGroupModel.getByAccountIDAndGroupID(
     userID,
     groupID
   );
+  roles.forEach(role => {
+    if (role === accountGroupResponse.role) {
+      return null;
+    }
+  });
+  return {
+    ReturnCode: 401,
+    Message: "invalid permission"
+  };
+}
+
+const isAccountGroupExisted = async (groupID, userID) => {
+  const accountGroupResponse = await accountGroupModel.getByAccountIDAndGroupID(
+    userID,
+    groupID
+  );
+  if (!accountGroupResponse) {
+    return {
+      ReturnCode: 404,
+      Message: "user not in this group"
+    };
+  }
+  return null;
+};
+
+exports.SetRole = async (groupID, userID, role, selfUserID) => {
+  let err = await isValidRole(groupID, selfUserID, [ROLE_OWNER]);
+  if (err != null) {
+    return err;
+  }
+
+  err = await isAccountGroupExisted(groupID, userID);
+  if (err != null) {
+    return err;
+  }
+
+  const accountGroupResponse = await accountGroupModel.getByAccountIDAndGroupID(
+    userID,
+    groupID
+  );
+
   const account_group = {
     id: accountGroupResponse.id,
     account_id: userID,
@@ -104,5 +150,53 @@ exports.SetRole = async (groupID, userID, role) => {
   return {
     ReturnCode: 200,
     Message: "change role successfully"
+  };
+};
+
+exports.RemoveMember = async (groupID, userID, selfUserID) => {
+  err = await isAccountGroupExisted(groupID, userID);
+  if (err != null) {
+    return err;
+  }
+
+  let err = await isValidRole(groupID, selfUserID, [ROLE_OWNER, ROLE_COOWNER]);
+  if (err != null) {
+    return err;
+  }
+
+  err = await isValidRole(groupID, user, [ROLE_MEMBER]);
+  if (err != null) {
+    return err;
+  }
+
+  const accountGroupResponse = await accountGroupModel.getByAccountIDAndGroupID(
+    memberID,
+    groupID
+  );
+
+  await accountGroupModel.del(accountGroupResponse.id);
+  return {
+    ReturnCode: 200,
+    Message: "remove member successfully"
+  };
+};
+
+exports.RemoveGroup = async (groupID, userID) => {
+  let err = await isValidRole(groupID, userID, [ROLE_OWNER]);
+  if (err != null) {
+    return err;
+  }
+
+  const presentations = await presentationModel.listByGroupID(groupID);
+  if (presentations) {
+    for (let i = 0; i < presentations.length; i++) {
+      presentationService.DeletePresentation(userID, presentations[i].id);
+    }
+  }
+
+  await groupModel.del(groupID);
+  return {
+    ReturnCode: 200,
+    Message: "remove group successfully"
   };
 };

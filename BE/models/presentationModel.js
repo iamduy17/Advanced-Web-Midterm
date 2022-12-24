@@ -18,6 +18,12 @@ module.exports = {
     if (res.length > 0) return res;
     return null;
   },
+  listByGroupID: async (groupID) => {
+    const condition = `WHERE "group_id" = '${groupID}' and "is_deleted" = false`;
+    const res = await db.loadCondition(tbName, "id", condition);
+    if (res.length > 0) return res;
+    return null;
+  },
   delete: async (id, is_deleted) => {
     const condition = ` WHERE "id" = ${id} `;
     try {
