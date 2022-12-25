@@ -8,7 +8,6 @@ const ROLE_OWNER = 1;
 const ROLE_COOWNER = 2;
 const ROLE_MEMBER = 3;
 
-
 exports.ListGroups = async (user) => {
   const groups = [];
   let accountGroups = await accountGroupModel.listByAccountID(user.id);
@@ -105,7 +104,7 @@ const isValidRole = async (groupID, userID, roles) => {
       Message: "invalid permission"
     };
   }
-  for(let i = 0; i < roles.length; i++){
+  for (let i = 0; i < roles.length; i++) {
     if (roles[i] === accountGroupResponse.role) {
       return null;
     }
@@ -114,7 +113,7 @@ const isValidRole = async (groupID, userID, roles) => {
     ReturnCode: 401,
     Message: "invalid permission"
   };
-}
+};
 
 const isAccountGroupExisted = async (groupID, userID) => {
   const accountGroupResponse = await accountGroupModel.getByAccountIDAndGroupID(
@@ -131,7 +130,7 @@ const isAccountGroupExisted = async (groupID, userID) => {
 };
 
 exports.SetRole = async (groupID, userID, role, selfUserID) => {
-  if (role === ROLE_OWNER){
+  if (role === ROLE_OWNER) {
     return {
       ReturnCode: 403,
       Message: "can't promote to owner"

@@ -19,8 +19,12 @@ const isPresentationExisted = async (presentationID) => {
 };
 
 const isValidPermission = async (userID, presentationID) => {
-  const presentation = await presentationModel.getByID(presentationID);
-  if (userID !== presentation.owner_id) {
+  const accountPresentation =
+    await accountPresentationModel.getByAccountIDAndPresentationID(
+      userID,
+      presentationID
+    );
+  if (!accountPresentation || accountPresentation.role !== ROLE_OWNER) {
     return {
       ReturnCode: 401,
       Message: "invalid permission"
@@ -29,11 +33,23 @@ const isValidPermission = async (userID, presentationID) => {
   return null;
 };
 
-const isAccountpresentationExisted = async (presentationID, userID) => {
-  const accountPresentationResponse = await accountPresentationModel.getByAccountIDAndPresentationID(
-    userID,
-    presentationID
-  );
+const isAccountExisted = async (accountID) => {
+  const account = await authModel.getUserByID(accountID);
+  if (!account) {
+    return {
+      ReturnCode: 404,
+      Message: "user not found"
+    };
+  }
+  return null;
+};
+
+const isAccountPresentationExisted = async (presentationID, userID) => {
+  const accountPresentationResponse =
+    await accountPresentationModel.getByAccountIDAndPresentationID(
+      userID,
+      presentationID
+    );
   if (!accountPresentationResponse) {
     return {
       ReturnCode: 404,
@@ -44,12 +60,16 @@ const isAccountpresentationExisted = async (presentationID, userID) => {
 };
 
 exports.ListPresentations = async (user) => {
-  const presentations = []
-  const accountPresentations = await accountPresentationModel.listByAccountID(user.id);
-  if(accountPresentations){
-    for(let i = 0; i < accountPresentations.length; i++){
-      const presentation = await presentationModel.getByID(accountPresentations[i].presentation_id)
-      presentations.push(presentation)
+  const presentations = [];
+  const accountPresentations = await accountPresentationModel.listByAccountID(
+    user.id
+  );
+  if (accountPresentations) {
+    for (let i = 0; i < accountPresentations.length; i++) {
+      const presentation = await presentationModel.getByID(
+        accountPresentations[i].presentation_id
+      );
+      presentations.push(presentation);
     }
   }
   presentations?.map((item) => {
@@ -86,7 +106,7 @@ exports.ListPresentations = async (user) => {
   };
 };
 
-exports.CreatePresentation = async (presentation) => {
+exports.CreatePresentation = async (presentation, userID) => {
   const presentationResponse = await presentationModel.add(presentation);
   const content = {
     title: "Multiple Choice",
@@ -114,7 +134,7 @@ exports.CreatePresentation = async (presentation) => {
   await slideModel.add(slide);
   const account_presentation = {
     presentation_id: presentationResponse.id,
-    account_id: presentation.owner_id,
+    account_id: userID,
     role: ROLE_OWNER
   };
   await accountPresentationModel.add(account_presentation);
@@ -142,6 +162,14 @@ exports.DeletePresentation = async (userID, presentationID) => {
   if (slides) {
     for (let i = 0; i < slides.length; i++) {
       slideService.DeleteSlide(userID, slides[i].id);
+    }
+  }
+
+  const accountPresentations =
+    await accountPresentationModel.listByPresentationID(presentationID);
+  if (accountPresentations) {
+    for (let i = 0; i < accountPresentations.length; i++) {
+      await accountPresentationModel.del(accountPresentations[i].id);
     }
   }
 
@@ -194,10 +222,11 @@ exports.GetPresentation = async (presentationID) => {
 
   const presentation = await presentationModel.getByID(presentationID);
   let slides = await slideModel.listByPresentationID(presentationID);
-  let accountPresentations = await accountPresentationModel.listByPresentationID(presentationID);
+  let accountPresentations =
+    await accountPresentationModel.listByPresentationID(presentationID);
   const owners = [];
   const collaborators = [];
-  if(!accountPresentations){
+  if (!accountPresentations) {
     return {
       ReturnCode: 200,
       Message: "get presentation successfully",
@@ -210,7 +239,9 @@ exports.GetPresentation = async (presentationID) => {
     };
   }
   for (let i = 0; i < accountPresentations.length; i++) {
-    const account = await authModel.getUserByID(accountPresentations[i].account_id);
+    const account = await authModel.getUserByID(
+      accountPresentations[i].account_id
+    );
     const { id, username } = account;
     switch (accountPresentations[i].role) {
       case ROLE_OWNER:
@@ -243,6 +274,12 @@ exports.AddCollaborator = async (presentationID, userID, selfUserID) => {
   if (err != null) {
     return err;
   }
+
+  err = await isAccountExisted(userID);
+  if (err != null) {
+    return err;
+  }
+
   const account_presentation = {
     presentation_id: presentationID,
     account_id: userID,
@@ -256,7 +293,7 @@ exports.AddCollaborator = async (presentationID, userID, selfUserID) => {
 };
 
 exports.RemoveCollaborator = async (presentationID, userID, selfUserID) => {
-  let err = await isAccountpresentationExisted(presentationID, userID);
+  let err = await isAccountPresentationExisted(presentationID, userID);
   if (err != null) {
     return err;
   }
@@ -265,12 +302,16 @@ exports.RemoveCollaborator = async (presentationID, userID, selfUserID) => {
   if (err != null) {
     return err;
   }
-  
-  const accountPresentation = accountPresentationModel.getByAccountIDAndPresentationID(userID, presentationID)
+
+  const accountPresentation =
+    await accountPresentationModel.getByAccountIDAndPresentationID(
+      userID,
+      presentationID
+    );
   await accountPresentationModel.del(accountPresentation.id);
   return {
     ReturnCode: 200,
-    Message: "add collaborator successfully"
+    Message: "remove collaborator successfully"
   };
 };
 

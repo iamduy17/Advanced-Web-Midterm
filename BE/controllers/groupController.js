@@ -113,10 +113,7 @@ router.post(
     try {
       console.log("remove group with req:", { req });
       const userID = req.user.id;
-      const result = await groupService.RemoveGroup(
-        req.body.group_id,
-        userID
-      );
+      const result = await groupService.RemoveGroup(req.body.group_id, userID);
 
       return res.json(result);
     } catch (error) {

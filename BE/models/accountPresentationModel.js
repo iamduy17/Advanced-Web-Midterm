@@ -41,5 +41,5 @@ module.exports = {
     const condition = `WHERE "id" = ${id}`;
     const res = await db.del(tbName, condition);
     return res;
-  },
+  }
 };
