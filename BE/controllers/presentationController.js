@@ -137,6 +137,27 @@ router.post(
       return res.json(result);
     } catch (error) {
       console.log("add collaborator failed with error: ", error);
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
+router.get(
+  "/get/:id",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      const presentationID = req.params.id;
+      const result = await presentationService.GetAllSlideOfPresentation(
+        presentationID
+      );
+
+      return res.json(result);
+    } catch (error) {
+      console.log("get presentation failed with error: ", error);
 
       return res.status(401).json({
         ReturnCode: AuthenticationError.Error,

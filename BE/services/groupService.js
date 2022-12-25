@@ -1,8 +1,11 @@
 const groupModel = require("../models/groupModel");
 const accountGroupModel = require("../models/accountGroupModel");
 const authModel = require("../models/authModel");
+<<<<<<< HEAD
 const presentationModel = require("../models/presentationModel");
 const presentationService = require("./presentationService");
+=======
+>>>>>>> main
 
 const ROLE_OWNER = 1;
 const ROLE_COOWNER = 2;
@@ -53,6 +56,7 @@ exports.GetGroup = async (id) => {
     const account = await authModel.getUserByID(accountGroups[i].account_id);
     const { id, username } = account;
     switch (accountGroups[i].role) {
+<<<<<<< HEAD
       case ROLE_OWNER:
         owners.push({ id, username });
         break;
@@ -60,6 +64,15 @@ exports.GetGroup = async (id) => {
         coOwners.push({ id, username });
         break;
       case ROLE_MEMBER:
+=======
+      case 1:
+        owners.push({ id, username });
+        break;
+      case 2:
+        coOwners.push({ id, username });
+        break;
+      case 3:
+>>>>>>> main
         members.push({ id, username });
         break;
     }
