@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Table, Button, Modal } from "react-bootstrap";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert, Edit, Delete } from "@mui/icons-material";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import axios from "axios";
 
 import { API_URL } from "../../config";
@@ -11,6 +12,10 @@ import "./ListPresentation.css";
 export default function ListPresentation() {
   const [presentations, setPresentations] = useState([]);
   const [lgShow, setLgShow] = useState(false);
+
+  const [listCollabShow, setlistCollabShow] = useState(false);
+  const handleCloseListCollab = () => setlistCollabShow(false);
+
   const handleClose = () => setLgShow(false);
   const [idEdit, setIdEdit] = useState(0);
 
@@ -65,7 +70,6 @@ export default function ListPresentation() {
     dateTime[0] = `${dateTime[0].split("/")[2]}-${dateTime[0].split("/")[0]}-${
       dateTime[0].split("/")[1]
     }`;
-
     if (dateTime[1].substring(0, 2) === "24") {
       dateTime[1] = `00${dateTime[1].substring(2)}`;
     }
@@ -184,6 +188,10 @@ export default function ListPresentation() {
           <MenuItem onClick={() => handleDelete(props.id)}>
             <Delete />
             <span style={{ paddingLeft: "10px" }}>Delete</span>
+          </MenuItem>
+          <MenuItem onClick={() => setlistCollabShow(true)}>
+            <FormatListBulletedIcon />
+            <span style={{ paddingLeft: "10px" }}>List collaborate</span>
           </MenuItem>
         </Menu>
       </>
@@ -319,6 +327,26 @@ export default function ListPresentation() {
                 onClick={handleEdit(idEdit)}
               >
                 Save
+              </Button>
+            </Modal.Footer>
+          </Modal>
+          <Modal
+            size="lg"
+            show={listCollabShow}
+            onHide={() => setlistCollabShow(false)}
+            aria-labelledby="example-modal-sizes-title-lg"
+          >
+            <Modal.Header>
+              <Modal.Title id="example-modal-sizes-title-lg">
+                List Presentation Collaborations
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div>hello</div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="danger" onClick={handleCloseListCollab}>
+                Close
               </Button>
             </Modal.Footer>
           </Modal>

@@ -17,26 +17,46 @@ function getKeyByValue(object, value) {
   return Object.keys(object).find((key) => object[key] === value);
 }
 
-function Person({ id, name, classID, role }) {
+function Person({ id, name, classID, role, roleUser }) {
   const roleMap = {
     1: "Owner",
     2: "Co-Owner",
-    3: "Member"
+    3: "Member",
+    4: "Delete"
   };
   const generateMenu = () => {
     const roles = [];
-    for (let i = 1; i < 4; i++) {
-      if (i == role) {
-        continue;
-      }
-      roles.push(i);
+    if (role == 2) {
+      roles.push(3);
+      roles.push(4);
     }
+
+    if (role == 3) {
+      roles.push(2);
+      roles.push(4);
+    }
+
     return roles.map((role, index) => (
       <MenuItem
         key={index}
-        onClick={() => {
+        onClick={async () => {
           const newRole = getKeyByValue(roleMap, roleMap[role]);
-          handleChangeRole(newRole);
+          if (newRole == 4) {
+            const token = localStorage.getItem("token");
+            const res = await axios.post(
+              API_URL + "groups/removeMember",
+              { group_id: classID, account_id: id },
+              {
+                headers: {
+                  Authorization: "Bearer " + token
+                }
+              }
+            );
+            console.log(res);
+            window.location.reload();
+          } else {
+            handleChangeRole(newRole);
+          }
         }}
       >
         {roleMap[role]}
@@ -73,22 +93,53 @@ function Person({ id, name, classID, role }) {
       <Link to={`/profile/${name}`}>
         <CardHeader className="person-card" avatar={<Avatar />} title={name} />
       </Link>
-      <IconButton
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVert />
-      </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        {generateMenu()}
-      </Menu>
+      {roleUser === 3 ? null : (
+        <>
+          {role === 3 ? (
+            <>
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <MoreVert />
+              </IconButton>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {generateMenu()}
+              </Menu>
+            </>
+          ) : (
+            <>
+              {role === 2 ? (
+                <>
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                    <MoreVert />
+                  </IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    {generateMenu()}
+                  </Menu>
+                </>
+              ) : null}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }

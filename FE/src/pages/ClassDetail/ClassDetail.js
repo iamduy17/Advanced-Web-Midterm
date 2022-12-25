@@ -81,7 +81,11 @@ function ClassDetail() {
               path=""
               element={<Main classData={classes[index]} />}
             />
-            <Route index path="/people" element={<People id={id} />} />
+            <Route
+              index
+              path="/people"
+              element={<People id={id} id_User={id_User} />}
+            />
           </Routes>
         </div>
       )}
