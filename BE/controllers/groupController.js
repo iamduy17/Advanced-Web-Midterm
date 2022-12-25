@@ -6,7 +6,7 @@ const { AuthenticationError } = require("../utils/index");
 
 router.get("/", authMiddleware.PassportJWTCheckToken, async (req, res) => {
   try {
-    console.log({ req });
+    console.log("list groups with req:", { req });
     const result = await groupService.ListGroups(req.user);
 
     return res.json(result);
@@ -23,6 +23,7 @@ router.post(
   authMiddleware.PassportJWTCheckToken,
   async (req, res) => {
     try {
+      console.log("create group with req:", { req });
       const userID = req.user.id;
       const group = {
         name: req.body.name,
@@ -43,6 +44,7 @@ router.post(
 
 router.get("/:id", authMiddleware.PassportJWTCheckToken, async (req, res) => {
   try {
+    console.log("get group with req:", { req });
     const id = req.params.id;
     const result = await groupService.GetGroup(id);
 
@@ -60,14 +62,58 @@ router.post(
   authMiddleware.PassportJWTCheckToken,
   async (req, res) => {
     try {
-      //const userID = req.user.id;
-      //check permission user.
+      console.log("change role with req:", { req });
+      const userID = req.user.id;
       console.log(req.body);
       const result = await groupService.SetRole(
         req.body.group_id,
         req.body.account_id,
-        req.body.role
+        req.body.role,
+        userID
       );
+
+      return res.json(result);
+    } catch (error) {
+      console.log("change role failed with err: " + error);
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
+router.post(
+  "/removeMember",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("remove member with req:", { req });
+      const userID = req.user.id;
+      const result = await groupService.RemoveMember(
+        req.body.group_id,
+        req.body.account_id,
+        userID
+      );
+
+      return res.json(result);
+    } catch (error) {
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
+router.post(
+  "/removeGroup",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("remove group with req:", { req });
+      const userID = req.user.id;
+      const result = await groupService.RemoveGroup(req.body.group_id, userID);
 
       return res.json(result);
     } catch (error) {

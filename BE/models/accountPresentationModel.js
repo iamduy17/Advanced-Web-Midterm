@@ -1,16 +1,10 @@
 const db = require("../db");
 
-const tbName = "account_group";
+const tbName = "account_presentation";
 
 module.exports = {
   getByID: async (id) => {
     const res = await db.get(tbName, "id", id);
-    if (res.length > 0) return res[0];
-    return null;
-  },
-  getByAccountIDAndGroupID: async (accountID, groupID) => {
-    const condition = `WHERE "account_id" = ${accountID} and "group_id" = ${groupID}`;
-    const res = await db.loadCondition(tbName, "id", condition);
     if (res.length > 0) return res[0];
     return null;
   },
@@ -19,9 +13,15 @@ module.exports = {
     if (res.length > 0) return res;
     return null;
   },
-  listByGroupID: async (groupID) => {
-    const res = await db.get(tbName, "group_id", groupID);
+  listByPresentationID: async (presentationID) => {
+    const res = await db.get(tbName, "presentation_id", presentationID);
     if (res.length > 0) return res;
+    return null;
+  },
+  getByAccountIDAndPresentationID: async (accountID, presentationID) => {
+    const condition = `WHERE "account_id" = ${accountID} and "presentation_id" = ${presentationID}`;
+    const res = await db.loadCondition(tbName, "id", condition);
+    if (res.length > 0) return res[0];
     return null;
   },
   add: async (data) => {

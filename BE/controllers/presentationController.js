@@ -33,9 +33,12 @@ router.post(
         updated_at: req.body.created_at,
         is_deleted: false,
         slide_count: 1,
-        owner_id: userID
+        group_id: req.body.group_id
       };
-      const result = await presentationService.CreatePresentation(presentation);
+      const result = await presentationService.CreatePresentation(
+        presentation,
+        userID
+      );
 
       return res.json(result);
     } catch (error) {
@@ -115,6 +118,57 @@ router.get(
       return res.json(result);
     } catch (error) {
       console.log("get presentation failed with error: ", error);
+
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
+router.post(
+  "/addCollaborator/:id",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("add collaborator with req:", { req });
+      const userID = req.user.id;
+      const presentationID = req.params.id;
+      const accountID = req.body.account_id;
+      const result = await presentationService.AddCollaborator(
+        presentationID,
+        accountID,
+        userID
+      );
+      return res.json(result);
+    } catch (error) {
+      console.log("add collaborator failed with error: ", error);
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
+router.post(
+  "/removeCollaborator/:id",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("add collaborator with req:", { req });
+      const userID = req.user.id;
+      const presentationID = req.params.id;
+      const accountID = req.body.account_id;
+      const result = await presentationService.RemoveCollaborator(
+        presentationID,
+        accountID,
+        userID
+      );
+      return res.json(result);
+    } catch (error) {
+      console.log("add collaborator failed with error: ", error);
 
       return res.status(401).json({
         ReturnCode: AuthenticationError.Error,
