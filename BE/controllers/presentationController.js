@@ -33,7 +33,8 @@ router.post(
         updated_at: req.body.created_at,
         is_deleted: false,
         slide_count: 1,
-        owner_id: userID
+        owner_id: userID,
+        group_id: req.body.group_id,
       };
       const result = await presentationService.CreatePresentation(presentation);
 
@@ -137,28 +138,6 @@ router.post(
       return res.json(result);
     } catch (error) {
       console.log("add collaborator failed with error: ", error);
-      return res.status(401).json({
-        ReturnCode: AuthenticationError.Error,
-        Message: "Something is wrong. Please sign in again!"
-      });
-    }
-  }
-);
-
-router.get(
-  "/get/:id",
-  authMiddleware.PassportJWTCheckToken,
-  async (req, res) => {
-    try {
-      const presentationID = req.params.id;
-      const result = await presentationService.GetAllSlideOfPresentation(
-        presentationID
-      );
-
-      return res.json(result);
-    } catch (error) {
-      console.log("get presentation failed with error: ", error);
-
       return res.status(401).json({
         ReturnCode: AuthenticationError.Error,
         Message: "Something is wrong. Please sign in again!"

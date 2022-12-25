@@ -13,6 +13,11 @@ module.exports = {
     if (res.length > 0) return res;
     return null;
   },
+  listByPresentationID: async (presentationID) => {
+    const res = await db.get(tbName, "presentation_id", presentationID);
+    if (res.length > 0) return res;
+    return null;
+  },
   getByAccountIDAndPresentationID: async (accountID, presentationID) => {
     const condition = `WHERE "account_id" = ${accountID} and "presentation_id" = ${presentationID}`;
     const res = await db.loadCondition(tbName, "id", condition);

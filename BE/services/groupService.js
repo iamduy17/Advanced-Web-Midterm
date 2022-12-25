@@ -99,11 +99,17 @@ const isValidRole = async (groupID, userID, roles) => {
     userID,
     groupID
   );
-  roles.forEach(role => {
-    if (role === accountGroupResponse.role) {
+  if (!accountGroupResponse) {
+    return {
+      ReturnCode: 401,
+      Message: "invalid permission"
+    };
+  }
+  for(let i = 0; i < roles.length; i++){
+    if (roles[i] === accountGroupResponse.role) {
       return null;
     }
-  });
+  }
   return {
     ReturnCode: 401,
     Message: "invalid permission"
@@ -125,12 +131,19 @@ const isAccountGroupExisted = async (groupID, userID) => {
 };
 
 exports.SetRole = async (groupID, userID, role, selfUserID) => {
-  let err = await isValidRole(groupID, selfUserID, [ROLE_OWNER]);
+  if (role === ROLE_OWNER){
+    return {
+      ReturnCode: 403,
+      Message: "can't promote to owner"
+    };
+  }
+
+  let err = await isAccountGroupExisted(groupID, userID);
   if (err != null) {
     return err;
   }
 
-  err = await isAccountGroupExisted(groupID, userID);
+  err = await isValidRole(groupID, selfUserID, [ROLE_OWNER]);
   if (err != null) {
     return err;
   }
@@ -154,23 +167,23 @@ exports.SetRole = async (groupID, userID, role, selfUserID) => {
 };
 
 exports.RemoveMember = async (groupID, userID, selfUserID) => {
-  err = await isAccountGroupExisted(groupID, userID);
+  let err = await isAccountGroupExisted(groupID, userID);
   if (err != null) {
     return err;
   }
 
-  let err = await isValidRole(groupID, selfUserID, [ROLE_OWNER, ROLE_COOWNER]);
+  err = await isValidRole(groupID, selfUserID, [ROLE_OWNER, ROLE_COOWNER]);
   if (err != null) {
     return err;
   }
 
-  err = await isValidRole(groupID, user, [ROLE_MEMBER]);
+  err = await isValidRole(groupID, userID, [ROLE_MEMBER]);
   if (err != null) {
     return err;
   }
 
   const accountGroupResponse = await accountGroupModel.getByAccountIDAndGroupID(
-    memberID,
+    userID,
     groupID
   );
 
@@ -185,6 +198,13 @@ exports.RemoveGroup = async (groupID, userID) => {
   let err = await isValidRole(groupID, userID, [ROLE_OWNER]);
   if (err != null) {
     return err;
+  }
+
+  const accountGroups = await accountGroupModel.listByGroupID(groupID);
+  if (accountGroups) {
+    for (let i = 0; i < accountGroups.length; i++) {
+      accountGroupModel.del(accountGroups[i].id);
+    }
   }
 
   const presentations = await presentationModel.listByGroupID(groupID);

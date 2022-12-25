@@ -74,6 +74,7 @@ router.post(
 
       return res.json(result);
     } catch (error) {
+      console.log("change role failed with err: " + error);
       return res.status(401).json({
         ReturnCode: AuthenticationError.Error,
         Message: "Something is wrong. Please sign in again!"

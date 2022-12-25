@@ -1,6 +1,7 @@
 const presentationModel = require("../models/presentationModel");
 const slideModel = require("../models/slideModel");
 const accountPresentationModel = require("../models/accountPresentationModel");
+const authModel = require("../models/authModel");
 const slideService = require("./slideService");
 
 const ROLE_OWNER = 1;
@@ -45,9 +46,11 @@ const isAccountpresentationExisted = async (presentationID, userID) => {
 exports.ListPresentations = async (user) => {
   const presentations = []
   const accountPresentations = await accountPresentationModel.listByAccountID(user.id);
-  for(let i = 0; i < accountPresentations.length; i++){
-    const presentation = await presentationModel.getByID(accountPresentations[i].presentation_id)
-    presentations.push(presentation)
+  if(accountPresentations){
+    for(let i = 0; i < accountPresentations.length; i++){
+      const presentation = await presentationModel.getByID(accountPresentations[i].presentation_id)
+      presentations.push(presentation)
+    }
   }
   presentations?.map((item) => {
     item.created_at = new Date(item.created_at).toLocaleString(
@@ -109,6 +112,12 @@ exports.CreatePresentation = async (presentation) => {
     content: JSON.stringify(content)
   };
   await slideModel.add(slide);
+  const account_presentation = {
+    presentation_id: presentationResponse.id,
+    account_id: presentation.owner_id,
+    role: ROLE_OWNER
+  };
+  await accountPresentationModel.add(account_presentation);
   return {
     ReturnCode: 200,
     Message: "create presentation successfully",
@@ -188,6 +197,18 @@ exports.GetPresentation = async (presentationID) => {
   let accountPresentations = await accountPresentationModel.listByPresentationID(presentationID);
   const owners = [];
   const collaborators = [];
+  if(!accountPresentations){
+    return {
+      ReturnCode: 200,
+      Message: "get presentation successfully",
+      Data: {
+        Presentation: presentation,
+        Slides: slides,
+        Owners: owners,
+        Collaborators: collaborators
+      }
+    };
+  }
   for (let i = 0; i < accountPresentations.length; i++) {
     const account = await authModel.getUserByID(accountPresentations[i].account_id);
     const { id, username } = account;
