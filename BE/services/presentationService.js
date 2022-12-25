@@ -244,6 +244,7 @@ exports.RemoveCollaborator = async (presentationID, userID, selfUserID) => {
   if (err != null) {
     return err;
   }
+  
   const accountPresentation = accountPresentationModel.getByAccountIDAndPresentationID(userID, presentationID)
   await accountPresentationModel.del(accountPresentation.id);
   return {
