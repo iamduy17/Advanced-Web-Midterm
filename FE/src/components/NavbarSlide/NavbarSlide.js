@@ -59,6 +59,7 @@ export default function NavbarSlide({
 
   const createNewSlide = () => {
     const content = {
+      value: 1, // sua
       title: "Multiple Choice",
       data: dataChartShow
     };
@@ -68,7 +69,7 @@ export default function NavbarSlide({
         `${API_URL}slide/create`,
         {
           presentation_id: parseInt(id),
-          slide_type_id: 1,
+          slide_type_id: 1, // sua
           content: JSON.stringify(content)
         },
         {

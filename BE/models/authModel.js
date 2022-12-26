@@ -31,5 +31,14 @@ module.exports = {
     } catch (error) {
       return false;
     }
+  },
+  resetPass: async (id, password) => {
+    const condition = ` WHERE "id" = ${id} `;
+    try {
+      await db.patch(tbName, ["password"], password, condition);
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 };

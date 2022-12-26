@@ -7,6 +7,7 @@ const {
   validateEmail
 } = require("../utils/index");
 const sendMail = require("../utils/sendMail");
+const sendMailReset = require("../utils/sendMailReset");
 const { CLIENT_URL } = require("../config/index");
 const { hexEncode, hexDecode } = require("../utils/hexToString");
 
@@ -146,4 +147,45 @@ exports.LoginGoogle = async (user) => {
       provider: "google"
     }
   };
+};
+
+exports.ForgotPass = async (email) => {
+  let account = await authModel.getUserByProvider(email, "local");
+
+  if (!account) {
+    return {
+      ReturnCode: AuthenticationError.Account_Not_Exist,
+      Message: "Your email is not exist!"
+    };
+  }
+
+  let tokenEmail = hexEncode(account.email);
+  let url = `${CLIENT_URL}/resetpass/${tokenEmail}`;
+  await sendMailReset(account.email, account.username, url);
+
+  return {
+    ReturnCode: 1,
+    Message: "Your email is exist!"
+  };
+};
+
+exports.ResetPass = async (req) => {
+  const { passwordReset, email } = req;
+
+  let account = await authModel.getUserByProvider(email, "local");
+
+  if (account) {
+    bcrypt.genSalt(parseInt(saltRounds), async function (err, salt) {
+      let pwdHashed = await bcrypt.hash(passwordReset.password, salt);
+
+      await authModel.resetPass(account.id, {
+        password: pwdHashed
+      });
+    });
+
+    return {
+      ReturnCode: 1,
+      Message: "Your password is reset successfully!"
+    };
+  }
 };

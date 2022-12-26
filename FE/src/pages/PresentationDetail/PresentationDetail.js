@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import multiple from "../../assets/images/bar-graph.png";
+import paragraph from "../../assets/images/paragraph.png";
+import heading from "../../assets/images/heading.png";
 import NavbarSlide from "../../components/NavbarSlide/NavbarSlide";
 import SlideDetail from "../../components/SlideDetail/SlideDetail";
 import { API_URL } from "../../config";
@@ -27,14 +29,38 @@ const dataChartShow = [
   }
 ];
 
+const slideTypes = [
+  {
+    value: 1,
+    title: "Multiple Choice",
+    data: dataChartShow
+  },
+  {
+    value: 2,
+    title: "Heading",
+    data: {
+      Subheading: ""
+    }
+  },
+  {
+    value: 3,
+    title: "Paragraph",
+    data: {
+      Paragraph: ""
+    }
+  }
+];
+
 function PresentationDetail() {
   const { id, id_slide } = useParams();
 
   const token = localStorage.getItem("token");
 
   const [presentationName, setPresentationName] = useState("");
-  const [title, setTitle] = useState("Multiple Choice");
-  const [dataChart, setDataChart] = useState(dataChartShow);
+  const [slideTypeList, setSlideTypeList] = useState(slideTypes);
+  const [slideType, setSlideType] = useState(slideTypeList[0].value);
+  const [title, setTitle] = useState(slideTypeList[0].title);
+  const [dataChart, setDataChart] = useState(slideTypeList[0].data);
   const [slides, setSlides] = useState([]);
   const [error, setError] = useState("");
 
@@ -64,8 +90,19 @@ function PresentationDetail() {
     setSlides(newSlideArr);
 
     const currentSlide = newSlideArr.filter((item) => item.id == id_slide);
+    setSlideType(currentSlide[0].content.value);
     setTitle(currentSlide[0].content.title);
     setDataChart(currentSlide[0].content.data);
+
+    let newSlideTypeList = [...slideTypeList];
+    newSlideTypeList.map((item) => {
+      if (item.value === currentSlide[0].content.value) {
+        item.title = currentSlide[0].content.title;
+        item.data = currentSlide[0].content.data;
+      }
+    });
+
+    setSlideTypeList(newSlideTypeList);
   };
 
   const handleClickSlideItem = (index) => () => {
@@ -108,6 +145,7 @@ function PresentationDetail() {
 
   const handleEditSlide = async () => {
     const newContent = {
+      value: slideType,
       title,
       data: dataChart
     };
@@ -171,6 +209,29 @@ function PresentationDetail() {
     }, 5000);
   }
 
+  const handleChangeSlideType = (e) => {
+    const value = parseInt(e.target.value);
+    const slideTypeItem = slideTypeList.filter((item) => item.value === value);
+
+    setSlideType(value);
+    setTitle(slideTypeItem[0].title);
+    setDataChart(slideTypeItem[0].data);
+  };
+
+  const handleSubheadingAndParagraph = (e) => {
+    const { value } = e.target;
+
+    if (slideType === 2)
+      setDataChart({
+        Subheading: value
+      });
+    else if (slideType === 3) {
+      setDataChart({
+        Paragraph: value
+      });
+    }
+  };
+
   return (
     <div id="root-content">
       {error.length !== 0 && (
@@ -206,7 +267,16 @@ function PresentationDetail() {
               >
                 <span className="slide__slide-item-text">{index + 1}</span>
                 <div className="slide__slide-item">
-                  <img alt="multiple-choice" src={multiple} />
+                  <img
+                    alt="multiple-choice"
+                    src={
+                      item.content.value === 1
+                        ? multiple
+                        : item.content.value === 2
+                        ? heading
+                        : paragraph
+                    }
+                  />
                   <p
                     style={{
                       margin: "0.5rem",
@@ -221,50 +291,101 @@ function PresentationDetail() {
             ))}
         </div>
         <div className="slide__col2">
-          <SlideDetail title={title} dataChart={dataChart} />
+          <SlideDetail
+            slideType={slideType}
+            title={title}
+            dataChart={dataChart}
+          />
         </div>
         <div className="slide__col3">
           <div className="slide__detail">
             <p className="slide__type-text">Slide Type</p>
-            <InputGroup className="mb-3">
-              <Form.Control value="Multiple Choice" readOnly />
-            </InputGroup>
+            <Form.Select
+              className="form-control mb-3"
+              value={slideType}
+              onChange={handleChangeSlideType}
+            >
+              <option value="1">Multiple Choice</option>
+              <option value="2">Heading</option>
+              <option value="3">Paragraph</option>
+            </Form.Select>
           </div>
           <hr />
           <div className="slide__detail">
-            <p className="slide__type-text">Slide Title</p>
-            <InputGroup className="mb-3">
-              <Form.Control value={title} onChange={handleTitleChange} />
-            </InputGroup>
+            {slideType === 1 ? (
+              <>
+                <p className="slide__type-text">Slide Title</p>
+                <InputGroup className="mb-3">
+                  <Form.Control value={title} onChange={handleTitleChange} />
+                </InputGroup>
+              </>
+            ) : (
+              <>
+                <p className="slide__type-text">Heading</p>
+                <InputGroup className="mb-3">
+                  <Form.Control value={title} onChange={handleTitleChange} />
+                </InputGroup>
+              </>
+            )}
           </div>
           <hr />
           <div className="slide__detail">
-            <p className="slide__type-text">Options</p>
-            {dataChart.map((item, index) => (
-              <div className="mb-3 slide__option-item" key={index}>
-                <InputGroup className="slide__input-group">
+            {slideType === 1 ? (
+              <>
+                <p className="slide__type-text">Options</p>
+                {dataChart.map((item, index) => (
+                  <div className="mb-3 slide__option-item" key={index}>
+                    <InputGroup className="slide__input-group">
+                      <Form.Control
+                        value={item.name}
+                        name={item.name}
+                        onChange={handleOptionChange(index)}
+                      />
+                    </InputGroup>
+                    <IconButton
+                      onClick={handleCloseOption(index)}
+                      aria-label="close option"
+                    >
+                      <Close />
+                    </IconButton>
+                  </div>
+                ))}
+                <Button
+                  variant="outlined"
+                  startIcon={<Add />}
+                  style={{ width: "100%", textTransform: "none" }}
+                  onClick={handleAddingOption}
+                >
+                  Add option
+                </Button>
+              </>
+            ) : slideType === 2 ? (
+              <>
+                <p className="slide__type-text">Subheading</p>
+                <InputGroup className="mb-3">
                   <Form.Control
-                    value={item.name}
-                    name={item.name}
-                    onChange={handleOptionChange(index)}
+                    as="textarea"
+                    rows={3}
+                    maxLength={500}
+                    value={dataChart.Subheading}
+                    onChange={handleSubheadingAndParagraph}
                   />
                 </InputGroup>
-                <IconButton
-                  onClick={handleCloseOption(index)}
-                  aria-label="close option"
-                >
-                  <Close />
-                </IconButton>
-              </div>
-            ))}
-            <Button
-              variant="outlined"
-              startIcon={<Add />}
-              style={{ width: "100%", textTransform: "none" }}
-              onClick={handleAddingOption}
-            >
-              Add option
-            </Button>
+              </>
+            ) : (
+              <>
+                <p className="slide__type-text">Paragraph</p>
+                <InputGroup className="mb-3">
+                  <Form.Control
+                    as="textarea"
+                    rows={5}
+                    value={dataChart.Paragraph}
+                    maxLength={800}
+                    onChange={handleSubheadingAndParagraph}
+                  />
+                </InputGroup>
+              </>
+            )}
           </div>
           <hr />
           <Button
