@@ -123,7 +123,7 @@ function SlideShow() {
     };
     await axios.post(
       `${API_URL}slide/edit/${id_slide}`,
-      { content: JSON.stringify(content) },
+      { slide_type_id: slideType, content: JSON.stringify(content) },
       {
         headers: {
           Authorization: `Bearer ${token}`
