@@ -153,6 +153,7 @@ function PresentationDetail() {
     const { data } = await axios.post(
       `${API_URL}slide/edit/${id_slide}`,
       {
+        slide_type_id: slideType,
         content: JSON.stringify(newContent)
       },
       {
