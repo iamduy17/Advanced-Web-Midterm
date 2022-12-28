@@ -43,6 +43,11 @@ export default function ListPresentation() {
     loadGroups();
   }, []);
 
+  // set Owner presentaion
+  presentations.map((presentation) => {
+    presentation.owner = "me";
+  });
+
   // Create a presentation
   const handleCreate = async () => {
     setLgShow(false);
@@ -256,6 +261,7 @@ export default function ListPresentation() {
                 <th>#</th>
                 <th>Name</th>
                 <th>Slide number</th>
+                <th>Owner</th>
                 <th>Date Created</th>
                 <th>Date Updated</th>
                 <th />
@@ -273,6 +279,9 @@ export default function ListPresentation() {
                   </td>
                   <td onClick={() => handleLink(presentation.id)}>
                     {presentation.slide_count}
+                  </td>
+                  <td onClick={() => handleLink(presentation.id)}>
+                    {presentation.owner}
                   </td>
                   <td onClick={() => handleLink(presentation.id)}>
                     {presentation.created_at}
@@ -342,7 +351,7 @@ export default function ListPresentation() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div>hello</div>
+              <div>list collab</div>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="danger" onClick={handleCloseListCollab}>
@@ -355,3 +364,8 @@ export default function ListPresentation() {
     </div>
   );
 }
+/* 
+  API
+  1. list collab presentation
+  2. get id user of owner's presentation
+*/
