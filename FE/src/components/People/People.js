@@ -5,10 +5,11 @@ import { API_URL } from "../../config/index";
 import "./People.css";
 import Person from "./Person";
 
-function People({ id }) {
+function People({ id, id_User }) {
   const [owners, setOwners] = useState([]);
   const [coOwners, setCoOwners] = useState([]);
   const [members, setMembers] = useState([]);
+  const [roleUser, setRoleUser] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,6 +27,25 @@ function People({ id }) {
     getGroup(id);
   }, []);
 
+  useEffect(() => {
+    const getRoleUser = async () => {
+      const token = localStorage.getItem("token");
+      const res = await axios.post(
+        API_URL + "account_group/roleUser",
+        { group_id: id, account_id: id_User },
+        {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }
+      );
+
+      setRoleUser(res.data.role);
+    };
+
+    getRoleUser();
+  }, []);
+
   return (
     <div className="container-people">
       <div className="role-item">
@@ -41,6 +61,7 @@ function People({ id }) {
             id={item.id}
             classID={id}
             role={1}
+            roleUser={roleUser}
           />
         ))}
       </div>
@@ -54,6 +75,7 @@ function People({ id }) {
             id={item.id}
             classID={id}
             role={2}
+            roleUser={roleUser}
           />
         ))}
       </div>
@@ -67,6 +89,7 @@ function People({ id }) {
             id={item.id}
             classID={id}
             role={3}
+            roleUser={roleUser}
           />
         ))}
       </div>

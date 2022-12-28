@@ -4,12 +4,14 @@
   padding-left: 1.5rem;
   padding-top: 1.5rem;
 }
+
 ul,
 ol {
   list-style: none;
   margin: 0;
   padding: 0;
 }
+
 .class__list {
   display: flex;
   flex-direction: column;
@@ -24,6 +26,7 @@ ol {
   -webkit-border-radius: 0.5rem;
   border-radius: 0.5rem;
 }
+
 .class__imgWrapper {
   height: 100%;
   left: 0;
@@ -32,6 +35,7 @@ ol {
   width: 100%;
   background-color: #174ea6;
 }
+
 .class__image {
   background-image: url(../../assets/images/group.png);
   background-position: center;
@@ -45,9 +49,11 @@ ol {
   -webkit-background-size: cover;
   background-size: cover;
 }
+
 .class__container {
   position: relative;
 }
+
 .class__content {
   display: flex;
   -webkit-flex-direction: column;
@@ -58,6 +64,7 @@ ol {
   padding: 1rem;
   position: relative;
 }
+
 .class__title {
   color: white;
   text-decoration: none;
@@ -69,17 +76,21 @@ ol {
   min-width: 0;
   margin: 1rem 0;
 }
+
 .class__title h2 {
   font-weight: 400;
 }
+
 .class__title h2:hover {
   text-decoration: underline;
 }
+
 .class__owner {
   color: white;
   font-weight: 400 !important;
   font-size: 15px !important;
 }
+
 .class__avatar {
   float: right;
   height: 3.5rem !important;
@@ -90,6 +101,7 @@ ol {
   margin: 10px;
   border: 1px solid red;
 }
+
 .class__bottom {
   margin-top: 40%;
   display: flex;
@@ -98,9 +110,19 @@ ol {
   border-top: 0.2px solid #e0e0e0;
   padding: 10px;
 }
-.class__bottom > * {
+
+.class__bottom>* {
   margin-right: 20px;
 }
+
 .class__content a:hover {
   color: white;
+}
+
+.deleteicon {
+  cursor: pointer;
+}
+
+.deleteicon:hover {
+  color: rgb(230, 49, 49);
 }
