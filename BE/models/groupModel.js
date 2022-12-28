@@ -10,5 +10,10 @@ module.exports = {
   add: async (data) => {
     const res = await db.add(tbName, data);
     return res;
+  },
+  del: async (id) => {
+    const condition = `WHERE "id" = ${id}`;
+    const res = await db.del(tbName, condition);
+    return res;
   }
 };
