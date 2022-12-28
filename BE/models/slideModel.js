@@ -36,7 +36,12 @@ module.exports = {
   update: async (id, content) => {
     const condition = ` WHERE "id" = ${id} `;
     try {
-      const res = await db.patch(tbName, ["content"], content, condition);
+      const res = await db.patch(
+        tbName,
+        ["slide_type_id", "content"],
+        content,
+        condition
+      );
       return res;
     } catch (error) {
       return false;

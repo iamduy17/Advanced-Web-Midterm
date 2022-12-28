@@ -52,10 +52,8 @@ function Email() {
               Your account is verified successfully!
             </p>
             <p className="email__message2">Are you ready to join with us?</p>
-            <Link to="/login">
-              <button className="btn btn-outline-success email___login">
-                Login
-              </button>
+            <Link to="/login" className="forgot__link">
+              <button className="login__submit email___login">Login Now</button>
             </Link>
           </div>
         </div>

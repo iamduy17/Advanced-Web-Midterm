@@ -59,7 +59,12 @@ router.post(
 
       const slideID = req.params.id;
       const content = req.body.content;
-      const result = await slideService.EditSlide(slideID, content);
+      const slide_type_id = req.body.slide_type_id;
+      const result = await slideService.EditSlide(
+        slideID,
+        slide_type_id,
+        content
+      );
 
       return res.json(result);
     } catch (error) {

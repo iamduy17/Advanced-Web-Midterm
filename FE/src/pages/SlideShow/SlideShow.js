@@ -20,13 +20,13 @@ function SlideShow() {
   const { id, id_slide } = useParams();
   const token = localStorage.getItem("token");
 
+  const [slideType, setSlideType] = useState(0);
   const [title, setTitle] = useState("");
   const [dataChart, setDataChart] = useState([]);
   const [prevURL, setPrevURL] = useState("");
   const [nextURL, setNextURL] = useState("");
   const [isPrevShow, setIsPrevShow] = useState(true);
   const [isNextShow, setIsNextShow] = useState(true);
-  const [isConnected, setIsConnected] = useState(socket.connected); // eslint-disable-line
 
   const showSlide = (slideList, indexToChange) => {
     if (slideList.length == 1) {
@@ -68,7 +68,19 @@ function SlideShow() {
     setNextURL(newURL);
   };
 
-  const ConfigSlides = (list) => { // eslint-disable-line
+  useEffect(() => {
+    async function loadSlides() {
+      const { data } = await axios.get(`${API_URL}presentation/get/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      ConfigSlides(data.Data.Slide);
+    }
+    loadSlides();
+  }, []);
+
+  const ConfigSlides = (list) => {
     const newSlideArr = [...list];
     if (newSlideArr.length !== 0) {
       newSlideArr.map((item) => {
@@ -78,23 +90,13 @@ function SlideShow() {
       });
     }
 
-    useEffect(() => {
-      async function loadSlides() {
-        const { data } = await axios.get(`${API_URL}presentation/get/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        ConfigSlides(data.Data.Slide);
-      }
-      loadSlides();
-    }, []);
-
     const currentSlide = newSlideArr.filter((item) => item.id == id_slide);
+    setSlideType(currentSlide[0].content.value);
     setTitle(currentSlide[0].content.title);
     setDataChart(currentSlide[0].content.data);
     handleNext(newSlideArr);
     handlePrevious(newSlideArr);
+
     const handleReceivedSubmit = (data) => {
       const temp = [...currentSlide[0].content.data];
       for (let i = 0; i < temp.length; i += 1) {
@@ -107,25 +109,21 @@ function SlideShow() {
     };
     socket.on("received submit", handleReceivedSubmit);
 
-    socket.on("disconnect", () => {
-      setIsConnected(false);
-    });
-
     return () => {
       socket.off("connect");
       socket.off("received submit", handleReceivedSubmit);
-      socket.off("disconnect");
     };
   };
 
   const handleFinishSlide = async () => {
     const content = {
+      value: slideType,
       title,
       data: dataChart
     };
     await axios.post(
       `${API_URL}slide/edit/${id_slide}`,
-      { content: JSON.stringify(content) },
+      { slide_type_id: slideType, content: JSON.stringify(content) },
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -138,7 +136,11 @@ function SlideShow() {
   return (
     <div id="root-content">
       <div className="slideShow__contain">
-        <SlideDetail title={title} dataChart={dataChart} />
+        <SlideDetail
+          slideType={slideType}
+          title={title}
+          dataChart={dataChart}
+        />
         <div className="slideShow__btn-group">
           <Button
             href={prevURL}

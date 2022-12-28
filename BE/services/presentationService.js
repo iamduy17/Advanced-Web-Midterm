@@ -109,6 +109,7 @@ exports.ListPresentations = async (user) => {
 exports.CreatePresentation = async (presentation, userID) => {
   const presentationResponse = await presentationModel.add(presentation);
   const content = {
+    value: 1,
     title: "Multiple Choice",
     data: [
       {
