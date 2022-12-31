@@ -27,13 +27,20 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/roleUser", authMiddleware.PassportJWTCheckToken, async (req, res) => {
-  const result = await account_groupModel.getUserByIDGroup_IdUser(req.body.group_id, req.body.account_id);
-  if (result) {
-    res.json(result);
-  } else {
-    res.json("error");
+router.post(
+  "/roleUser",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    const result = await account_groupModel.getUserByIDGroup_IdUser(
+      req.body.group_id,
+      req.body.account_id
+    );
+    if (result) {
+      res.json(result);
+    } else {
+      res.json("error");
+    }
   }
-});
+);
 
 module.exports = router;
