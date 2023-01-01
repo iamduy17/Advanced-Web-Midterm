@@ -15,36 +15,19 @@ curl --location --request GET 'http://localhost:5000/presentation' \
 
 ```json
 {
-  "ReturnCode": 200,
-  "Message": "get presentation successfully",
-    "Data": {
-      "Presentation": {
-        "id": 8,
-        "name": "test",
-        "is_deleted": false,
-        "slide_count": 1,
-        "owner_id": 6,
-        "created_at": "2011-01-01T03:01:00.000Z",
-        "updated_at": "2011-01-01T03:01:00.000Z",
-        "group_id": null
-      },
-      "Slides": [
+    "ReturnCode": 200,
+    "Message": "list presentations successfully",
+    "Presentations": [
         {
-          "id": 9,
-          "slide_type_id": 1,
-          "presentation_id": 8,
-          "content": "{\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
-          "is_deleted": false
+            "id": 8,
+            "name": "test",
+            "is_deleted": false,
+            "slide_count": 1,
+            "created_at": "01/01/11 10:01:00",
+            "updated_at": "01/01/11 10:01:00",
+            "group_id": null
         }
-      ],
-      "Owners": [
-          {
-            "id": 6,
-            "username": "Thới Hải Đức"
-          }
-      ],
-      "Collaborators": []
-    }
+    ]
 }
 ```
 
@@ -197,26 +180,34 @@ curl --location --request GET 'http://localhost:5000/presentation/edit/6' \
   {
     "ReturnCode": 200,
     "Message": "get presentation successfully",
-    "Data": {
-      "Presentation": {
-        "id": 6,
-        "name": "test_edit",
-        "is_deleted": false,
-        "slide_count": 1,
-        "owner_id": 6,
-        "created_at": "2011-01-01T03:01:00.000Z",
-        "updated_at": "2011-01-01T03:01:00.000Z"
-      },
-      "Slides": [
-        {
-          "id": 6,
-          "slide_type_id": 1,
-          "presentation_id": 6,
-          "content": "",
-          "is_deleted": false
-        }
-      ]
-    }
+      "Data": {
+        "Presentation": {
+          "id": 8,
+          "name": "test",
+          "is_deleted": false,
+          "slide_count": 1,
+          "owner_id": 6,
+          "created_at": "2011-01-01T03:01:00.000Z",
+          "updated_at": "2011-01-01T03:01:00.000Z",
+          "group_id": null
+        },
+        "Slides": [
+          {
+            "id": 9,
+            "slide_type_id": 1,
+            "presentation_id": 8,
+            "content": "{\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+            "is_deleted": false
+          }
+        ],
+        "Owners": [
+            {
+              "id": 6,
+              "username": "Thới Hải Đức"
+            }
+        ],
+        "Collaborators": []
+      }
   }
   ```
 
