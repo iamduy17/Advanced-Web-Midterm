@@ -140,9 +140,45 @@ exports.GetSlide = async (slideID) => {
   const slide = await slideModel.getByID(slideID);
   return {
     ReturnCode: 200,
-    Message: "get presentation successfully",
+    Message: "get slide successfully",
     Data: {
       Slide: slide
+    }
+  };
+};
+
+exports.EditChats = async (slideID, chats) => {
+  let err = await isSlideExisted(slideID);
+  if (err != null) {
+    return err;
+  }
+
+  const slideResponse = await slideModel.updateByFields(slideID, ["chats"], {
+    chats: chats
+  });
+  return {
+    ReturnCode: 200,
+    Message: "edit chats successfully",
+    Data: {
+      Slide: slideResponse[0]
+    }
+  };
+};
+
+exports.EditQuestions = async (slideID, questions) => {
+  let err = await isSlideExisted(slideID);
+  if (err != null) {
+    return err;
+  }
+
+  const slideResponse = await slideModel.updateByFields(slideID, ["questions"], {
+    questions: questions
+  });
+  return {
+    ReturnCode: 200,
+    Message: "edit questions successfully",
+    Data: {
+      Slide: slideResponse[0]
     }
   };
 };
