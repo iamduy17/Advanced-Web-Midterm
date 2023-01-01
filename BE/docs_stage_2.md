@@ -365,17 +365,19 @@ curl --location --request GET 'http://localhost:5000/slide/edit/7/slideshow' \
   - Get slide successfully:
   ```json
   {
-    "ReturnCode": 200,
-    "Message": "get presentation successfully",
-    "Data": {
-      "Slide": {
-        "id": 7,
-        "slide_type_id": 1,
-        "presentation_id": 5,
-        "content": "json string",
-        "is_deleted": false
+      "ReturnCode": 200,
+      "Message": "get presentation successfully",
+      "Data": {
+          "Slide": {
+              "id": 8,
+              "slide_type_id": 1,
+              "presentation_id": 7,
+              "content": "{\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0},{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+              "is_deleted": false,
+              "chats": null,
+              "questions": null
+          }
       }
-    }
   }
   ```
 
