@@ -108,13 +108,16 @@ exports.DeleteSlide = async (userID, slideID) => {
   };
 };
 
-exports.EditSlide = async (slideID, content) => {
+exports.EditSlide = async (slideID, slide_type_id, content) => {
   let err = await isSlideExisted(slideID);
   if (err != null) {
     return err;
   }
 
-  const slideResponse = await slideModel.update(slideID, { content: content });
+  const slideResponse = await slideModel.update(slideID, {
+    slide_type_id: slide_type_id,
+    content: content
+  });
   return {
     ReturnCode: 200,
     Message: "edit slide successfully",

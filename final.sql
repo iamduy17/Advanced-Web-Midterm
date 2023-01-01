@@ -5,7 +5,7 @@
 -- Dumped from database version 14.1
 -- Dumped by pg_dump version 14.1
 
--- Started on 2022-12-25 22:52:22
+-- Started on 2022-12-28 09:40:50
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -310,6 +310,8 @@ INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_delete
 --
 
 INSERT INTO public.slide_type (id, name) OVERRIDING SYSTEM VALUE VALUES (1, 'Multiple Choice');
+INSERT INTO public.slide_type (id, name) OVERRIDING SYSTEM VALUE VALUES (2, 'Heading');
+INSERT INTO public.slide_type (id, name) OVERRIDING SYSTEM VALUE VALUES (3, 'Paragraph');
 
 
 --
@@ -372,7 +374,7 @@ SELECT pg_catalog.setval('public.slide_id_seq', 9, true);
 -- Name: slide_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.slide_type_id_seq', 1, true);
+SELECT pg_catalog.setval('public.slide_type_id_seq', 3, true);
 
 
 --
@@ -492,7 +494,7 @@ ALTER TABLE ONLY public.slide
     ADD CONSTRAINT slide_type_id_foreign_key FOREIGN KEY (slide_type_id) REFERENCES public.slide_type(id);
 
 
--- Completed on 2022-12-25 22:52:23
+-- Completed on 2022-12-28 09:40:51
 
 --
 -- PostgreSQL database dump complete

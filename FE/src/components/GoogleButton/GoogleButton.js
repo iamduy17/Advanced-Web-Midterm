@@ -50,7 +50,6 @@ function GoogleButton({ setIsErrorAuth }) {
         <button
           onClick={renderProps.onClick}
           className="login__google-btn btn btn-outline-danger"
-          style={{ color: "red" }}
         >
           <img src={google} alt="Google" className="login__google-img" />
           <div className="login__google-text">Sign in with Google</div>

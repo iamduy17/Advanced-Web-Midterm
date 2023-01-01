@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Table, Button, Modal } from "react-bootstrap";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert, Edit, Delete } from "@mui/icons-material";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import axios from "axios";
 
 import { API_URL } from "../../config";
@@ -11,6 +12,10 @@ import "./ListPresentation.css";
 export default function ListPresentation() {
   const [presentations, setPresentations] = useState([]);
   const [lgShow, setLgShow] = useState(false);
+
+  const [listCollabShow, setlistCollabShow] = useState(false);
+  const handleCloseListCollab = () => setlistCollabShow(false);
+
   const handleClose = () => setLgShow(false);
   const [idEdit, setIdEdit] = useState(0);
 
@@ -37,6 +42,11 @@ export default function ListPresentation() {
 
     loadGroups();
   }, []);
+
+  // set Owner presentaion
+  presentations.map((presentation) => {
+    presentation.owner = "me";
+  });
 
   // Create a presentation
   const handleCreate = async () => {
@@ -65,7 +75,6 @@ export default function ListPresentation() {
     dateTime[0] = `${dateTime[0].split("/")[2]}-${dateTime[0].split("/")[0]}-${
       dateTime[0].split("/")[1]
     }`;
-
     if (dateTime[1].substring(0, 2) === "24") {
       dateTime[1] = `00${dateTime[1].substring(2)}`;
     }
@@ -185,6 +194,10 @@ export default function ListPresentation() {
             <Delete />
             <span style={{ paddingLeft: "10px" }}>Delete</span>
           </MenuItem>
+          <MenuItem onClick={() => setlistCollabShow(true)}>
+            <FormatListBulletedIcon />
+            <span style={{ paddingLeft: "10px" }}>List collaborate</span>
+          </MenuItem>
         </Menu>
       </>
     );
@@ -248,6 +261,7 @@ export default function ListPresentation() {
                 <th>#</th>
                 <th>Name</th>
                 <th>Slide number</th>
+                <th>Owner</th>
                 <th>Date Created</th>
                 <th>Date Updated</th>
                 <th />
@@ -265,6 +279,9 @@ export default function ListPresentation() {
                   </td>
                   <td onClick={() => handleLink(presentation.id)}>
                     {presentation.slide_count}
+                  </td>
+                  <td onClick={() => handleLink(presentation.id)}>
+                    {presentation.owner}
                   </td>
                   <td onClick={() => handleLink(presentation.id)}>
                     {presentation.created_at}
@@ -322,8 +339,33 @@ export default function ListPresentation() {
               </Button>
             </Modal.Footer>
           </Modal>
+          <Modal
+            size="lg"
+            show={listCollabShow}
+            onHide={() => setlistCollabShow(false)}
+            aria-labelledby="example-modal-sizes-title-lg"
+          >
+            <Modal.Header>
+              <Modal.Title id="example-modal-sizes-title-lg">
+                List Presentation Collaborations
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div>list collab</div>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="danger" onClick={handleCloseListCollab}>
+                Close
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       </div>
     </div>
   );
 }
+/* 
+  API
+  1. list collab presentation
+  2. get id user of owner's presentation
+*/

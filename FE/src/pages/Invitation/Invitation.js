@@ -21,6 +21,8 @@ export default function Invitation({ setIsJoined }) {
   async function JoinHandle() {
     setIsJoined(true);
     await axios.post(`${API_URL}account_group`, account_group).then(() => {});
+
+    window.location.reload();
   }
 
   return (

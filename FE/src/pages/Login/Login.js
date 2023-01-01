@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import axios from "axios";
+import { Modal, Button } from "react-bootstrap";
 import Loader from "../../components/Loader/Loader";
 import { API_URL } from "../../config";
 import GoogleButton from "../../components/GoogleButton/GoogleButton";
 import "./style.css";
 
 function Login() {
+  const [lgShow, setLgShow] = useState(false);
+  const [usernameForgot, setUsernameForgot] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(true);
   const [isErrorAuth, setIsErrorAuth] = useState({
     isError: false,
@@ -60,11 +64,53 @@ function Login() {
     handleErrorResponse(error.message);
   }
 
+  const handleChange = (e) => {
+    if (e.target.value != "") {
+      setUsernameForgot(e.target.value);
+    }
+  };
+
+  const handleClose = () => setLgShow(false);
+
+  const handleForgotPass = async () => {
+    const token = localStorage.getItem("token");
+
+    const result = await axios.post(
+      `${API_URL}auth/forgotpass`,
+      { usernameForgot },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    if (result.data.ReturnCode === 1) {
+      setLgShow(false);
+      setUsernameForgot("");
+      setIsSuccess(true);
+    } else {
+      setIsSuccess(false);
+      setLgShow(false);
+      handleErrorResponse(result.data.Message);
+    }
+  };
+
   return (
     <div className="login__container">
       {isErrorAuth.isError && (
         <div className="alert alert-danger login__alert" role="alert">
           {isErrorAuth.message}
+        </div>
+      )}
+      {isSuccess && (
+        <div className="alert alert-success register__alert" role="alert">
+          <h5>A reset password link has been sent to your email account</h5>
+          <hr />
+          <div>
+            Please click on the button link that has been sent to your email
+            account to create new password!
+          </div>
         </div>
       )}
       <div className="login__form-container">
@@ -105,7 +151,9 @@ function Login() {
               onClick={() => setPasswordOpen(!passwordOpen)}
             />
           </div>
-
+          <p className="login__forgot-text" onClick={() => setLgShow(true)}>
+            Forgot Password?
+          </p>
           <button type="submit" className="login__submit mb-2">
             Sign in
           </button>
@@ -127,6 +175,37 @@ function Login() {
           </p>
         </div>
       </div>
+
+      <Modal
+        size="lg"
+        show={lgShow}
+        onHide={() => setLgShow(false)}
+        aria-labelledby="forgot-password"
+      >
+        <Modal.Header>
+          <Modal.Title id="forgot-password">Forgot Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form className="login__form">
+            <input
+              className="form-control"
+              type="text"
+              name="username"
+              value={usernameForgot}
+              onChange={handleChange}
+              placeholder="Enter your email account"
+            />
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" id="btn-save" onClick={handleForgotPass}>
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

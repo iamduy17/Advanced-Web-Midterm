@@ -41,7 +41,7 @@ export default function Presentations() {
   const handleCreate = async () => {
     const token = localStorage.getItem("token");
 
-    axios.post(
+    await axios.post(
       `${API_URL}presentation/create`,
       { name: namePresentation, created_at: currentDate },
       {

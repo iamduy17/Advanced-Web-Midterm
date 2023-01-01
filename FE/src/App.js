@@ -22,6 +22,7 @@ import SlideMember from "./pages/SlideMember/SlideMember";
 import SlideShow from "./pages/SlideShow/SlideShow";
 import ThanksForVoting from "./pages/ThanksForVoting/ThanksForVoting";
 import { SocketContext, socket } from "./context/socket";
+import ForgotPass from "./pages/ForgotPass/ForgotPass";
 
 function Layout() {
   return (
@@ -126,6 +127,7 @@ function App() {
           />
           <Route path=":id/verify/:token" element={<Email />} />
           <Route path="/ThanksForVoting" element={<ThanksForVoting />} />
+          <Route path="/resetpass/:email" element={<ForgotPass />} />
         </Routes>
       </BrowserRouter>
     </SocketContext.Provider>

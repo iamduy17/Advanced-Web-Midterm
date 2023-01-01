@@ -76,3 +76,18 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.slidemember__button-submit {
+  width: fit-content;
+  height: fit-content;
+  box-sizing: border-box;
+  border: 1px solid rgb(255, 199, 56);
+  border-radius: 50%;
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: white;
+}
+
+.slidemember__button-submit:hover { 
+  opacity: 0.6;
+}
