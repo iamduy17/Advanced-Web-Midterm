@@ -38,8 +38,12 @@ const isSlideTypeExisted = async (slideTypeID) => {
 };
 
 const isValidPermission = async (userID, presentationID) => {
-  const presentation = await presentationModel.getByID(presentationID);
-  if (userID !== presentation?.owner_id) {
+  const accountPresentation =
+    await accountPresentationModel.getByAccountIDAndPresentationID(
+      userID,
+      presentationID
+    );
+  if (!accountPresentation || accountPresentation.role !== ROLE_OWNER) {
     return {
       ReturnCode: 401,
       Message: "invalid permission"
