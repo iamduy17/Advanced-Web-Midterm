@@ -6,6 +6,9 @@ const accountPresentationModel = require("../models/accountPresentationModel");
 const ROLE_OWNER = 1;
 const ROLE_COLLABORATOR = 2;
 
+const ROLE_OWNER = 1;
+const ROLE_COLLABORATOR = 2;
+
 const isSlideExisted = async (slideID) => {
   const slide = await slideModel.getByID(slideID);
   if (!slide) {
