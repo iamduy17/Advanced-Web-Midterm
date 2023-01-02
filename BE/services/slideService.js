@@ -2,6 +2,9 @@ const presentationModel = require("../models/presentationModel");
 const slideModel = require("../models/slideModel");
 const slideTypeModel = require("../models/slideTypeModel");
 
+const ROLE_OWNER = 1;
+const ROLE_COLLABORATOR = 2;
+
 const isSlideExisted = async (slideID) => {
   const slide = await slideModel.getByID(slideID);
   if (!slide) {
@@ -38,8 +41,12 @@ const isSlideTypeExisted = async (slideTypeID) => {
 };
 
 const isValidPermission = async (userID, presentationID) => {
-  const presentation = await presentationModel.getByID(presentationID);
-  if (userID !== presentation?.owner_id) {
+  const accountPresentation =
+    await accountPresentationModel.getByAccountIDAndPresentationID(
+      userID,
+      presentationID
+    );
+  if (!accountPresentation || accountPresentation.role !== ROLE_OWNER || accountPresentation.role !== ROLE_COLLABORATOR) {
     return {
       ReturnCode: 401,
       Message: "invalid permission"
@@ -136,9 +143,45 @@ exports.GetSlide = async (slideID) => {
   const slide = await slideModel.getByID(slideID);
   return {
     ReturnCode: 200,
-    Message: "get presentation successfully",
+    Message: "get slide successfully",
     Data: {
       Slide: slide
+    }
+  };
+};
+
+exports.EditChats = async (slideID, chats) => {
+  let err = await isSlideExisted(slideID);
+  if (err != null) {
+    return err;
+  }
+
+  const slideResponse = await slideModel.updateByFields(slideID, ["chats"], {
+    chats: chats
+  });
+  return {
+    ReturnCode: 200,
+    Message: "edit chats successfully",
+    Data: {
+      Slide: slideResponse[0]
+    }
+  };
+};
+
+exports.EditQuestions = async (slideID, questions) => {
+  let err = await isSlideExisted(slideID);
+  if (err != null) {
+    return err;
+  }
+
+  const slideResponse = await slideModel.updateByFields(slideID, ["questions"], {
+    questions: questions
+  });
+  return {
+    ReturnCode: 200,
+    Message: "edit questions successfully",
+    Data: {
+      Slide: slideResponse[0]
     }
   };
 };
