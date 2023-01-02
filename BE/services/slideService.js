@@ -2,6 +2,9 @@ const presentationModel = require("../models/presentationModel");
 const slideModel = require("../models/slideModel");
 const slideTypeModel = require("../models/slideTypeModel");
 
+const ROLE_OWNER = 1;
+const ROLE_COLLABORATOR = 2;
+
 const isSlideExisted = async (slideID) => {
   const slide = await slideModel.getByID(slideID);
   if (!slide) {
@@ -43,7 +46,7 @@ const isValidPermission = async (userID, presentationID) => {
       userID,
       presentationID
     );
-  if (!accountPresentation || accountPresentation.role !== ROLE_OWNER) {
+  if (!accountPresentation || accountPresentation.role !== ROLE_OWNER || accountPresentation.role !== ROLE_COLLABORATOR) {
     return {
       ReturnCode: 401,
       Message: "invalid permission"
