@@ -69,7 +69,7 @@ curl --location --request POST 'http://localhost:5000/slide/edit/5' \
   ```json
   {
     "ReturnCode": 404,
-    "Message": "presentation not found"
+    "Message": "slide not found"
   }
   ```
   - Edit slide successfully:
@@ -165,5 +165,83 @@ curl --location --request GET 'http://localhost:5000/slide/edit/7/slideshow' \
               "questions": null
           }
       }
+  }
+  ```
+
+### Edit chats:
+
+- Request
+
+```bash
+curl --location --request POST 'http://localhost:5000/slide/9/questions' \
+--header 'Authorization: Bearer <token>' \
+--data-raw '{
+    "questions": "abcdef"
+}'
+```
+
+- Response:
+  - Slide not found:
+  ```json
+  {
+    "ReturnCode": 404,
+    "Message": "slide not found"
+  }
+  ```
+  - Edit chats successfully:
+  ```json
+  {
+    "ReturnCode": 200,
+    "Message": "edit questions successfully",
+    "Data": {
+        "Slide": {
+            "id": 9,
+            "slide_type_id": 1,
+            "presentation_id": 8,
+            "content": "{\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0},{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+            "is_deleted": false,
+            "chats": "abcde",
+            "questions": "abcdef"
+        }
+    }
+  }
+  ```
+
+### Edit questions:
+
+- Request
+
+```bash
+curl --location --request POST 'http://localhost:5000/slide/9/questions' \
+--header 'Authorization: Bearer <token>' \
+--data-raw '{
+    "questions": "abcdef"
+}'
+```
+
+- Response:
+  - Slide not found:
+  ```json
+  {
+    "ReturnCode": 404,
+    "Message": "slide not found"
+  }
+  ```
+  - Edit chats successfully:
+  ```json
+  {
+    "ReturnCode": 200,
+    "Message": "edit questions successfully",
+    "Data": {
+        "Slide": {
+            "id": 9,
+            "slide_type_id": 1,
+            "presentation_id": 8,
+            "content": "{\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0},{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+            "is_deleted": false,
+            "chats": "abcde",
+            "questions": "abcdef"
+        }
+    }
   }
   ```
