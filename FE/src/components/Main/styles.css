@@ -13,6 +13,17 @@
   overflow: hidden;
 }
 
+.btn-add-presentation {
+  height: 40px;
+  width: 180px;
+  border-radius: 3px;
+  background-color: #196cff;
+  color: white;
+  font-weight: bold;
+  border: 0px;
+  margin: 25px auto;
+}
+
 .main__wrapper1 {
   height: 15rem;
   position: relative;
