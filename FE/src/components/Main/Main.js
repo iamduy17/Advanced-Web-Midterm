@@ -73,7 +73,10 @@ function Main({ classData }) {
   //list presentation of group
   useEffect(() => {
     async function loadPresentation() {
-      const res = await axios.get(`${API_URL}presentation/getbyIDGroup/12`, {});
+      const res = await axios.get(
+        `${API_URL}presentation/getbyIDGroup/${classData.id}`,
+        {}
+      );
 
       setListPresentation(Object.values(res.data));
     }

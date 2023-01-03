@@ -9,6 +9,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
+import SearchButton from "../../components/SearchButton/SearchButton";
+import CollaboratorsTable from "../../components/CustomizedTables/CollaboratorsTable";
 
 import { API_URL } from "../../config";
 
@@ -18,6 +20,8 @@ export default function ListPresentation() {
   const [presentations, setPresentations] = useState([]);
   const [lgShow, setLgShow] = useState(false);
 
+  const [collaborators, setCollaborators] = useState([]);
+  const [idPresentation, setIdPresentation] = useState(0);
   const [listCollabShow, setlistCollabShow] = useState(false);
   const handleCloseListCollab = () => setlistCollabShow(false);
 
@@ -130,6 +134,19 @@ export default function ListPresentation() {
     );
   };
 
+  // Show list collab
+  const handleShowListCollab = async (id) => {
+    const { data } = await axios.get(`${API_URL}presentation/edit/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    setCollaborators(data.Data.Collaborators);
+    setIdPresentation(id);
+  };
+
+  console.log(collaborators);
+
   function IsolatedMenu(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -205,9 +222,14 @@ export default function ListPresentation() {
             <Delete />
             <span style={{ paddingLeft: "10px" }}>Delete</span>
           </MenuItem>
-          <MenuItem onClick={() => setlistCollabShow(true)}>
+          <MenuItem
+            onClick={() => {
+              setlistCollabShow(true);
+              handleShowListCollab(props.id);
+            }}
+          >
             <FormatListBulletedIcon />
-            <span style={{ paddingLeft: "10px" }}>List collaborate</span>
+            <span style={{ paddingLeft: "10px" }}>List collaborators</span>
           </MenuItem>
         </Menu>
       </>
@@ -424,12 +446,20 @@ export default function ListPresentation() {
             aria-labelledby="example-modal-sizes-title-lg"
           >
             <Modal.Header>
-              <Modal.Title id="example-modal-sizes-title-lg">
-                List Presentation Collaborations
+              <Modal.Title
+                id="example-modal-sizes-title-lg"
+                style={{ margin: "0 auto" }}
+              >
+                List Collaborator of Presentation
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div>list collab</div>
+              <SearchButton />
+              <div className="_space"></div>
+              <CollaboratorsTable
+                collaborators={collaborators}
+                idPresentation={idPresentation}
+              />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="danger" onClick={handleCloseListCollab}>
