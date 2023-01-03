@@ -3,6 +3,7 @@ const router = express.Router();
 const authMiddleware = require("../middlewares/authMiddleware");
 const presentationService = require("../services/presentationService");
 const { AuthenticationError } = require("../utils/index");
+const presentationModel = require("../models/presentationModel");
 
 router.get("/", authMiddleware.PassportJWTCheckToken, async (req, res) => {
   try {
@@ -186,6 +187,28 @@ router.get(
       const presentationID = req.params.id;
       const result = await presentationService.GetAllSlideOfPresentation(
         presentationID
+      );
+
+      return res.json(result);
+    } catch (error) {
+      console.log("get presentation failed with error: ", error);
+
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
+router.get(
+  "/getbyIDGroup/:id",
+  async (req, res) => {
+    try {
+      const groupID = req.params.id;
+      console.log(groupID)
+      const result = await presentationModel.getByIDGroup(
+        groupID
       );
 
       return res.json(result);
