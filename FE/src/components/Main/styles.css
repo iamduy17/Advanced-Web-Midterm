@@ -48,11 +48,9 @@
   position: absolute;
   top: 0;
   width: 100%;
-  background-image: radial-gradient(
-    25rem 18.75rem ellipse at bottom right,
-    #4285f4,
-    transparent
-  );
+  background-image: radial-gradient(25rem 18.75rem ellipse at bottom right,
+      #4285f4,
+      transparent);
 }
 
 .main__text {
@@ -145,7 +143,7 @@
   align-items: center;
 }
 
-.main__wrapper100 > * {
+.main__wrapper100>* {
   margin-right: 20px;
 }
 
@@ -174,7 +172,7 @@
 }
 
 .btn-copy {
-  font-size: 25px;
+  font-size: 20px;
   width: 2rem;
   margin-right: 1rem;
 }
@@ -183,4 +181,22 @@
   cursor: pointer;
   border-radius: 100%;
   color: rgb(223, 17, 17);
+}
+
+.btn-MenuList {
+  height: 40px;
+  width: 120px;
+  border-radius: 3px;
+  background-color: #196cff;
+  color: white;
+  border: 0px;
+  margin: 25px auto;
+}
+
+.name_menuList {
+  margin-left: 15px;
+}
+
+.btn_menuList:hover {
+  border: 2px solid white;
 }

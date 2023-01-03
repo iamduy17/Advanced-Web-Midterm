@@ -38,9 +38,10 @@ export default function Presentations() {
     loadGroups();
   }, []);
 
-  //const date = new Date();
-  //const currentDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-  const currentDate = "2023-02-01 20:24:18";
+  const date = new Date();
+  const currentDate = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
   const handleClose = () => setLgShow(false);
 

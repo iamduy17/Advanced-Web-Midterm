@@ -31,9 +31,10 @@ export default function ListPresentation() {
   const [renamePresentation, setRenamePresentation] = useState("");
 
   const form = useRef();
-  //const date = new Date();
-  //const currentDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-  const currentDate = "2023-02-01 20:24:18";
+  const date = new Date();
+  const currentDate = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -340,7 +341,7 @@ export default function ListPresentation() {
                 <th>Slide number</th>
                 <th>Owner</th>
                 <th>Date Created</th>
-                <th>Date Updated</th>
+                <th>Type</th>
                 <th />
               </tr>
             </thead>
@@ -364,7 +365,7 @@ export default function ListPresentation() {
                     {presentation.created_at}
                   </td>
                   <td onClick={() => handleLink(presentation.id)}>
-                    {presentation.updated_at}
+                    {presentation.group_id == 0 ? "Public" : "Group"}
                   </td>
                   <td>
                     <IsolatedMenu
