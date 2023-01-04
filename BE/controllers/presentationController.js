@@ -135,11 +135,11 @@ router.post(
     try {
       console.log("add collaborator with req:", { req });
       const userID = req.user.id;
-      const presentationID = req.params.id;
-      const accountID = req.body.account_id;
+      const presentationID = parseInt(req.params.id);
+      const accountEmail = req.body.email;
       const result = await presentationService.AddCollaborator(
         presentationID,
-        accountID,
+        accountEmail,
         userID
       );
       return res.json(result);
@@ -160,7 +160,7 @@ router.post(
     try {
       console.log("add collaborator with req:", { req });
       const userID = req.user.id;
-      const presentationID = req.params.id;
+      const presentationID = parseInt(req.params.id);
       const accountID = req.body.account_id;
       const result = await presentationService.RemoveCollaborator(
         presentationID,
@@ -210,6 +210,33 @@ router.get(
       const result = await presentationModel.getByIDGroup(
         groupID
       );
+
+      result?.map((item) => {
+        item.created_at = new Date(item.created_at).toLocaleString(
+          "es-ES",
+          {
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          },
+          { timeZone: "Asia/Bangkok" }
+        );
+        item.updated_at = new Date(item.updated_at).toLocaleString(
+          "es-ES",
+          {
+            year: "2-digit",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+          },
+          { timeZone: "Asia/Bangkok" }
+        );
+      });
 
       return res.json(result);
     } catch (error) {

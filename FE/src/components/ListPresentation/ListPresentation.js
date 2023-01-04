@@ -11,6 +11,7 @@ import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
 import SearchButton from "../../components/SearchButton/SearchButton";
 import CollaboratorsTable from "../../components/CustomizedTables/CollaboratorsTable";
+import jwt_decode from "jwt-decode";
 
 import { API_URL } from "../../config";
 
@@ -22,6 +23,7 @@ export default function ListPresentation() {
 
   const [collaborators, setCollaborators] = useState([]);
   const [idPresentation, setIdPresentation] = useState(0);
+  const [idOwner, setIdOwner] = useState(0);
   const [listCollabShow, setlistCollabShow] = useState(false);
   const handleCloseListCollab = () => setlistCollabShow(false);
 
@@ -55,8 +57,13 @@ export default function ListPresentation() {
   }, []);
 
   // set Owner presentaion
+  const decode = jwt_decode(token);
+  const IDUser = decode.data.id;
+
   presentations.map((presentation) => {
-    presentation.owner = "me";
+    presentation.owner.id === IDUser
+      ? (presentation.owner.username = "me")
+      : null;
   });
 
   // Create a presentation
@@ -145,8 +152,6 @@ export default function ListPresentation() {
     setIdPresentation(id);
   };
 
-  console.log(collaborators);
-
   function IsolatedMenu(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -226,6 +231,7 @@ export default function ListPresentation() {
             onClick={() => {
               setlistCollabShow(true);
               handleShowListCollab(props.id);
+              setIdOwner(props.idOwner);
             }}
           >
             <FormatListBulletedIcon />
@@ -280,7 +286,7 @@ export default function ListPresentation() {
           + New Presentation
         </button>
         <Modal
-          size="lg"
+          size=""
           show={lgShow}
           onHide={() => setLgShow(false)}
           aria-labelledby="example-modal-sizes-title-lg"
@@ -380,8 +386,11 @@ export default function ListPresentation() {
                   <td onClick={() => handleLink(presentation.id)}>
                     {presentation.slide_count}
                   </td>
-                  <td onClick={() => handleLink(presentation.id)}>
-                    {presentation.owner}
+                  <td
+                    onClick={() => handleLink(presentation.id)}
+                    style={{ fontStyle: "italic", color: "#615F5F" }}
+                  >
+                    {presentation.owner.username}
                   </td>
                   <td onClick={() => handleLink(presentation.id)}>
                     {presentation.created_at}
@@ -393,6 +402,7 @@ export default function ListPresentation() {
                     <IsolatedMenu
                       id={presentation.id}
                       name={presentation.name}
+                      idOwner={presentation.owner.id}
                     />
                   </td>
                 </tr>
@@ -454,11 +464,16 @@ export default function ListPresentation() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <SearchButton />
-              <div className="_space"></div>
+              {IDUser == idOwner ? (
+                <>
+                  <SearchButton idPresentation={idPresentation} />
+                  <div className="_space"></div>
+                </>
+              ) : null}
               <CollaboratorsTable
                 collaborators={collaborators}
                 idPresentation={idPresentation}
+                idOwner={idOwner}
               />
             </Modal.Body>
             <Modal.Footer>

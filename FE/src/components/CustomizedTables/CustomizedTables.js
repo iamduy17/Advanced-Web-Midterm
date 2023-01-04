@@ -9,6 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import axios from "axios";
 
+import "./CustomizedTables.css";
+
 import { API_URL } from "../../config";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -54,14 +56,20 @@ export default function CustomizedTables({ listPresentation }) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
+            <StyledTableCell>No.</StyledTableCell>
             <StyledTableCell>Name presentation</StyledTableCell>
             <StyledTableCell align="center">Number Slide</StyledTableCell>
             <StyledTableCell align="center">Created Date</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {listPresentation.map((presentation) => (
-            <StyledTableRow key={presentation.id} style={{ cursor: "pointer" }}>
+          {listPresentation.map((presentation, index) => (
+            <StyledTableRow
+              key={presentation.id}
+              style={{ cursor: "pointer" }}
+              className="btn_TableRow"
+            >
+              <StyledTableCell align="left">{index + 1}</StyledTableCell>
               <StyledTableCell
                 component="th"
                 scope="row"

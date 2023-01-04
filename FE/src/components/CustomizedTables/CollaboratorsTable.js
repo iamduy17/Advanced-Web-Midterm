@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import "./CustomizedTables.css";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 import { API_URL } from "../../config";
 
@@ -34,9 +35,15 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   }
 }));
 
-export default function CollaboratorsTable({ collaborators, idPresentation }) {
+export default function CollaboratorsTable({
+  collaborators,
+  idPresentation,
+  idOwner
+}) {
+  const token = localStorage.getItem("token");
+  const user = jwt_decode(token);
+  const IDUser = user.data.id;
   const handleDeleteCollab = async (id) => {
-    const token = localStorage.getItem("token");
     await axios.post(
       `${API_URL}presentation/removeCollaborator/${idPresentation}`,
       {
@@ -77,12 +84,16 @@ export default function CollaboratorsTable({ collaborators, idPresentation }) {
                       {collaborator.username}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <DeleteOutlineIcon
-                        className="btn_delete_collab"
-                        onClick={() => {
-                          handleDeleteCollab(collaborator.id);
-                        }}
-                      />
+                      {IDUser == idOwner ? (
+                        <>
+                          <DeleteOutlineIcon
+                            className="btn_delete_collab"
+                            onClick={() => {
+                              handleDeleteCollab(collaborator.id);
+                            }}
+                          />
+                        </>
+                      ) : null}
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
