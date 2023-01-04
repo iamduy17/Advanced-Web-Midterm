@@ -69,7 +69,6 @@ exports.ListPresentations = async (user) => {
       const presentation = await presentationModel.getByID(
         accountPresentations[i].presentation_id
       );
-      presentations.push(presentation);
       const accountPresentationOwner = await accountPresentationModel.getByPresentationIDAndRole(
         accountPresentations[i].presentation_id,
         ROLE_OWNER
