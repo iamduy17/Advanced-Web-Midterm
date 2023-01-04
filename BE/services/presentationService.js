@@ -77,9 +77,9 @@ exports.ListPresentations = async (user) => {
       const owner = await authModel.getUserByID(
         accountPresentationOwner.account_id
       );
-      presentation.Owner = {
-        Id: owner.id, 
-        Username: owner.username
+      presentation.owner = {
+        id: owner.id, 
+        username: owner.username
       };
 
       presentations.push(presentation);
