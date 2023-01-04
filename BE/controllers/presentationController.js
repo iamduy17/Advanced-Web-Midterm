@@ -201,26 +201,21 @@ router.get(
   }
 );
 
-router.get(
-  "/getbyIDGroup/:id",
-  async (req, res) => {
-    try {
-      const groupID = req.params.id;
-      console.log(groupID)
-      const result = await presentationModel.getByIDGroup(
-        groupID
-      );
+router.get("/getbyIDGroup/:id", async (req, res) => {
+  try {
+    const groupID = req.params.id;
+    console.log(groupID);
+    const result = await presentationModel.getByIDGroup(groupID);
 
-      return res.json(result);
-    } catch (error) {
-      console.log("get presentation failed with error: ", error);
+    return res.json(result);
+  } catch (error) {
+    console.log("get presentation failed with error: ", error);
 
-      return res.status(401).json({
-        ReturnCode: AuthenticationError.Error,
-        Message: "Something is wrong. Please sign in again!"
-      });
-    }
+    return res.status(401).json({
+      ReturnCode: AuthenticationError.Error,
+      Message: "Something is wrong. Please sign in again!"
+    });
   }
-);
+});
 
 module.exports = router;
