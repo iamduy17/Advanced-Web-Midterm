@@ -70,6 +70,19 @@ exports.ListPresentations = async (user) => {
         accountPresentations[i].presentation_id
       );
       presentations.push(presentation);
+      const accountPresentationOwner = await accountPresentationModel.getByPresentationIDAndRole(
+        accountPresentations[i].presentation_id,
+        ROLE_OWNER
+      );
+      const owner = await authModel.getUserByID(
+        accountPresentationOwner.account_id
+      );
+      presentation.Owner = {
+        Id: owner.id, 
+        Username: owner.username
+      };
+
+      presentations.push(presentation);
     }
   }
   presentations?.map((item) => {

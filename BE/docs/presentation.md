@@ -25,7 +25,24 @@ curl --location --request GET 'http://localhost:5000/presentation' \
             "slide_count": 1,
             "created_at": "01/01/11 10:01:00",
             "updated_at": "01/01/11 10:01:00",
-            "group_id": null
+            "group_id": null,
+            "Owner": {
+                "Id": 6,
+                "Username": "Thới Hải Đức"
+            }
+        },
+        {
+            "id": 8,
+            "name": "test",
+            "is_deleted": false,
+            "slide_count": 1,
+            "created_at": "01/01/11 10:01:00",
+            "updated_at": "01/01/11 10:01:00",
+            "group_id": null,
+            "Owner": {
+                "Id": 6,
+                "Username": "Thới Hải Đức"
+            }
         }
     ]
 }
