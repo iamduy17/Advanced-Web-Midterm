@@ -6,6 +6,11 @@ import ListPresentation from "../../components/ListPresentation/ListPresentation
 import axios from "axios";
 import { API_URL } from "../../config";
 import Navbar from "../../components/Navbar/Navbar";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 
 export default function Presentations() {
   const [lgShow, setLgShow] = useState(false);
@@ -34,16 +39,21 @@ export default function Presentations() {
   }, []);
 
   const date = new Date();
-  const currentDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const currentDate = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
   const handleClose = () => setLgShow(false);
 
   const handleCreate = async () => {
     const token = localStorage.getItem("token");
+    const group_id = selected == "public" ? 0 : valueCheckBox;
+    console.log(selected);
+    console.log(valueCheckBox);
 
     await axios.post(
       `${API_URL}presentation/create`,
-      { name: namePresentation, created_at: currentDate },
+      { name: namePresentation, created_at: currentDate, group_id: group_id },
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -62,6 +72,39 @@ export default function Presentations() {
       setNamePresentation(e.target.value);
     }
   };
+
+  // Check user create presentaion public or group
+  const options = [
+    { value: "public", text: "Public" },
+    { value: "group", text: "Group" }
+  ];
+
+  const [selected, setSelected] = useState(options[0].value);
+  const handleChangeSelected = (event) => {
+    setSelected(event.target.value);
+  };
+
+  const [checkList, setCheckList] = useState([]);
+  const [valueCheckBox, setValueCheckBox] = useState("");
+
+  const handleRadioChange = (event) => {
+    setValueCheckBox(event.target.value);
+    console.log(valueCheckBox);
+  };
+
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    async function loadGroups() {
+      const res = await axios.get(`${API_URL}groups`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setCheckList(res.data.Groups);
+    }
+
+    loadGroups();
+  }, []);
 
   return (
     <div id="root-content">
@@ -110,6 +153,42 @@ export default function Presentations() {
                   onChange={handleChange}
                   placeholder="Presentation name"
                 />
+                <select
+                  value={selected}
+                  onChange={handleChangeSelected}
+                  className="select"
+                >
+                  {options.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.text}
+                    </option>
+                  ))}
+                </select>
+                {selected === "group" ? (
+                  <div className="listCheckBox">
+                    <FormControl>
+                      <FormLabel id="demo-radio-buttons-group-label">
+                        <span className="txtCheckbox">Your list group</span>
+                      </FormLabel>
+                      <RadioGroup
+                        aria-labelledby="demo-radio-buttons-group-label"
+                        name="radio-buttons-group"
+                        onChange={handleRadioChange}
+                        className="radioGroup"
+                      >
+                        {checkList.map((item, index) => (
+                          <FormControlLabel
+                            className="btn_checkbox"
+                            key={index}
+                            value={item.id}
+                            control={<Radio />}
+                            label={item.className}
+                          />
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                  </div>
+                ) : null}
               </form>
             </Modal.Body>
             <Modal.Footer>

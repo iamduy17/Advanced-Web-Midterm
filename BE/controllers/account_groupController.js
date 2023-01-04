@@ -43,4 +43,19 @@ router.post(
   }
 );
 
+router.post(
+  "/groupowner",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    const result = await account_groupModel.getGroupOwnerByIDUser(
+      req.body.account_id
+    );
+    if (result) {
+      res.json(result);
+    } else {
+      res.json("error");
+    }
+  }
+);
+
 module.exports = router;

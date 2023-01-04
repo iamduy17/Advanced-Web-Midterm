@@ -27,6 +27,17 @@ module.exports = {
     if (res.length > 0) return res[0];
     return null;
   },
+  getGroupOwnerByIDUser: async (account_id) => {
+    const res = await db.getTowCondition(
+      tbName,
+      "role",
+      1,
+      "account_id",
+      account_id
+    );
+    if (res.length > 0) return res;
+    return null;
+  },
   update: async (id, verify) => {
     const condition = ` WHERE "id" = ${id} `;
     try {
