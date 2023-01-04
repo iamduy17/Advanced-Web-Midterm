@@ -8,13 +8,16 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import { useState } from "react";
+import axios from "axios";
+
+import { API_URL } from "../../config";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.primary.light, 0.75),
   "&:hover": {
-    backgroundColor: alpha(theme.palette.primary.light, 1)
+    backgroundColor: alpha(theme.palette.primary.light, 1.25)
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
@@ -51,18 +54,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 
-export default function SearchButton() {
+export default function SearchButton({ idPresentation }) {
   const [inputValue, setInputValue] = useState("");
+  const token = localStorage.getItem("token");
 
-  const handleInviteCollab = () => {
-    console.log(inputValue);
-    // Add Collaborator
+  const handleInviteCollab = async () => {
+    await axios.post(
+      `${API_URL}presentation/addCollaborator/${idPresentation}`,
+      { email: inputValue },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    window.location.reload();
   };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" style={{ backgroundColor: "white" }}>
         <Toolbar>
+          <div style={{ color: "black", fontWeight: "bold", fontSize: "17px" }}>
+            Invite collaborator:{" "}
+          </div>
           <Search>
             <SearchIconWrapper>
               <PersonAddAltIcon />
@@ -80,6 +96,7 @@ export default function SearchButton() {
             variant="contained"
             endIcon={<SendIcon />}
             onClick={handleInviteCollab}
+            style={{ marginLeft: "15px" }}
           >
             Invite
           </Button>
