@@ -26,9 +26,9 @@ curl --location --request GET 'http://localhost:5000/presentation' \
             "created_at": "01/01/11 10:01:00",
             "updated_at": "01/01/11 10:01:00",
             "group_id": null,
-            "Owner": {
-                "Id": 6,
-                "Username": "Thới Hải Đức"
+            "owner": {
+                "id": 6,
+                "username": "Thới Hải Đức"
             }
         },
         {
@@ -39,9 +39,9 @@ curl --location --request GET 'http://localhost:5000/presentation' \
             "created_at": "01/01/11 10:01:00",
             "updated_at": "01/01/11 10:01:00",
             "group_id": null,
-            "Owner": {
-                "Id": 6,
-                "Username": "Thới Hải Đức"
+            "owner": {
+                "id": 6,
+                "username": "Thới Hải Đức"
             }
         }
     ]
