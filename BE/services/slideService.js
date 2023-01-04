@@ -47,12 +47,7 @@ const isValidPermission = async (userID, presentationID) => {
       userID,
       presentationID
     );
-  console.log("accountPresentation", accountPresentation);
   if (!accountPresentation || (accountPresentation.role !== ROLE_OWNER && accountPresentation.role !== ROLE_COLLABORATOR)) {
-    console.log(!accountPresentation);
-    console.log(accountPresentation.role !== ROLE_OWNER);
-    console.log(accountPresentation.role !== ROLE_COLLABORATOR);
-    
     return {
       ReturnCode: 401,
       Message: "invalid permission"
