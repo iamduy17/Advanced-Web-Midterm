@@ -28,6 +28,12 @@ module.exports = {
     const res = await db.add(tbName, data);
     return res;
   },
+  getByPresentationIDAndRole: async (accountID, role) => {
+    const condition = `WHERE "presentation_id" = ${accountID} and "role" = ${role}`;
+    const res = await db.loadCondition(tbName, "id", condition);
+    if (res.length > 0) return res[0];
+    return null;
+  },
   update: async (id, account_group) => {
     const condition = `WHERE "id" = ${id} `;
     try {
