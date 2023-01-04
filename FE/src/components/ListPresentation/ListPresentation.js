@@ -3,7 +3,14 @@ import { Table, Button, Modal } from "react-bootstrap";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { MoreVert, Edit, Delete } from "@mui/icons-material";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import axios from "axios";
+import SearchButton from "../../components/SearchButton/SearchButton";
+import CollaboratorsTable from "../../components/CustomizedTables/CollaboratorsTable";
 
 import { API_URL } from "../../config";
 
@@ -13,6 +20,8 @@ export default function ListPresentation() {
   const [presentations, setPresentations] = useState([]);
   const [lgShow, setLgShow] = useState(false);
 
+  const [collaborators, setCollaborators] = useState([]);
+  const [idPresentation, setIdPresentation] = useState(0);
   const [listCollabShow, setlistCollabShow] = useState(false);
   const handleCloseListCollab = () => setlistCollabShow(false);
 
@@ -27,7 +36,9 @@ export default function ListPresentation() {
 
   const form = useRef();
   const date = new Date();
-  const currentDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const currentDate = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -52,9 +63,11 @@ export default function ListPresentation() {
   const handleCreate = async () => {
     setLgShow(false);
 
-    await axios.post(
+    const group_id = selected == "public" ? 0 : valueCheckBox;
+
+    const res = await axios.post(
       `${API_URL}presentation/create`,
-      { name: namePresentation, created_at: currentDate },
+      { name: namePresentation, created_at: currentDate, group_id: group_id },
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -63,6 +76,7 @@ export default function ListPresentation() {
     );
 
     window.location.reload();
+    console.log(res);
   };
 
   // Rename a spresentation
@@ -95,6 +109,7 @@ export default function ListPresentation() {
   };
 
   const handleDelete = async (id) => {
+    console.log(id);
     await axios.post(
       `${API_URL}presentation/delete/${id}`,
       {},
@@ -118,6 +133,19 @@ export default function ListPresentation() {
       `${window.location.href}/${id}/slide/${data.Data.Slides[0].id}`
     );
   };
+
+  // Show list collab
+  const handleShowListCollab = async (id) => {
+    const { data } = await axios.get(`${API_URL}presentation/edit/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    setCollaborators(data.Data.Collaborators);
+    setIdPresentation(id);
+  };
+
+  console.log(collaborators);
 
   function IsolatedMenu(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -194,14 +222,50 @@ export default function ListPresentation() {
             <Delete />
             <span style={{ paddingLeft: "10px" }}>Delete</span>
           </MenuItem>
-          <MenuItem onClick={() => setlistCollabShow(true)}>
+          <MenuItem
+            onClick={() => {
+              setlistCollabShow(true);
+              handleShowListCollab(props.id);
+            }}
+          >
             <FormatListBulletedIcon />
-            <span style={{ paddingLeft: "10px" }}>List collaborate</span>
+            <span style={{ paddingLeft: "10px" }}>List collaborators</span>
           </MenuItem>
         </Menu>
       </>
     );
   }
+
+  // Check user create presentaion public or group
+  const options = [
+    { value: "public", text: "Public" },
+    { value: "group", text: "Group" }
+  ];
+
+  const [selected, setSelected] = useState(options[0].value);
+  const handleChange = (event) => {
+    setSelected(event.target.value);
+  };
+
+  const [checkList, setCheckList] = useState([]);
+  const [valueCheckBox, setValueCheckBox] = useState("");
+
+  const handleRadioChange = (event) => {
+    setValueCheckBox(event.target.value);
+  };
+
+  useEffect(() => {
+    async function loadGroups() {
+      const res = await axios.get(`${API_URL}groups`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setCheckList(res.data.Groups);
+    }
+
+    loadGroups();
+  }, []);
 
   return (
     <div>
@@ -236,6 +300,42 @@ export default function ListPresentation() {
                 onChange={(e) => setNamePresentation(e.target.value)}
                 placeholder="Presentation name"
               />
+              <select
+                value={selected}
+                onChange={handleChange}
+                className="select"
+              >
+                {options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.text}
+                  </option>
+                ))}
+              </select>
+              {selected === "group" ? (
+                <div className="listCheckBox">
+                  <FormControl>
+                    <FormLabel id="demo-radio-buttons-group-label">
+                      <span className="txtCheckbox">Your list group</span>
+                    </FormLabel>
+                    <RadioGroup
+                      aria-labelledby="demo-radio-buttons-group-label"
+                      name="radio-buttons-group"
+                      onChange={handleRadioChange}
+                      className="radioGroup"
+                    >
+                      {checkList.map((item, index) => (
+                        <FormControlLabel
+                          className="btn_checkbox"
+                          key={index}
+                          value={item.id}
+                          control={<Radio />}
+                          label={item.className}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                </div>
+              ) : null}
             </form>
           </Modal.Body>
           <Modal.Footer>
@@ -263,7 +363,7 @@ export default function ListPresentation() {
                 <th>Slide number</th>
                 <th>Owner</th>
                 <th>Date Created</th>
-                <th>Date Updated</th>
+                <th>Type</th>
                 <th />
               </tr>
             </thead>
@@ -287,7 +387,7 @@ export default function ListPresentation() {
                     {presentation.created_at}
                   </td>
                   <td onClick={() => handleLink(presentation.id)}>
-                    {presentation.updated_at}
+                    {presentation.group_id == 0 ? "Public" : "Group"}
                   </td>
                   <td>
                     <IsolatedMenu
@@ -346,12 +446,20 @@ export default function ListPresentation() {
             aria-labelledby="example-modal-sizes-title-lg"
           >
             <Modal.Header>
-              <Modal.Title id="example-modal-sizes-title-lg">
-                List Presentation Collaborations
+              <Modal.Title
+                id="example-modal-sizes-title-lg"
+                style={{ margin: "0 auto" }}
+              >
+                List Collaborator of Presentation
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div>list collab</div>
+              <SearchButton />
+              <div className="_space"></div>
+              <CollaboratorsTable
+                collaborators={collaborators}
+                idPresentation={idPresentation}
+              />
             </Modal.Body>
             <Modal.Footer>
               <Button variant="danger" onClick={handleCloseListCollab}>

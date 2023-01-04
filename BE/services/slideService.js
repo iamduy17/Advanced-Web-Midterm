@@ -1,10 +1,8 @@
 const presentationModel = require("../models/presentationModel");
 const slideModel = require("../models/slideModel");
 const slideTypeModel = require("../models/slideTypeModel");
-const accountPresentationModel = require("../models/accountPresentationModel");
+const accountPresentationModel = require("../models/accountPresentationModel")
 
-const ROLE_OWNER = 1;
-const ROLE_COLLABORATOR = 2;
 
 const ROLE_OWNER = 1;
 const ROLE_COLLABORATOR = 2;
@@ -12,7 +10,7 @@ const ROLE_COLLABORATOR = 2;
 const isSlideExisted = async (slideID) => {
   const slide = await slideModel.getByID(slideID);
   if (!slide) {
-    return {
+    return {  
       ReturnCode: 404,
       Message: "slide not found"
     };

@@ -8,6 +8,12 @@ module.exports = {
     if (res.length > 0) return res[0];
     return null;
   },
+  getByIDGroup: async (id) => {
+    const condition = `WHERE "group_id" = '${id}' and "is_deleted" = false`;
+    const res = await db.loadCondition(tbName, "id", condition);
+    if (res.length > 0) return res;
+    return null;
+  },
   add: async (data) => {
     const res = await db.add(tbName, data);
     return res;
