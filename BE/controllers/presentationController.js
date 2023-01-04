@@ -201,53 +201,48 @@ router.get(
   }
 );
 
-router.get(
-  "/getbyIDGroup/:id",
-  async (req, res) => {
-    try {
-      const groupID = req.params.id;
-      console.log(groupID)
-      const result = await presentationModel.getByIDGroup(
-        groupID
+router.get("/getbyIDGroup/:id", async (req, res) => {
+  try {
+    const groupID = req.params.id;
+    console.log(groupID);
+    const result = await presentationModel.getByIDGroup(groupID);
+
+    result?.map((item) => {
+      item.created_at = new Date(item.created_at).toLocaleString(
+        "es-ES",
+        {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        },
+        { timeZone: "Asia/Bangkok" }
       );
+      item.updated_at = new Date(item.updated_at).toLocaleString(
+        "es-ES",
+        {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        },
+        { timeZone: "Asia/Bangkok" }
+      );
+    });
 
-      result?.map((item) => {
-        item.created_at = new Date(item.created_at).toLocaleString(
-          "es-ES",
-          {
-            year: "2-digit",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-          },
-          { timeZone: "Asia/Bangkok" }
-        );
-        item.updated_at = new Date(item.updated_at).toLocaleString(
-          "es-ES",
-          {
-            year: "2-digit",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-          },
-          { timeZone: "Asia/Bangkok" }
-        );
-      });
+    return res.json(result);
+  } catch (error) {
+    console.log("get presentation failed with error: ", error);
 
-      return res.json(result);
-    } catch (error) {
-      console.log("get presentation failed with error: ", error);
-
-      return res.status(401).json({
-        ReturnCode: AuthenticationError.Error,
-        Message: "Something is wrong. Please sign in again!"
-      });
-    }
+    return res.status(401).json({
+      ReturnCode: AuthenticationError.Error,
+      Message: "Something is wrong. Please sign in again!"
+    });
   }
-);
+});
 
 module.exports = router;

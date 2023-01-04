@@ -11,6 +11,9 @@ import BootstrapButton from "react-bootstrap/Button";
 import SlideDetail from "../../components/SlideDetail/SlideDetail";
 import { API_URL } from "../../config";
 import { SocketContext } from "../../context/socket";
+import ModalQuestion from "../../components/Modals/ModalQuestion";
+import ModalChat from "../../components/Modals/ModalChat";
+import ModalVote from "../../components/Modals/ModalVote";
 
 import "./style.css";
 
@@ -160,6 +163,11 @@ function SlideShow() {
               style={{ width: "unset", height: "unset" }}
             />
           </Button>
+        </div>
+        <div className="slideShow__btn-realtime-group">
+          <ModalQuestion />
+          <ModalChat />
+          <ModalVote />
         </div>
         <BootstrapButton
           className="btn btn-danger slideShow__btn-finish"

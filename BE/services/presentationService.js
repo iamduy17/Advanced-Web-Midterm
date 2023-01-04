@@ -71,10 +71,11 @@ exports.ListPresentations = async (user) => {
       const presentation = await presentationModel.getByID(
         accountPresentations[i].presentation_id
       );
-      const accountPresentationOwner = await accountPresentationModel.getByPresentationIDAndRole(
-        accountPresentations[i].presentation_id,
-        ROLE_OWNER
-      );
+      const accountPresentationOwner =
+        await accountPresentationModel.getByPresentationIDAndRole(
+          accountPresentations[i].presentation_id,
+          ROLE_OWNER
+        );
       const owner = await authModel.getUserByID(
         accountPresentationOwner.account_id
       );

@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/index");
 
-exports.GenerateToken = (id, email, provider) => {
+exports.GenerateToken = (id, username, email, provider) => {
   return jwt.sign(
     {
       data: {
         id: id,
+        username: username,
         email: email,
         provider: provider
       }
