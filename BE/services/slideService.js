@@ -3,6 +3,7 @@ const slideModel = require("../models/slideModel");
 const slideTypeModel = require("../models/slideTypeModel");
 const accountPresentationModel = require("../models/accountPresentationModel")
 
+
 const ROLE_OWNER = 1;
 const ROLE_COLLABORATOR = 2;
 
