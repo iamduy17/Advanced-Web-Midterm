@@ -73,6 +73,7 @@ exports.ListPresentations = async (user) => {
         accountPresentations[i].presentation_id,
         ROLE_OWNER
       );
+      console.log("accountPresentationOwner", accountPresentationOwner);
       const owner = await authModel.getUserByID(
         accountPresentationOwner.account_id
       );
