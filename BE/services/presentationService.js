@@ -3,6 +3,8 @@ const slideModel = require("../models/slideModel");
 const accountPresentationModel = require("../models/accountPresentationModel");
 const authModel = require("../models/authModel");
 const slideService = require("./slideService");
+const sendMailCollab = require("../utils/sendMailCollab");
+const { CLIENT_URL } = require("../config/index");
 
 const ROLE_OWNER = 1;
 const ROLE_COLLABORATOR = 2;
@@ -77,7 +79,7 @@ exports.ListPresentations = async (user) => {
         accountPresentationOwner.account_id
       );
       presentation.owner = {
-        id: owner.id, 
+        id: owner.id,
         username: owner.username
       };
 
@@ -277,7 +279,7 @@ exports.GetPresentation = async (presentationID) => {
   };
 };
 
-exports.AddCollaborator = async (presentationID, userID, selfUserID) => {
+exports.AddCollaborator = async (presentationID, email, selfUserID) => {
   let err = await isPresentationExisted(presentationID);
   if (err != null) {
     return err;
@@ -288,16 +290,23 @@ exports.AddCollaborator = async (presentationID, userID, selfUserID) => {
     return err;
   }
 
-  err = await isAccountExisted(userID);
+  const user = await authModel.get(email);
+
+  err = await isAccountExisted(user.id);
   if (err != null) {
     return err;
   }
 
   const account_presentation = {
     presentation_id: presentationID,
-    account_id: userID,
+    account_id: user.id,
     role: ROLE_COLLABORATOR
   };
+
+  // Send email invite
+  let url = `${CLIENT_URL}/presentation`;
+  await sendMailCollab(email, url);
+
   await accountPresentationModel.add(account_presentation);
   return {
     ReturnCode: 200,
