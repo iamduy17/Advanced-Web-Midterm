@@ -166,6 +166,7 @@ curl --location --request GET 'http://localhost:5000/slide/edit/7/slideshow' \
           }
       }
   }
+
   ```
 
 ### Edit chats:
