@@ -4,6 +4,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const presentationService = require("../services/presentationService");
 const { AuthenticationError } = require("../utils/index");
 const presentationModel = require("../models/presentationModel");
+const accountPresentationModel = require("../models/accountPresentationModel");
 
 router.get("/", authMiddleware.PassportJWTCheckToken, async (req, res) => {
   try {
@@ -150,6 +151,25 @@ router.post(
         Message: "Something is wrong. Please sign in again!"
       });
     }
+  }
+);
+
+router.post(
+  "/ConfirmAddCollaborator",
+  async (req, res) => {
+    console.log("add collaborator with req:", { req });
+    const presentationID = req.body.presentationID;
+    const account = req.body.userID;
+
+    const account_presentation = {
+      presentation_id: presentationID,
+      account_id: account,
+      role: 2
+    };
+    const result = await accountPresentationModel.add(account_presentation);
+    return res.json(result, {
+      Message: "Something is wrong. Please sign in again!"
+    });
   }
 );
 

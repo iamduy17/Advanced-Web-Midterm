@@ -293,26 +293,32 @@ exports.AddCollaborator = async (presentationID, email, selfUserID) => {
 
   const user = await authModel.get(email);
 
+  if (!user) {
+    return {
+      Message: "Your email is not exist!"
+    };
+  }
+
   err = await isAccountExisted(user.id);
   if (err != null) {
     return err;
   }
 
-  const account_presentation = {
-    presentation_id: presentationID,
-    account_id: user.id,
-    role: ROLE_COLLABORATOR
-  };
+  // const account_presentation = {
+  //   presentation_id: presentationID,
+  //   account_id: user.id,
+  //   role: ROLE_COLLABORATOR
+  // };
+  // await accountPresentationModel.add(account_presentation);
+  // return {
+  //   ReturnCode: 200,
+  //   Message: "add collaborator successfully"
+  // };
 
   // Send email invite
-  let url = `${CLIENT_URL}/presentation`;
+  let url = `${CLIENT_URL}/presentation/invitation/collaborator/${presentationID}/${user.id}`;
   await sendMailCollab(email, url);
 
-  await accountPresentationModel.add(account_presentation);
-  return {
-    ReturnCode: 200,
-    Message: "add collaborator successfully"
-  };
 };
 
 exports.RemoveCollaborator = async (presentationID, userID, selfUserID) => {
