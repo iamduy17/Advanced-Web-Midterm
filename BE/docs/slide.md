@@ -174,10 +174,10 @@ curl --location --request GET 'http://localhost:5000/slide/edit/7/slideshow' \
 - Request
 
 ```bash
-curl --location --request POST 'http://localhost:5000/slide/9/questions' \
+curl --location --request POST 'http://localhost:5000/slide/9/chats' \
 --header 'Authorization: Bearer <token>' \
 --data-raw '{
-    "questions": "abcdef"
+    "chats": "abcdef"
 }'
 ```
 
@@ -193,7 +193,7 @@ curl --location --request POST 'http://localhost:5000/slide/9/questions' \
   ```json
   {
     "ReturnCode": 200,
-    "Message": "edit questions successfully",
+    "Message": "edit chats successfully",
     "Data": {
         "Slide": {
             "id": 9,
