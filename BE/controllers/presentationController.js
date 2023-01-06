@@ -276,10 +276,7 @@ router.post(
 
       const presentationID = req.params.id;
       const questions = req.body.questions;
-      const result = await presentationService.EditQuestions(
-        presentationID,
-        questions
-      );
+      const result = await presentationService.EditQuestions(presentationID, questions);
 
       return res.json(result);
     } catch (error) {
