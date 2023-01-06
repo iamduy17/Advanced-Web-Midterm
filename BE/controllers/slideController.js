@@ -97,47 +97,4 @@ router.get(
   }
 );
 
-router.post(
-  "/:id/chats",
-  authMiddleware.PassportJWTCheckToken,
-  async (req, res) => {
-    try {
-      console.log("edit with req:", { req });
-
-      const slideID = req.params.id;
-      const chats = req.body.chats;
-      const result = await slideService.EditChats(slideID, chats);
-
-      return res.json(result);
-    } catch (error) {
-      console.log("edit failed with error: ", error);
-      return res.status(401).json({
-        ReturnCode: AuthenticationError.Error,
-        Message: "Something is wrong. Please sign in again!"
-      });
-    }
-  }
-);
-
-router.post(
-  "/:id/questions",
-  authMiddleware.PassportJWTCheckToken,
-  async (req, res) => {
-    try {
-      console.log("edit with req:", { req });
-
-      const slideID = req.params.id;
-      const questions = req.body.questions;
-      const result = await slideService.EditQuestions(slideID, questions);
-
-      return res.json(result);
-    } catch (error) {
-      console.log("edit failed with error: ", error);
-      return res.status(401).json({
-        ReturnCode: AuthenticationError.Error,
-        Message: "Something is wrong. Please sign in again!"
-      });
-    }
-  }
-);
 module.exports = router;

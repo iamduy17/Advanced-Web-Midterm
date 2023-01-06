@@ -24,7 +24,7 @@ require("./middlewares/passport")(app);
 // --- Route --- //
 
 app.use("/", require("./routes/routes"));
-socket.startSocketServer(server)
+socket.startSocketServer(server);
 
 server.listen(port, () => {
   console.log(`Backend app listening on port http://localhost:${port}/`);

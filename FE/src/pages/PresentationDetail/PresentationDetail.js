@@ -33,21 +33,24 @@ const slideTypes = [
   {
     value: 1,
     title: "Multiple Choice",
-    data: dataChartShow
+    data: dataChartShow,
+    votings: []
   },
   {
     value: 2,
     title: "Heading",
     data: {
       Subheading: ""
-    }
+    },
+    votings: []
   },
   {
     value: 3,
     title: "Paragraph",
     data: {
       Paragraph: ""
-    }
+    },
+    votings: []
   }
 ];
 

@@ -9,12 +9,15 @@ import { API_URL } from "../../config";
 import { SocketContext } from "../../context/socket";
 import logo from "../../assets/images/logo.jpg";
 import "./style.css";
+import jwt_decode from "jwt-decode";
 
 function SlideMember() {
   const socket = useContext(SocketContext);
   const { id, id_slide } = useParams();
   const token = localStorage.getItem("token");
+  const decoded = jwt_decode(token);
 
+  const username = decoded.data.username;
   const [value, setValue] = useState("");
   const [slideType, setSlideType] = useState(0);
   const [title, setTitle] = useState("");
@@ -57,12 +60,17 @@ function SlideMember() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    socket.emit("submit", value);
+    socket.emit("submit", {
+      username: username,
+      data: value
+    });
     window.location.href = "/ThanksForVoting";
   };
 
   const handleSubmitParagraphHeading = () => {
-    socket.emit("submit-paragraph-heading");
+    socket.emit("submit-paragraph-heading", {
+      username: username
+    });
     window.location.href = "/ThanksForVoting";
   };
 

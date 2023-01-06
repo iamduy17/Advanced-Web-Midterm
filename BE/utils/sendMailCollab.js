@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const { EmailInfo } = require("../config/index");
 
 const emailHTML = (email, url) => {
-	return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 	<html lang="en">
 	<head>
 	<meta charset="UTF-8">
@@ -48,29 +48,29 @@ const emailHTML = (email, url) => {
 };
 
 module.exports = async (email, url) => {
-	try {
-		const transporter = nodemailer.createTransport({
-			host: EmailInfo.EMAIL_HOST,
-			service: EmailInfo.EMAIL_SERVICE,
-			port: Number(EmailInfo.EMAIL_PORT),
-			secure: true,
-			auth: {
-				user: EmailInfo.EMAIL_USER,
-				pass: EmailInfo.EMAIL_PASS
-			}
-		});
+  try {
+    const transporter = nodemailer.createTransport({
+      host: EmailInfo.EMAIL_HOST,
+      service: EmailInfo.EMAIL_SERVICE,
+      port: Number(EmailInfo.EMAIL_PORT),
+      secure: true,
+      auth: {
+        user: EmailInfo.EMAIL_USER,
+        pass: EmailInfo.EMAIL_PASS
+      }
+    });
 
-		const htmlText = emailHTML(email, url);
-		await transporter.sendMail({
-			from: {
-				name: "DND Group",
-				address: EmailInfo.EMAIL_USER
-			},
-			to: email,
-			subject: "Confirm your email address",
-			html: htmlText
-		});
-	} catch (error) {
-		return error;
-	}
+    const htmlText = emailHTML(email, url);
+    await transporter.sendMail({
+      from: {
+        name: "DND Group",
+        address: EmailInfo.EMAIL_USER
+      },
+      to: email,
+      subject: "Confirm your email address",
+      html: htmlText
+    });
+  } catch (error) {
+    return error;
+  }
 };

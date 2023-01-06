@@ -26,7 +26,8 @@ function SlideShow() {
   const [slideType, setSlideType] = useState(1);
   const [title, setTitle] = useState("");
   const [dataChart, setDataChart] = useState([]);
-  const dataVoting = [];
+  const [votings, setVotings] = useState([]);
+
   const [prevURL, setPrevURL] = useState("");
   const [nextURL, setNextURL] = useState("");
   const [isPrevShow, setIsPrevShow] = useState(true);
@@ -102,14 +103,17 @@ function SlideShow() {
     setSlideType(currentSlide[0].content.value);
     setTitle(currentSlide[0].content.title);
     setDataChart(currentSlide[0].content.data);
+    setVotings(currentSlide[0].content.votings);
+
     handleNext(newSlideArr);
     handlePrevious(newSlideArr);
 
     const saveToDB = async () => {
       const content = {
         value: currentSlide[0].content.value,
-        title,
-        data: currentSlide[0].content.data
+        title: currentSlide[0].content.title,
+        data: currentSlide[0].content.data,
+        votings: currentSlide[0].content.votings
       };
       await axios.post(
         `${API_URL}slide/edit/${id_slide}`,
@@ -123,15 +127,21 @@ function SlideShow() {
     };
 
     const handleReceivedSubmit = async (data) => {
-      const temp = [...currentSlide[0].content.data];
-      console.log("temp", temp);
-      for (let i = 0; i < temp.length; i += 1) {
-        if (temp[i].name === data) {
-          temp[i].count += 1;
+      const tempDataChart = [...currentSlide[0].content.data];
+      for (let i = 0; i < tempDataChart.length; i += 1) {
+        if (tempDataChart[i].name === data.data) {
+          tempDataChart[i].count += 1;
           break;
         }
       }
-      setDataChart(temp);
+      setDataChart(tempDataChart);
+
+      currentSlide[0].content.votings = [
+        ...currentSlide[0].content.votings,
+        data
+      ];
+
+      setVotings(currentSlide[0].content.votings);
       await saveToDB();
     };
     socket.on("received submit", handleReceivedSubmit);
@@ -171,8 +181,8 @@ function SlideShow() {
         </div>
         <div className="slideShow__btn-realtime-group">
           <ModalQuestion />
-          <ModalChat data={dataVoting} />
-          <ModalVote />
+          <ModalChat />
+          <ModalVote votings={votings} />
         </div>
         <BootstrapButton
           className="btn btn-danger slideShow__btn-finish"
