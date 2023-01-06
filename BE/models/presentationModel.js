@@ -66,5 +66,14 @@ module.exports = {
     } catch (error) {
       return false;
     }
+  },
+  updateByFields: async (id, fields, presentaion) => {
+    const condition = ` WHERE "id" = ${id} `;
+    try {
+      const res = await db.patch(tbName, fields, presentaion, condition);
+      return res;
+    } catch (error) {
+      return false;
+    }
   }
 };
