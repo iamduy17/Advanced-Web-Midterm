@@ -223,10 +223,15 @@ export default function ListPresentation() {
             <Edit />
             <span style={{ paddingLeft: "10px" }}>Edit</span>
           </MenuItem>
-          <MenuItem onClick={() => handleDelete(props.id)}>
-            <Delete />
-            <span style={{ paddingLeft: "10px" }}>Delete</span>
-          </MenuItem>
+          {props.idOwner == IDUser ? (
+            <>
+              <MenuItem onClick={() => handleDelete(props.id)}>
+                <Delete />
+                <span style={{ paddingLeft: "10px" }}>Delete</span>
+              </MenuItem>
+            </>
+          ) : null}
+
           <MenuItem
             onClick={() => {
               setlistCollabShow(true);
