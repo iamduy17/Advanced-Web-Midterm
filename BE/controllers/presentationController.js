@@ -289,4 +289,26 @@ router.post(
   }
 );
 
+router.post(
+  "/:id/isPresenting",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("edit is_presenting with req:", { req });
+
+      const presentationID = req.params.id;
+      const isPresenting = req.body.is_presenting;
+      const result = await presentationService.EditIsPresenting(presentationID, isPresenting);
+
+      return res.json(result);
+    } catch (error) {
+      console.log("edit failed with error: ", error);
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
 module.exports = router;

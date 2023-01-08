@@ -159,7 +159,8 @@ CREATE TABLE public.presentation (
     updated_at timestamp without time zone,
     group_id integer,
     chats text,
-    questions text
+    questions text,
+    is_presenting boolean
 );
 
 

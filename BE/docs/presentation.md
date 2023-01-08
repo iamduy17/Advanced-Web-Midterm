@@ -421,3 +421,41 @@ curl --location --request POST 'http://localhost:5000/presenation/9/questions' \
     }
   }
   ```
+
+```bash
+curl --location --request POST 'http://localhost:5000/presenation/9/isPresenting' \
+--header 'Authorization: Bearer <token>' \
+--data-raw '{
+    "is_presenting": false
+}'
+```
+
+- Response:
+  - presenation not found:
+  ```json
+  {
+    "ReturnCode": 404,
+    "Message": "presenation not found"
+  }
+  ```
+  - Edit is Presenting successfully:
+  ```json
+  {
+    "ReturnCode": 200,
+    "Message": "edit isPresenting successfully",
+    "Data": {
+        "Presentation": {
+            "id": 8,
+            "name": "test",
+            "is_deleted": false,
+            "slide_count": 6,
+            "created_at": "2011-01-01T03:01:00.000Z",
+            "updated_at": "2011-01-01T03:01:00.000Z",
+            "group_id": null,
+            "chats": "abcdef",
+            "questions": "abcdef",
+            "is_presenting": false
+        }
+    }
+  }
+  ```
