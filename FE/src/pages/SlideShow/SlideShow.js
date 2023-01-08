@@ -182,7 +182,7 @@ function SlideShow() {
         <div className="slideShow__btn-realtime-group">
           <ModalQuestion />
           <ModalChat />
-          <ModalVote votings={votings} />
+          <ModalVote slideType={slideType} votings={votings} />
         </div>
         <BootstrapButton
           className="btn btn-danger slideShow__btn-finish"

@@ -9,6 +9,10 @@ module.exports = {
       socket.on("submit", (data) => {
         handleReceiveSubmit(io, data);
       });
+      socket.on("submit-paragraph-heading", (data) => {
+        console.log("data p h", data);
+        handleReceiveSubmit(io, data);
+      });
       //another events...
     });
   }

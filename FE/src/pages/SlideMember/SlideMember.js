@@ -121,7 +121,7 @@ function SlideMember() {
               <div
                 style={{ width: "70%", textAlign: "center", marginTop: "1rem" }}
               >
-                {dataChart.Subheading}
+                {dataChart[0]?.Subheading}
               </div>
               <button
                 className="slidemember__button-submit"
@@ -135,7 +135,7 @@ function SlideMember() {
               <div
                 style={{ width: "70%", textAlign: "center", marginTop: "1rem" }}
               >
-                {dataChart.Paragraph}
+                {dataChart[0]?.Paragraph}
               </div>
               <button
                 className="slidemember__button-submit"
