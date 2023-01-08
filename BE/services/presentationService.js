@@ -353,3 +353,65 @@ exports.GetAllSlideOfPresentation = async (presentationId) => {
     }
   };
 };
+
+exports.EditChats = async (presentationID, chats) => {
+  let err = await isPresentationExisted(presentationID);
+  if (err != null) {
+    return err;
+  }
+
+  const presentationResponse = await presentationModel.updateByFields(presentationID, ["chats"], {
+    chats: chats
+  });
+  return {
+    ReturnCode: 200,
+    Message: "edit chats successfully",
+    Data: {
+      Presentation: presentationResponse[0]
+    }
+  };
+};
+
+exports.EditQuestions = async (presentationID, questions) => {
+  let err = await isPresentationExisted(presentationID);
+  if (err != null) {
+    return err;
+  }
+
+  const presentationResponse = await presentationModel.updateByFields(
+    presentationID,
+    ["questions"],
+    {
+      questions: questions
+    }
+  );
+  return {
+    ReturnCode: 200,
+    Message: "edit questions successfully",
+    Data: {
+      Presentation: presentationResponse[0]
+    }
+  };
+};
+
+exports.EditIsPresenting = async (presentationID, isPresenting) => {
+  let err = await isPresentationExisted(presentationID);
+  if (err != null) {
+    return err;
+  }
+
+  const presentationResponse = await presentationModel.updateByFields(
+    presentationID,
+    ["is_presenting"],
+    {
+      is_presenting: isPresenting
+    }
+  );
+  return {
+    ReturnCode: 200,
+    Message: "edit isPresenting successfully",
+    Data: {
+      Presentation: presentationResponse[0]
+    }
+  };
+};

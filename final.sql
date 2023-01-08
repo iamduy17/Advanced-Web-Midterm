@@ -5,7 +5,7 @@
 -- Dumped from database version 14.1
 -- Dumped by pg_dump version 14.1
 
--- Started on 2022-12-28 09:40:50
+-- Started on 2023-01-06 23:13:10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -157,7 +157,10 @@ CREATE TABLE public.presentation (
     slide_count integer NOT NULL,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    group_id integer
+    group_id integer,
+    chats text,
+    questions text,
+    is_presenting boolean
 );
 
 
@@ -264,8 +267,10 @@ INSERT INTO public.account_group (id, group_id, account_id, role) OVERRIDING SYS
 --
 
 INSERT INTO public.account_presentation (id, account_id, presentation_id, role) OVERRIDING SYSTEM VALUE VALUES (1, 6, 8, 1);
-INSERT INTO public.account_presentation (id, account_id, presentation_id, role) OVERRIDING SYSTEM VALUE VALUES (3, 7, 5, 2);
 INSERT INTO public.account_presentation (id, account_id, presentation_id, role) OVERRIDING SYSTEM VALUE VALUES (4, 7, 8, 2);
+INSERT INTO public.account_presentation (id, account_id, presentation_id, role) OVERRIDING SYSTEM VALUE VALUES (5, 6, 7, 2);
+INSERT INTO public.account_presentation (id, account_id, presentation_id, role) OVERRIDING SYSTEM VALUE VALUES (3, 7, 7, 1);
+INSERT INTO public.account_presentation (id, account_id, presentation_id, role) OVERRIDING SYSTEM VALUE VALUES (6, 6, 9, 1);
 
 
 --
@@ -286,10 +291,11 @@ INSERT INTO public."group" (id, name, description, invitation_link) OVERRIDING S
 -- Data for Name: presentation; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id) OVERRIDING SYSTEM VALUE VALUES (4, 'abcd', true, 1, '2011-01-01 10:01:00', '2011-01-01 10:01:00', NULL);
-INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id) OVERRIDING SYSTEM VALUE VALUES (5, 'abcde', false, 2, '2022-11-14 15:35:42', '2022-12-14 15:40:02', NULL);
-INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id) OVERRIDING SYSTEM VALUE VALUES (7, 'test', false, 1, '2011-01-01 10:01:00', '2011-01-01 10:01:00', NULL);
-INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id) OVERRIDING SYSTEM VALUE VALUES (8, 'test', false, 1, '2011-01-01 10:01:00', '2011-01-01 10:01:00', NULL);
+INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id, chats, questions) OVERRIDING SYSTEM VALUE VALUES (4, 'abcd', true, 1, '2011-01-01 10:01:00', '2011-01-01 10:01:00', NULL, NULL, NULL);
+INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id, chats, questions) OVERRIDING SYSTEM VALUE VALUES (5, 'abcde', false, 2, '2022-11-14 15:35:42', '2022-12-14 15:40:02', NULL, NULL, NULL);
+INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id, chats, questions) OVERRIDING SYSTEM VALUE VALUES (7, 'test', false, 1, '2011-01-01 10:01:00', '2011-01-01 10:01:00', NULL, NULL, NULL);
+INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id, chats, questions) OVERRIDING SYSTEM VALUE VALUES (9, 'abcde', false, 2, '2023-01-04 14:59:41', '2023-01-04 14:59:41', 0, NULL, NULL);
+INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, updated_at, group_id, chats, questions) OVERRIDING SYSTEM VALUE VALUES (8, 'test', false, 6, '2011-01-01 10:01:00', '2011-01-01 10:01:00', NULL, 'abcdef', 'abcdef');
 
 
 --
@@ -300,7 +306,14 @@ INSERT INTO public.presentation (id, name, is_deleted, slide_count, created_at, 
 
 INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (6, 1, 5, '{"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":1}]}', false);
 INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (8, 1, 7, '{"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
-INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (9, 1, 8, '{"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (12, 1, 8, '{"value":1,"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (13, 1, 8, '{"value":1,"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (14, 1, 8, '{"value":1,"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (15, 1, 9, '{"value":1,"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (16, 1, 9, '{"value":1,"title":"Multiple Choice","data":[{"name":"Option 1","count":0},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (10, 1, 8, '{"value":1,"title":"Multiple Choice","data":[{"name":"Option 1","count":1},{"name":"Option 2","count":0},{"name":"Option 3","count":0}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (11, 1, 8, '{"value":1,"title":"","data":[{"name":"Option 1","count":12},{"name":"Option 2","count":6},{"name":"Option 3","count":5}]}', false);
+INSERT INTO public.slide (id, slide_type_id, presentation_id, content, is_deleted) OVERRIDING SYSTEM VALUE VALUES (9, 3, 8, '{"value":3,"title":"Paragraph","data":{"Paragraph":"abcdef"}}', false);
 
 
 --
@@ -338,7 +351,7 @@ SELECT pg_catalog.setval('public.account_group_id_seq', 17, true);
 -- Name: account_presentation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.account_presentation_id_seq', 4, true);
+SELECT pg_catalog.setval('public.account_presentation_id_seq', 6, true);
 
 
 --
@@ -356,7 +369,7 @@ SELECT pg_catalog.setval('public.group_id_seq', 11, true);
 -- Name: presentation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.presentation_id_seq', 8, true);
+SELECT pg_catalog.setval('public.presentation_id_seq', 9, true);
 
 
 --
@@ -365,7 +378,7 @@ SELECT pg_catalog.setval('public.presentation_id_seq', 8, true);
 -- Name: slide_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.slide_id_seq', 9, true);
+SELECT pg_catalog.setval('public.slide_id_seq', 16, true);
 
 
 --
@@ -494,7 +507,7 @@ ALTER TABLE ONLY public.slide
     ADD CONSTRAINT slide_type_id_foreign_key FOREIGN KEY (slide_type_id) REFERENCES public.slide_type(id);
 
 
--- Completed on 2022-12-28 09:40:51
+-- Completed on 2023-01-06 23:13:11
 
 --
 -- PostgreSQL database dump complete

@@ -197,34 +197,75 @@ curl --location --request GET 'http://localhost:5000/presentation/edit/6' \
   {
     "ReturnCode": 200,
     "Message": "get presentation successfully",
-      "Data": {
+    "Data": {
         "Presentation": {
-          "id": 8,
-          "name": "test",
-          "is_deleted": false,
-          "slide_count": 1,
-          "owner_id": 6,
-          "created_at": "2011-01-01T03:01:00.000Z",
-          "updated_at": "2011-01-01T03:01:00.000Z",
-          "group_id": null
+            "id": 8,
+            "name": "test",
+            "is_deleted": false,
+            "slide_count": 6,
+            "created_at": "2011-01-01T03:01:00.000Z",
+            "updated_at": "2011-01-01T03:01:00.000Z",
+            "group_id": null,
+            "chats": "abcdef",
+            "questions": "abcdef"
         },
         "Slides": [
-          {
-            "id": 9,
-            "slide_type_id": 1,
-            "presentation_id": 8,
-            "content": "{\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
-            "is_deleted": false
-          }
+            {
+                "id": 9,
+                "slide_type_id": 3,
+                "presentation_id": 8,
+                "content": "{\"value\":3,\"title\":\"Paragraph\",\"data\":{\"Paragraph\":\"abcdef\"}}",
+                "is_deleted": false
+            },
+            {
+                "id": 10,
+                "slide_type_id": 1,
+                "presentation_id": 8,
+                "content": "{\"value\":1,\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":1},{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+                "is_deleted": false
+            },
+            {
+                "id": 11,
+                "slide_type_id": 1,
+                "presentation_id": 8,
+                "content": "{\"value\":1,\"title\":\"\",\"data\":[{\"name\":\"Option 1\",\"count\":12},{\"name\":\"Option 2\",\"count\":6},{\"name\":\"Option 3\",\"count\":5}]}",
+                "is_deleted": false
+            },
+            {
+                "id": 12,
+                "slide_type_id": 1,
+                "presentation_id": 8,
+                "content": "{\"value\":1,\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0},{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+                "is_deleted": false
+            },
+            {
+                "id": 13,
+                "slide_type_id": 1,
+                "presentation_id": 8,
+                "content": "{\"value\":1,\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0},{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+                "is_deleted": false
+            },
+            {
+                "id": 14,
+                "slide_type_id": 1,
+                "presentation_id": 8,
+                "content": "{\"value\":1,\"title\":\"Multiple Choice\",\"data\":[{\"name\":\"Option 1\",\"count\":0},{\"name\":\"Option 2\",\"count\":0},{\"name\":\"Option 3\",\"count\":0}]}",
+                "is_deleted": false
+            }
         ],
         "Owners": [
             {
-              "id": 6,
-              "username": "Thới Hải Đức"
+                "id": 6,
+                "username": "Thới Hải Đức"
             }
         ],
-        "Collaborators": []
-      }
+        "Collaborators": [
+            {
+                "id": 7,
+                "username": "admin"
+            }
+        ]
+    }
   }
   ```
   ### Add Collaborator:
@@ -296,5 +337,125 @@ curl --location --request POST 'http://localhost:5000/presentation/removeCollabo
   {
     "ReturnCode": 200,
     "Message": "remove collaborator successfully"
+  }
+  ```
+
+  ### Edit chats:
+
+- Request
+
+```bash
+curl --location --request POST 'http://localhost:5000/presenation/9/chats' \
+--header 'Authorization: Bearer <token>' \
+--data-raw '{
+    "chats": "abcdef"
+}'
+```
+
+- Response:
+  - presenation not found:
+  ```json
+  {
+    "ReturnCode": 404,
+    "Message": "presenation not found"
+  }
+  ```
+  - Edit chats successfully:
+  ```json
+  {
+    "ReturnCode": 200,
+    "Message": "edit chats successfully",
+    "Data": {
+        "Presentation": {
+            "id": 8,
+            "name": "test",
+            "is_deleted": false,
+            "slide_count": 6,
+            "created_at": "2011-01-01T03:01:00.000Z",
+            "updated_at": "2011-01-01T03:01:00.000Z",
+            "group_id": null,
+            "chats": "abcdef",
+            "questions": "abcdef"
+        }
+    }
+  }
+  ```
+
+### Edit questions:
+
+- Request
+
+```bash
+curl --location --request POST 'http://localhost:5000/presenation/9/questions' \
+--header 'Authorization: Bearer <token>' \
+--data-raw '{
+    "questions": "abcdef"
+}'
+```
+
+- Response:
+  - presenation not found:
+  ```json
+  {
+    "ReturnCode": 404,
+    "Message": "presenation not found"
+  }
+  ```
+  - Edit chats successfully:
+  ```json
+  {
+    "ReturnCode": 200,
+    "Message": "edit chats successfully",
+    "Data": {
+        "Presentation": {
+            "id": 8,
+            "name": "test",
+            "is_deleted": false,
+            "slide_count": 6,
+            "created_at": "2011-01-01T03:01:00.000Z",
+            "updated_at": "2011-01-01T03:01:00.000Z",
+            "group_id": null,
+            "chats": "abcdef",
+            "questions": "abcdef"
+        }
+    }
+  }
+  ```
+
+```bash
+curl --location --request POST 'http://localhost:5000/presenation/9/isPresenting' \
+--header 'Authorization: Bearer <token>' \
+--data-raw '{
+    "is_presenting": false
+}'
+```
+
+- Response:
+  - presenation not found:
+  ```json
+  {
+    "ReturnCode": 404,
+    "Message": "presenation not found"
+  }
+  ```
+  - Edit is Presenting successfully:
+  ```json
+  {
+    "ReturnCode": 200,
+    "Message": "edit isPresenting successfully",
+    "Data": {
+        "Presentation": {
+            "id": 8,
+            "name": "test",
+            "is_deleted": false,
+            "slide_count": 6,
+            "created_at": "2011-01-01T03:01:00.000Z",
+            "updated_at": "2011-01-01T03:01:00.000Z",
+            "group_id": null,
+            "chats": "abcdef",
+            "questions": "abcdef",
+            "is_presenting": false
+        }
+    }
   }
   ```

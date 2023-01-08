@@ -23,9 +23,10 @@ function SlideShow() {
   const { id, id_slide } = useParams();
   const token = localStorage.getItem("token");
 
-  const [slideType, setSlideType] = useState(0);
+  const [slideType, setSlideType] = useState(1);
   const [title, setTitle] = useState("");
   const [dataChart, setDataChart] = useState([]);
+  const dataVoting = [];
   const [prevURL, setPrevURL] = useState("");
   const [nextURL, setNextURL] = useState("");
   const [isPrevShow, setIsPrevShow] = useState(true);
@@ -81,6 +82,10 @@ function SlideShow() {
       ConfigSlides(data.Data.Slide);
     }
     loadSlides();
+    return () => {
+      socket.off("connect");
+      socket.off("received submit");
+    };
   }, []);
 
   const ConfigSlides = (list) => {
@@ -100,8 +105,26 @@ function SlideShow() {
     handleNext(newSlideArr);
     handlePrevious(newSlideArr);
 
-    const handleReceivedSubmit = (data) => {
+    const saveToDB = async () => {
+      const content = {
+        value: currentSlide[0].content.value,
+        title,
+        data: currentSlide[0].content.data
+      };
+      await axios.post(
+        `${API_URL}slide/edit/${id_slide}`,
+        { slide_type_id: slideType, content: JSON.stringify(content) },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+    };
+
+    const handleReceivedSubmit = async (data) => {
       const temp = [...currentSlide[0].content.data];
+      console.log("temp", temp);
       for (let i = 0; i < temp.length; i += 1) {
         if (temp[i].name === data) {
           temp[i].count += 1;
@@ -109,30 +132,12 @@ function SlideShow() {
         }
       }
       setDataChart(temp);
+      await saveToDB();
     };
     socket.on("received submit", handleReceivedSubmit);
-
-    return () => {
-      socket.off("connect");
-      socket.off("received submit", handleReceivedSubmit);
-    };
   };
 
   const handleFinishSlide = async () => {
-    const content = {
-      value: slideType,
-      title,
-      data: dataChart
-    };
-    await axios.post(
-      `${API_URL}slide/edit/${id_slide}`,
-      { slide_type_id: slideType, content: JSON.stringify(content) },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    );
     window.location.assign(`/presentation/${id}/slide/${id_slide}`);
   };
 
@@ -166,7 +171,7 @@ function SlideShow() {
         </div>
         <div className="slideShow__btn-realtime-group">
           <ModalQuestion />
-          <ModalChat />
+          <ModalChat data={dataVoting} />
           <ModalVote />
         </div>
         <BootstrapButton
