@@ -393,3 +393,25 @@ exports.EditQuestions = async (presentationID, questions) => {
     }
   };
 };
+
+exports.EditIsPresenting = async (presentationID, isPresenting) => {
+  let err = await isPresentationExisted(presentationID);
+  if (err != null) {
+    return err;
+  }
+
+  const presentationResponse = await presentationModel.updateByFields(
+    presentationID,
+    ["is_presenting"],
+    {
+      is_presenting: isPresenting
+    }
+  );
+  return {
+    ReturnCode: 200,
+    Message: "edit isPresenting successfully",
+    Data: {
+      Presentation: presentationResponse[0]
+    }
+  };
+};
