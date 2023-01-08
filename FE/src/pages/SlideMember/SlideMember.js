@@ -34,6 +34,9 @@ function SlideMember() {
       ConfigSlides(data.Data.Slide);
     }
     loadSlides();
+    socket.emit("join-slide", {
+      slideID: id_slide
+    });
   }, []);
 
   const ConfigSlides = (list) => {
@@ -62,16 +65,18 @@ function SlideMember() {
     e.preventDefault();
     socket.emit("submit", {
       username: username,
-      data: value
+      data: value,
+      slideID: id_slide
     });
-    window.location.href = "/ThanksForVoting";
+    window.location.assign(`/presentation/${id}/slide/${id_slide}/slideshow`);
   };
 
   const handleSubmitParagraphHeading = () => {
     socket.emit("submit-paragraph-heading", {
-      username: username
+      username: username,
+      slideID: id_slide
     });
-    window.location.href = "/ThanksForVoting";
+    window.location.assign(`/presentation/${id}/slide/${id_slide}/slideshow`);
   };
 
   return (

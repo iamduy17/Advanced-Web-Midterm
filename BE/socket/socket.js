@@ -10,10 +10,12 @@ module.exports = {
         handleReceiveSubmit(io, data);
       });
       socket.on("submit-paragraph-heading", (data) => {
-        console.log("data p h", data);
         handleReceiveSubmit(io, data);
       });
-      //another events...
+      socket.on('join-slide', (data) => {
+        const { slideID} = data;
+        socket.join(slideID); // Join the user to a socket room
+      });
     });
   }
 };

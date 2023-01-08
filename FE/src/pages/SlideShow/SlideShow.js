@@ -83,6 +83,11 @@ function SlideShow() {
       ConfigSlides(data.Data.Slide);
     }
     loadSlides();
+
+    socket.emit("join-slide", {
+      slideID: id_slide
+    });
+
     return () => {
       socket.off("connect");
       socket.off("received submit");
