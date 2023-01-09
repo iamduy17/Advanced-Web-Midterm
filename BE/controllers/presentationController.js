@@ -167,9 +167,11 @@ router.post(
       role: 2
     };
     const result = await accountPresentationModel.add(account_presentation);
-    return res.json(result, {
-      Message: "Something is wrong. Please sign in again!"
-    });
+    if (result) {
+      res.json(result);
+    } else {
+      res.json("error");
+    }
   }
 );
 
