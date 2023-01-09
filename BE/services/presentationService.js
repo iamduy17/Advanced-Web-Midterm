@@ -139,7 +139,8 @@ exports.CreatePresentation = async (presentation, userID) => {
         name: "Option 3",
         count: 0
       }
-    ]
+    ],
+    votings: []
   };
 
   const slide = {
@@ -318,7 +319,6 @@ exports.AddCollaborator = async (presentationID, email, selfUserID) => {
   // Send email invite
   let url = `${CLIENT_URL}/presentation/invitation/collaborator/${presentationID}/${user.id}`;
   await sendMailCollab(email, url);
-
 };
 
 exports.RemoveCollaborator = async (presentationID, userID, selfUserID) => {
@@ -366,9 +366,13 @@ exports.EditChats = async (presentationID, chats) => {
     return err;
   }
 
-  const presentationResponse = await presentationModel.updateByFields(presentationID, ["chats"], {
-    chats: chats
-  });
+  const presentationResponse = await presentationModel.updateByFields(
+    presentationID,
+    ["chats"],
+    {
+      chats: chats
+    }
+  );
   return {
     ReturnCode: 200,
     Message: "edit chats successfully",

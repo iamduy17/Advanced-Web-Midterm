@@ -11,6 +11,13 @@ module.exports = {
       socket.on("submit", (data) => {
         handleReceiveSubmit(io, data);
       });
+      socket.on("submit-paragraph-heading", (data) => {
+        handleReceiveSubmit(io, data);
+      });
+      socket.on("join-slide", (data) => {
+        const { slideID } = data;
+        socket.join(slideID); // Join the user to a socket room
+      });
       //another events...
       socket.on("presenting", (data) => {
         const { id, presentationGroupID, URL_Presentation } = data;

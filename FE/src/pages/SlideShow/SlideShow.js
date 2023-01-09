@@ -30,12 +30,18 @@ function SlideShow() {
   const [slideType, setSlideType] = useState(1);
   const [title, setTitle] = useState("");
   const [dataChart, setDataChart] = useState([]);
+  const [votings, setVotings] = useState([]);
+
   const [dataChats, setDataChats] = useState([]);
   const [dataQuestions, setDataQuestions] = useState([]);
   const [prevURL, setPrevURL] = useState("");
   const [nextURL, setNextURL] = useState("");
   const [isPrevShow, setIsPrevShow] = useState(true);
   const [isNextShow, setIsNextShow] = useState(true);
+  const [ownerID, setOwnerID] = useState(0);
+  const decoded = jwt_decode(token);
+
+  const userID = decoded.data.id;
   const [isMember, setIsMember] = useState(true);
 
   const showSlide = (slideList, indexToChange) => {
@@ -85,11 +91,17 @@ function SlideShow() {
           Authorization: `Bearer ${token}`
         }
       });
+      setOwnerID(data.Data.Owners[0].id);
       ConfigSlides(data.Data.Slides);
       GetChatsAndQuestions(data.Data.Presentations);
       CheckIsMember(data.Data);
     }
     loadSlides();
+
+    socket.emit("join-slide", {
+      slideID: id_slide
+    });
+
     return () => {
       socket.off("connect");
       socket.off("received submit");
@@ -110,14 +122,17 @@ function SlideShow() {
     setSlideType(currentSlide[0].content.value);
     setTitle(currentSlide[0].content.title);
     setDataChart(currentSlide[0].content.data);
+    setVotings(currentSlide[0].content.votings);
+
     handleNext(newSlideArr);
     handlePrevious(newSlideArr);
 
     const saveToDB = async () => {
       const content = {
         value: currentSlide[0].content.value,
-        title,
-        data: currentSlide[0].content.data
+        title: currentSlide[0].content.title,
+        data: currentSlide[0].content.data,
+        votings: currentSlide[0].content.votings
       };
       await axios.post(
         `${API_URL}slide/edit/${id_slide}`,
@@ -131,15 +146,21 @@ function SlideShow() {
     };
 
     const handleReceivedSubmit = async (data) => {
-      const temp = [...currentSlide[0].content.data];
-      console.log("temp", temp);
-      for (let i = 0; i < temp.length; i += 1) {
-        if (temp[i].name === data) {
-          temp[i].count += 1;
+      const tempDataChart = [...currentSlide[0].content.data];
+      for (let i = 0; i < tempDataChart.length; i += 1) {
+        if (tempDataChart[i].name === data.data) {
+          tempDataChart[i].count += 1;
           break;
         }
       }
-      setDataChart(temp);
+      setDataChart(tempDataChart);
+
+      currentSlide[0].content.votings = [
+        ...currentSlide[0].content.votings,
+        data
+      ];
+
+      setVotings(currentSlide[0].content.votings);
       await saveToDB();
     };
     socket.on("received submit", handleReceivedSubmit);
@@ -147,6 +168,9 @@ function SlideShow() {
 
   const handleFinishSlide = async () => {
     window.location.assign(`/presentation/${id}/slide/${id_slide}`);
+  };
+  const goToHomePage = async () => {
+    window.location.assign(`/`);
   };
 
   const GetChatsAndQuestions = (data) => {
@@ -246,14 +270,23 @@ function SlideShow() {
             setDataChats={setDataChats}
             id_presentation={id}
           />
-          <ModalVote />
+          <ModalVote slideType={slideType} votings={votings} />
         </div>
-        <BootstrapButton
-          className="btn btn-danger slideShow__btn-finish"
-          onClick={() => handleFinishSlide()}
-        >
-          Stop Presentation
-        </BootstrapButton>
+        {userID === ownerID ? (
+          <BootstrapButton
+            className="btn btn-danger slideShow__btn-finish"
+            onClick={() => handleFinishSlide()}
+          >
+            Stop Presentation
+          </BootstrapButton>
+        ) : (
+          <BootstrapButton
+            className="btn btn-info slideShow__btn-finish"
+            onClick={() => goToHomePage()}
+          >
+            Go to HomePage
+          </BootstrapButton>
+        )}
       </div>
     </div>
   );

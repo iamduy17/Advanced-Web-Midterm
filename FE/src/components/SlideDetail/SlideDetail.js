@@ -54,7 +54,7 @@ function SlideDetail({ slideType, title, dataChart }) {
               overflow: "hidden"
             }}
           >
-            {dataChart.Subheading}
+            {dataChart[0].Subheading}
           </div>
         </>
       ) : (
@@ -67,7 +67,7 @@ function SlideDetail({ slideType, title, dataChart }) {
               overflow: "hidden"
             }}
           >
-            {dataChart.Paragraph}
+            {dataChart[0].Paragraph}
           </div>
         </>
       )}

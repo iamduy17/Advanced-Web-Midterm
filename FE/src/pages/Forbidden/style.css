@@ -1,0 +1,11 @@
+.Forbidden__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.Forbidden__img {
+  height: 90vh;
+  padding: 20px;
+}

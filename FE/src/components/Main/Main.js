@@ -21,9 +21,7 @@ import jwt_decode from "jwt-decode";
 import Notification from "../Notification/Notification";
 import io from "socket.io-client";
 const socket = io.connect(API_URL);
-socket.on("disconnect", () => {
-  console.log(socket.id); // undefined
-});
+socket.on("disconnect", () => {});
 
 function Main({ classData }) {
   const [showInput, setShowInput] = useState(false);
@@ -43,7 +41,6 @@ function Main({ classData }) {
 
   useEffect(() => {
     socket.on("receive_presenting", (data) => {
-      console.log(data);
       setData(data);
 
       const loadAccount_Group = async () => {
@@ -57,7 +54,6 @@ function Main({ classData }) {
             }
           }
         );
-        console.log(res);
 
         for (let i = 0; i < res.data.length; i++) {
           if (res.data[i].account_id == id_User) setNotification(true);
@@ -87,7 +83,6 @@ function Main({ classData }) {
 
   const handleCreate = async () => {
     const token = localStorage.getItem("token");
-    console.log(classData.id);
 
     await axios.post(
       `${API_URL}presentation/create`,

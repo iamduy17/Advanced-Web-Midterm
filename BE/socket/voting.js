@@ -1,6 +1,6 @@
 module.exports = {
   handleReceiveSubmit: (io, data) => {
-    io.sockets.emit("received submit", data);
+    io.sockets.to(data.slideID).emit("received submit", data);
     //socket.emit("received submit", data)
   }
 };

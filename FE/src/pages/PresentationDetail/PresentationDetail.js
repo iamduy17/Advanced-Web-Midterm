@@ -33,21 +33,28 @@ const slideTypes = [
   {
     value: 1,
     title: "Multiple Choice",
-    data: dataChartShow
+    data: dataChartShow,
+    votings: []
   },
   {
     value: 2,
     title: "Heading",
-    data: {
-      Subheading: ""
-    }
+    data: [
+      {
+        Subheading: ""
+      }
+    ],
+    votings: []
   },
   {
     value: 3,
     title: "Paragraph",
-    data: {
-      Paragraph: ""
-    }
+    data: [
+      {
+        Paragraph: ""
+      }
+    ],
+    votings: []
   }
 ];
 
@@ -149,7 +156,8 @@ function PresentationDetail() {
     const newContent = {
       value: slideType,
       title,
-      data: dataChart
+      data: dataChart,
+      votings: []
     };
 
     const { data } = await axios.post(
@@ -225,13 +233,17 @@ function PresentationDetail() {
     const { value } = e.target;
 
     if (slideType === 2)
-      setDataChart({
-        Subheading: value
-      });
+      setDataChart([
+        {
+          Subheading: value
+        }
+      ]);
     else if (slideType === 3) {
-      setDataChart({
-        Paragraph: value
-      });
+      setDataChart([
+        {
+          Paragraph: value
+        }
+      ]);
     }
   };
 
@@ -370,7 +382,7 @@ function PresentationDetail() {
                     as="textarea"
                     rows={3}
                     maxLength={500}
-                    value={dataChart.Subheading}
+                    value={dataChart[0].Subheading}
                     onChange={handleSubheadingAndParagraph}
                   />
                 </InputGroup>
@@ -382,7 +394,7 @@ function PresentationDetail() {
                   <Form.Control
                     as="textarea"
                     rows={5}
-                    value={dataChart.Paragraph}
+                    value={dataChart[0].Paragraph}
                     maxLength={800}
                     onChange={handleSubheadingAndParagraph}
                   />

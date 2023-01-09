@@ -25,48 +25,15 @@ const style = {
   p: 4
 };
 
-export default function ModalChat() {
+export default function ModalChat({ slideType, votings }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const fakeData = [
-    {
-      id: 1,
-      name: "Duy",
-      content: "Option 1"
-    },
-    {
-      id: 8,
-      name: "Thais Duy Do",
-      content: "Option 12"
-    },
-    {
-      id: 13,
-      name: "Duy",
-      content: "Option 14"
-    },
-    {
-      id: 13,
-      name: "Duy",
-      content: "Option 19"
-    },
-    {
-      id: 13,
-      name: "Duy",
-      content: "Option 15"
-    },
-    {
-      id: 13,
-      name: "Duy",
-      content: "Option 14"
-    }
-  ];
-
   return (
     <div>
       <IconButton onClick={handleOpen} className="slideShow_btn-icon">
-        <Badge badgeContent={fakeData.length} color="primary">
+        <Badge badgeContent={votings?.length} color="primary">
           <PollIcon />
         </Badge>
       </IconButton>
@@ -91,12 +58,16 @@ export default function ModalChat() {
             </Typography>
             <Box sx={{ overflowY: "auto", height: "90%" }}>
               <div className="modal__box-contain">
-                {fakeData?.map((item, index) => (
+                {votings?.map((item, index) => (
                   <Box className="modal__single-box" key={index}>
-                    <div className="modal__single-box-name">{item.name}</div>
-                    <div className="modal__single-box-content">
-                      {item.content}
+                    <div className="modal__single-box-name">
+                      {item.username}
                     </div>
+                    {slideType == 1 ? (
+                      <div className="modal__single-box-content">
+                        {item.data}
+                      </div>
+                    ) : null}
                   </Box>
                 ))}
               </div>

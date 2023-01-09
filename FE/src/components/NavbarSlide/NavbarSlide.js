@@ -72,7 +72,8 @@ export default function NavbarSlide({
     const content = {
       value: 1, // sua
       title: "Multiple Choice",
-      data: dataChartShow
+      data: dataChartShow,
+      votings: []
     };
 
     async function addSLide() {
