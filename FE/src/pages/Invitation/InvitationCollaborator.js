@@ -7,15 +7,15 @@ import { API_URL } from "../../config";
 export default function InvitationCollaborator() {
   const { userID, presentationID } = useParams();
   //const token = localStorage.getItem("token");
-  async function handleJoinPresentation() {
+  const handleJoinPresentation = async () => {
     console.log(userID, presentationID);
     await axios.post(`${API_URL}presentation/ConfirmAddCollaborator`, {
-      presentationID: presentationID,
-      userID: userID
+      presentationID: parseInt(presentationID),
+      userID: parseInt(userID)
     });
 
     window.location.replace("http://localhost:3000/presentation");
-  }
+  };
 
   return (
     <div>
