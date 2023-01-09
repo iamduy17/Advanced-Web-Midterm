@@ -31,7 +31,7 @@ function SlideMember() {
           Authorization: `Bearer ${token}`
         }
       });
-      if (data.Data.group_id !== null) {
+      if (data.Data.Presentation.group_id !== 0) {
         const isInGroup = await axios.post(
           `${API_URL}groups/isInGroup`,
           { group_id: data.Data.Presentation.group_id },
