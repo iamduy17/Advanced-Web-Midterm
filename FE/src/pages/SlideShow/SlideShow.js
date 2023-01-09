@@ -14,6 +14,7 @@ import { SocketContext } from "../../context/socket";
 import ModalQuestion from "../../components/Modals/ModalQuestion";
 import ModalChat from "../../components/Modals/ModalChat";
 import ModalVote from "../../components/Modals/ModalVote";
+import jwt_decode from "jwt-decode";
 
 import "./style.css";
 
@@ -32,6 +33,10 @@ function SlideShow() {
   const [nextURL, setNextURL] = useState("");
   const [isPrevShow, setIsPrevShow] = useState(true);
   const [isNextShow, setIsNextShow] = useState(true);
+  const [ownerID, setOwnerID] = useState(0);
+  const decoded = jwt_decode(token);
+
+  const userID = decoded.data.id;
 
   const showSlide = (slideList, indexToChange) => {
     if (slideList.length == 1) {
@@ -75,12 +80,13 @@ function SlideShow() {
 
   useEffect(() => {
     async function loadSlides() {
-      const { data } = await axios.get(`${API_URL}presentation/get/${id}`, {
+      const { data } = await axios.get(`${API_URL}presentation/edit/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      ConfigSlides(data.Data.Slide);
+      setOwnerID(data.Data.Owners[0].id);
+      ConfigSlides(data.Data.Slides);
     }
     loadSlides();
 
@@ -155,6 +161,9 @@ function SlideShow() {
   const handleFinishSlide = async () => {
     window.location.assign(`/presentation/${id}/slide/${id_slide}`);
   };
+  const goToHomePage = async () => {
+    window.location.assign(`/`);
+  };
 
   return (
     <div id="root-content">
@@ -189,12 +198,21 @@ function SlideShow() {
           <ModalChat />
           <ModalVote slideType={slideType} votings={votings} />
         </div>
-        <BootstrapButton
-          className="btn btn-danger slideShow__btn-finish"
-          onClick={() => handleFinishSlide()}
-        >
-          Stop Presentation
-        </BootstrapButton>
+        {userID === ownerID ? (
+          <BootstrapButton
+            className="btn btn-danger slideShow__btn-finish"
+            onClick={() => handleFinishSlide()}
+          >
+            Stop Presentation
+          </BootstrapButton>
+        ) : (
+          <BootstrapButton
+            className="btn btn-info slideShow__btn-finish"
+            onClick={() => goToHomePage()}
+          >
+            Go to HomePage
+          </BootstrapButton>
+        )}
       </div>
     </div>
   );

@@ -125,4 +125,24 @@ router.post(
   }
 );
 
+router.post(
+  "/isInGroup",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    try {
+      console.log("remove group with req:", { req });
+      const userID = req.user.id;
+      const groupID = req.body.group_id;
+      const result = await groupService.IsInGroup(groupID, userID);
+
+      return res.json(result);
+    } catch (error) {
+      return res.status(401).json({
+        ReturnCode: AuthenticationError.Error,
+        Message: "Something is wrong. Please sign in again!"
+      });
+    }
+  }
+);
+
 module.exports = router;

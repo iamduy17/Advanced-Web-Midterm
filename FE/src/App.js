@@ -22,6 +22,7 @@ import SearchButton from "./components/SearchButton/SearchButton";
 
 import SlideShow from "./pages/SlideShow/SlideShow";
 import ThanksForVoting from "./pages/ThanksForVoting/ThanksForVoting";
+import Forbidden from "./pages/Forbidden/Forbidden";
 import { SocketContext, socket } from "./context/socket";
 import ForgotPass from "./pages/ForgotPass/ForgotPass";
 
@@ -129,6 +130,7 @@ function App() {
           <Route path="/Table" element={<SearchButton />} />
           <Route path=":id/verify/:token" element={<Email />} />
           <Route path="/ThanksForVoting" element={<ThanksForVoting />} />
+          <Route path="/Forbidden" element={<Forbidden />} />
           <Route path="/resetpass/:email" element={<ForgotPass />} />
         </Routes>
       </BrowserRouter>

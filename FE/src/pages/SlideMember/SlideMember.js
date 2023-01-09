@@ -18,6 +18,7 @@ function SlideMember() {
   const decoded = jwt_decode(token);
 
   const username = decoded.data.username;
+  const userID = decoded.data.id;
   const [value, setValue] = useState("");
   const [slideType, setSlideType] = useState(0);
   const [title, setTitle] = useState("");
@@ -25,13 +26,28 @@ function SlideMember() {
 
   useEffect(() => {
     async function loadSlides() {
-      const { data } = await axios.get(`${API_URL}presentation/get/${id}`, {
+      const { data } = await axios.get(`${API_URL}presentation/edit/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+      if (data.Data.group_id !== null) {
+        const isInGroup = await axios.post(
+          `${API_URL}groups/isInGroup`,
+          { group_id: data.Data.Presentation.group_id },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+        if (!isInGroup.Data) {
+          window.location.assign(`/Forbidden`);
+          return;
+        }
+      }
 
-      ConfigSlides(data.Data.Slide);
+      ConfigSlides(data.Data.Slides);
     }
     loadSlides();
     socket.emit("join-slide", {
@@ -53,6 +69,11 @@ function SlideMember() {
     setSlideType(currentSlide[0].content.value);
     setTitle(currentSlide[0].content.title);
     setDataChart(currentSlide[0].content.data);
+    const votings = currentSlide[0].content.votings;
+    const isVoted = votings.filter((item) => item.userID == userID);
+    if (isVoted.length > 0) {
+      window.location.assign(`/thanksForVoting`);
+    }
   };
 
   const handleChange = (e) => {
@@ -66,7 +87,8 @@ function SlideMember() {
     socket.emit("submit", {
       username: username,
       data: value,
-      slideID: id_slide
+      slideID: id_slide,
+      userID: userID
     });
     window.location.assign(`/presentation/${id}/slide/${id_slide}/slideshow`);
   };
@@ -74,7 +96,8 @@ function SlideMember() {
   const handleSubmitParagraphHeading = () => {
     socket.emit("submit-paragraph-heading", {
       username: username,
-      slideID: id_slide
+      slideID: id_slide,
+      userID: userID
     });
     window.location.assign(`/presentation/${id}/slide/${id_slide}/slideshow`);
   };
