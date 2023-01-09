@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Backdrop,
   Box,
@@ -10,7 +10,6 @@ import {
   TextField
 } from "@mui/material";
 import { Chat as ChatIcon, Send as SendIcon } from "@mui/icons-material";
-import jwt_decode from "jwt-decode";
 
 import "./styles.css";
 
@@ -27,55 +26,60 @@ const style = {
   p: 4
 };
 
-export default function ModalChat() {
-  const token = localStorage.getItem("token");
-  const data = jwt_decode(token).data;
-  const id_User = data.id;
-  const userName = data.username;
-
+export default function ModalChat({
+  id_User,
+  userName,
+  socket,
+  dataChats,
+  setDataChats,
+  id_presentation
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [fakeData, setFakeData] = useState([
-    {
-      id: 1,
-      name: "Duy",
-      content: "sdfsdfs"
-    },
-    {
-      id: 8,
-      name: "Thais Duy Do",
-      content: "fsdfsdfsd"
-    },
-    {
-      id: 13,
-      name: "Duy",
-      content: "hjghjghjghj"
-    },
-    {
-      id: 13,
-      name: "Duy",
-      content: "hjghjghjghj"
-    },
-    {
-      id: 13,
-      name: "Duy",
-      content: "hjghjghjghj"
-    }
-  ]);
+  const messageRef = useRef(null);
+
+  useEffect(() => {
+    messageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [dataChats]);
+
+  useEffect(() => {
+    socket.on("receive_message_chat", (newDataChats) => {
+      setDataChats(newDataChats);
+    });
+
+    return () => socket.off("receive_message_chat");
+  }, [socket]);
 
   const [chatText, setChatText] = useState("");
 
+  const changeDigit = (number) => {
+    if (number < 10 && number > 0) return "0" + number;
+    return number;
+  };
+
   const handleSubmitChat = () => {
+    const date = new Date();
+    const currentDate = `${changeDigit(date.getFullYear())}-${changeDigit(
+      date.getMonth() + 1
+    )}-${changeDigit(date.getDate())} ${changeDigit(
+      date.getHours()
+    )}:${changeDigit(date.getMinutes())}:${changeDigit(date.getSeconds())}`;
+
     if (chatText.length != 0) {
-      let newData = [...fakeData];
-      newData.push({
+      let newDataChats = [...dataChats];
+      newDataChats.push({
         id: id_User,
         name: userName,
-        content: chatText
+        content: chatText,
+        time: currentDate
       });
-      setFakeData(newData);
+
+      socket.emit("send_message_chat", {
+        newDataChats,
+        id_presentation
+      });
     }
 
     setChatText("");
@@ -84,7 +88,7 @@ export default function ModalChat() {
   return (
     <div>
       <IconButton onClick={handleOpen} className="slideShow_btn-icon">
-        <Badge badgeContent={fakeData.length} color="primary">
+        <Badge badgeContent={dataChats.length} color="primary">
           <ChatIcon />
         </Badge>
       </IconButton>
@@ -109,29 +113,35 @@ export default function ModalChat() {
             </Typography>
             <Box sx={{ overflowY: "auto", height: "80%" }}>
               <div className="modal__box-contain">
-                {fakeData?.map((item, index) => (
-                  <Box
-                    className="modal__single-box"
-                    style={
-                      item.id === id_User
-                        ? { alignItems: "flex-end", alignSelf: "flex-end" }
-                        : {}
-                    }
-                    key={index}
-                  >
-                    <div className="modal__single-box-name">{item.name}</div>
-                    <div
-                      className="modal__single-box-content"
+                {dataChats == null || dataChats.length == 0 ? (
+                  <div>No message here. Start chatting now!</div>
+                ) : (
+                  dataChats?.map((item, index) => (
+                    <Box
+                      className="modal__single-box"
                       style={
                         item.id === id_User
-                          ? { backgroundColor: "#5BC0F8", color: "white" }
+                          ? { alignItems: "flex-end", alignSelf: "flex-end" }
                           : {}
                       }
+                      key={index}
                     >
-                      {item.content}
-                    </div>
-                  </Box>
-                ))}
+                      <div className="modal__single-box-name">{item.name}</div>
+                      <div
+                        className="modal__single-box-content"
+                        style={
+                          item.id === id_User
+                            ? { backgroundColor: "#5BC0F8", color: "white" }
+                            : {}
+                        }
+                      >
+                        {item.content}
+                      </div>
+                      <div className="modal__single-box-time">{item.time}</div>
+                    </Box>
+                  ))
+                )}
+                <div ref={messageRef} />
               </div>
             </Box>
             <div
