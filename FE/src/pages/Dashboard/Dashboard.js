@@ -56,22 +56,32 @@ function Dashboard({ classes }) {
   return (
     <div id="root-content">
       <Navbar />
-      <Row style={{ margin: "0!important" }}>
-        {classes.map((item, index) => (
-          <Col key={index}>
-            <Classes classData={item} md="auto" />
-          </Col>
-        ))}
-      </Row>
-      {!notification ? null : (
+      {classes.length == 0 ? (
+        <div
+          style={{ fontStyle: "italic", marginLeft: "20px", color: "#808080" }}
+        >
+          You have not joined any groups yet!
+        </div>
+      ) : (
         <>
-          {!isPresenting ? null : (
-            <Notification
-              setNotification={setNotification}
-              groupID={data.presentationGroupID}
-              presentationID={parseInt(data.id)}
-              URL_Presentation={data.URL_Presentation}
-            />
+          <Row style={{ margin: "0!important" }}>
+            {classes.map((item, index) => (
+              <Col key={index}>
+                <Classes classData={item} md="auto" />
+              </Col>
+            ))}
+          </Row>
+          {!notification ? null : (
+            <>
+              {!isPresenting ? null : (
+                <Notification
+                  setNotification={setNotification}
+                  groupID={data.presentationGroupID}
+                  presentationID={parseInt(data.id)}
+                  URL_Presentation={data.URL_Presentation}
+                />
+              )}
+            </>
           )}
         </>
       )}

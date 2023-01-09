@@ -19,16 +19,16 @@ export default function InvitationCollaborator() {
 
   return (
     <div>
-      <header className="header">
+      <header className="header1">
         <span className="textHeader">Invitation to join collaborators</span>
       </header>
 
       <div className="ct">
         <div className="container">
-          <div className="header-container">
+          <div className="header-container2">
             <img
-              className="img-picture"
-              src="https://www.gstatic.com/classroom/logo_square_rounded.svg"
+              className="img-picture2"
+              src="https://img.icons8.com/external-filled-outline-satawat-anukul/512/external-card-wedding-filled-outline-satawat-anukul-2.png"
               alt="..."
             />
             <span
@@ -50,7 +50,13 @@ export default function InvitationCollaborator() {
 
           <div className="content-container">
             <span className="txt-content" style={{ fontSize: "20px" }}>
-              Simply click the big blue button below to become a collaborator.
+              Simply click the big blue button belowto become a collaborator.
+            </span>
+            <span
+              className="txt-content2"
+              style={{ fontSize: "18px", fontStyle: "italic" }}
+            >
+              You can view and edit the presentation.
             </span>
             <button className="btn-join" onClick={handleJoinPresentation}>
               <span className="txt-btn">Join now!</span>

@@ -96,7 +96,7 @@ export default function Notification({
             }}
             onClick={handleMark}
           >
-            Mark a read
+            Skip
           </Button>
         </div>
       </div>
