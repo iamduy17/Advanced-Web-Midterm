@@ -139,13 +139,14 @@ exports.CreatePresentation = async (presentation, userID) => {
         name: "Option 3",
         count: 0
       }
-    ]
+    ],
+    votings: []
   };
 
   const slide = {
     slide_type_id: 1,
     presentation_id: presentationResponse.id,
-    content: JSON.stringify(content)
+    content: JSON.stringify(content),
   };
   await slideModel.add(slide);
   const account_presentation = {

@@ -7,7 +7,6 @@ module.exports = {
     io.on("connect", (socket) => {
       console.log("socket abc", socket.id);
       socket.on("submit", (data) => {
-        console.log("submit123", data);
         handleReceiveSubmit(io, data);
       });
       socket.on("submit-paragraph-heading", (data) => {

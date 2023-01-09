@@ -41,7 +41,7 @@ function SlideMember() {
             }
           }
         );
-        if (!isInGroup.Data) {
+        if (!isInGroup.data.Data) {
           window.location.assign(`/Forbidden`);
           return;
         }
