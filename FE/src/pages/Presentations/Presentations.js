@@ -69,6 +69,7 @@ export default function Presentations() {
     if (value.length === 0) {
       document.getElementById("btn-save").disabled = true;
     } else {
+      // document.getElementById("btn-save").disabled = false;
       setNamePresentation(e.target.value);
     }
   };

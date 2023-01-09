@@ -6,6 +6,7 @@ import {
   ArrowCircleRightRounded,
   ArrowCircleLeftRounded
 } from "@mui/icons-material";
+import jwt_decode from "jwt-decode";
 
 import BootstrapButton from "react-bootstrap/Button";
 import SlideDetail from "../../components/SlideDetail/SlideDetail";
@@ -22,15 +23,20 @@ function SlideShow() {
 
   const { id, id_slide } = useParams();
   const token = localStorage.getItem("token");
+  const data = jwt_decode(token).data;
+  const id_User = data.id;
+  const userName = data.username;
 
   const [slideType, setSlideType] = useState(1);
   const [title, setTitle] = useState("");
   const [dataChart, setDataChart] = useState([]);
-  const dataVoting = [];
+  const [dataChats, setDataChats] = useState([]);
+  const [dataQuestions, setDataQuestions] = useState([]);
   const [prevURL, setPrevURL] = useState("");
   const [nextURL, setNextURL] = useState("");
   const [isPrevShow, setIsPrevShow] = useState(true);
   const [isNextShow, setIsNextShow] = useState(true);
+  const [isMember, setIsMember] = useState(true);
 
   const showSlide = (slideList, indexToChange) => {
     if (slideList.length == 1) {
@@ -74,12 +80,14 @@ function SlideShow() {
 
   useEffect(() => {
     async function loadSlides() {
-      const { data } = await axios.get(`${API_URL}presentation/get/${id}`, {
+      const { data } = await axios.get(`${API_URL}presentation/edit/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      ConfigSlides(data.Data.Slide);
+      ConfigSlides(data.Data.Slides);
+      GetChatsAndQuestions(data.Data.Presentations);
+      CheckIsMember(data.Data);
     }
     loadSlides();
     return () => {
@@ -141,6 +149,57 @@ function SlideShow() {
     window.location.assign(`/presentation/${id}/slide/${id_slide}`);
   };
 
+  const GetChatsAndQuestions = (data) => {
+    if (data !== undefined) {
+      let { chats, questions } = data;
+      if (chats != null && !Array.isArray(chats)) {
+        setDataChats(JSON.parse(chats));
+      }
+
+      if (questions != null && !Array.isArray(questions)) {
+        setDataQuestions(JSON.parse(questions));
+      }
+    }
+  };
+
+  const CheckIsMember = (data) => {
+    const { Owners, Collaborators } = data;
+
+    if (Owners?.length != 0) {
+      let findOwnerById = Owners.filter((item) => item.id === id_User);
+
+      if (findOwnerById.length != 0) {
+        setIsMember(false);
+        return;
+      }
+    }
+
+    if (Collaborators?.length != 0) {
+      let findCollabById = Collaborators.filter((item) => item.id === id_User);
+
+      if (findCollabById.length != 0) {
+        setIsMember(false);
+        return;
+      }
+    }
+
+    setIsMember(true);
+  };
+
+  useEffect(() => {
+    socket.emit("join_presentation_room", {
+      id_presentation: id,
+      id_User,
+      userName
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("load_chats_and_questions", (data) => {
+      GetChatsAndQuestions(data);
+    });
+  }, [socket]);
+
   return (
     <div id="root-content">
       <div className="slideShow__contain">
@@ -170,8 +229,23 @@ function SlideShow() {
           </Button>
         </div>
         <div className="slideShow__btn-realtime-group">
-          <ModalQuestion />
-          <ModalChat data={dataVoting} />
+          <ModalQuestion
+            id_User={id_User}
+            userName={userName}
+            socket={socket}
+            dataQuestions={dataQuestions}
+            setDataQuestions={setDataQuestions}
+            id_presentation={id}
+            isMember={isMember}
+          />
+          <ModalChat
+            id_User={id_User}
+            userName={userName}
+            socket={socket}
+            dataChats={dataChats}
+            setDataChats={setDataChats}
+            id_presentation={id}
+          />
           <ModalVote />
         </div>
         <BootstrapButton
