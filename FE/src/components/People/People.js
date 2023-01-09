@@ -22,6 +22,7 @@ function People({ id, id_User }) {
       setOwners(res.data.Data.Owners);
       setCoOwners(res.data.Data.CoOwners);
       setMembers(res.data.Data.Members);
+      console.log(res);
     }
 
     getGroup(id);

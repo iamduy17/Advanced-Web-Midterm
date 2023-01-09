@@ -18,7 +18,8 @@ import Footer from "./components/Footer/Footer";
 import Presentations from "./pages/Presentations/Presentations";
 import PresentationDetail from "./pages/PresentationDetail/PresentationDetail";
 import SlideMember from "./pages/SlideMember/SlideMember";
-import SearchButton from "./components/SearchButton/SearchButton";
+import Notification from "./components/Notification/Notification";
+import InvitationCollaborator from "./pages/Invitation/InvitationCollaborator";
 
 import SlideShow from "./pages/SlideShow/SlideShow";
 import ThanksForVoting from "./pages/ThanksForVoting/ThanksForVoting";
@@ -126,7 +127,11 @@ function App() {
               !isAuthenticated ? <Register /> : <Navigate replace to="/" />
             }
           />
-          <Route path="/Table" element={<SearchButton />} />
+          <Route path="/Table" element={<Notification />} />
+          <Route
+            path="/presentation/invitation/collaborator/:presentationID/:userID"
+            element={<InvitationCollaborator />}
+          />
           <Route path=":id/verify/:token" element={<Email />} />
           <Route path="/ThanksForVoting" element={<ThanksForVoting />} />
           <Route path="/resetpass/:email" element={<ForgotPass />} />

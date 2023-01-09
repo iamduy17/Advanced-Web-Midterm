@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Box,
@@ -19,8 +19,16 @@ import axios from "axios";
 import Modal from "react-bootstrap/Modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import jwt_decode from "jwt-decode";
+import Notification from "../Notification/Notification";
 
 import { API_URL } from "../../config";
+
+import io from "socket.io-client";
+const socket = io.connect(API_URL);
+socket.on("disconnect", () => {
+  console.log(socket.id); // undefined
+});
 
 import "./style.css";
 
@@ -43,11 +51,14 @@ export default function NavbarSlide({
   name,
   handleErrorResponse,
   setError,
-  id
+  id,
+  presentationGroupID
 }) {
   const token = localStorage.getItem("token");
-
+  const decoded = jwt_decode(token);
+  const id_User = decoded.data.id;
   const [showModal, setShowModal] = useState(false);
+  const URL_Presentation = `${window.location.href}/slideshow/member`;
 
   const handleCopy = () => {
     const URL = `${window.location.href}/slideshow/member`;
@@ -90,6 +101,43 @@ export default function NavbarSlide({
       }
     }
     addSLide();
+  };
+
+  const [notification, setNotification] = useState(false);
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    socket.on("receive_presenting", (data) => {
+      console.log("receive_presenting: ", data);
+      setData(data);
+
+      const loadAccount_Group = async () => {
+        const token = localStorage.getItem("token");
+        const res = await axios.post(
+          API_URL + "account_group/getByGroupID",
+          { presentationGroupID: data.presentationGroupID },
+          {
+            headers: {
+              Authorization: "Bearer " + token
+            }
+          }
+        );
+        console.log(res);
+
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].account_id == id_User) setNotification(true);
+        }
+      };
+
+      loadAccount_Group();
+    });
+  }, [socket]);
+
+  const handlePresenting = (id) => {
+    if (presentationGroupID != 0) {
+      console.log("clicked");
+      socket.emit("presenting", { id, presentationGroupID, URL_Presentation });
+    }
   };
 
   return (
@@ -140,10 +188,24 @@ export default function NavbarSlide({
             startIcon={<PlayArrow />}
             style={{ margin: "0 0.5rem" }}
             href={`${window.location.href}/slideshow`}
+            onClick={() => {
+              handlePresenting(id);
+            }}
           >
             Present
           </Button>
         </Toolbar>
+
+        {notification ? (
+          <>
+            <Notification
+              setNotification={setNotification}
+              groupID={data.presentationGroupID}
+              presentationID={parseInt(data.id)}
+              URL_Presentation={data.URL_Presentation}
+            />
+          </>
+        ) : null}
 
         <Modal show={showModal} onHide={() => setShowModal(false)}>
           <Modal.Header>
