@@ -2,10 +2,16 @@ const { Server } = require("socket.io");
 const { handleReceiveSubmit } = require("./voting");
 const { handleChatMessage, handleLoadChatsAndQuestions } = require("./chat");
 const { handleQuestionMessage } = require("./question");
+const { CLIENT_URL } = require("../config/index");
 
 module.exports = {
   startSocketServer: (server) => {
-    const io = new Server(server);
+    const io = new Server(server, {
+      cors: {
+        origin: CLIENT_URL,
+        methods: ['GET', 'POST'],
+      },
+    });
     io.on("connect", (socket) => {
       console.log("socket abc", socket.id);
       socket.on("submit", (data) => {

@@ -97,7 +97,9 @@ export default function NavbarSlide({
       } else {
         const currentUrl = window.location.href;
         const newURL =
-          currentUrl.substring(0, currentUrl.length - 2) + data.Data.Slide.id;
+          currentUrl.substring(0, currentUrl.length - 2) +
+          "/" +
+          data.Data.Slide.id;
         window.location.assign(newURL);
       }
     }
