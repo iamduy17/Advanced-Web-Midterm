@@ -17,6 +17,11 @@ import { ToastContainer, toast } from "react-toastify";
 import AddIcon from "@mui/icons-material/Add";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
 import CustomizedTables from "../CustomizedTables/CustomizedTables";
+import jwt_decode from "jwt-decode";
+import Notification from "../Notification/Notification";
+import io from "socket.io-client";
+const socket = io.connect(API_URL);
+socket.on("disconnect", () => {});
 
 function Main({ classData }) {
   const [showInput, setShowInput] = useState(false);
@@ -26,6 +31,38 @@ function Main({ classData }) {
   const [namePresentation, setNamePresentation] = useState("");
   const [listPresentation, setListPresentation] = useState([]);
   const form = useRef();
+
+  const token = localStorage.getItem("token");
+  const decoded = jwt_decode(token);
+  const id_User = decoded.data.id;
+
+  const [notification, setNotification] = useState(false);
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    socket.on("receive_presenting", (data) => {
+      setData(data);
+
+      const loadAccount_Group = async () => {
+        const token = localStorage.getItem("token");
+        const res = await axios.post(
+          API_URL + "account_group/getByGroupID",
+          { presentationGroupID: data.presentationGroupID },
+          {
+            headers: {
+              Authorization: "Bearer " + token
+            }
+          }
+        );
+
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].account_id == id_User) setNotification(true);
+        }
+      };
+
+      loadAccount_Group();
+    });
+  }, [socket]);
 
   const handleChange = (e) => {
     const { value } = e.target;
@@ -46,7 +83,6 @@ function Main({ classData }) {
 
   const handleCreate = async () => {
     const token = localStorage.getItem("token");
-    console.log(classData.id);
 
     await axios.post(
       `${API_URL}presentation/create`,
@@ -222,6 +258,15 @@ function Main({ classData }) {
             <p>Upcoming</p>
             <p className="main__subText">No work due</p>
           </div>
+          {notification ? (
+            <>
+              <Notification
+                setNotification={setNotification}
+                groupID={data.presentationGroupID}
+                presentationID={parseInt(data.id)}
+              />
+            </>
+          ) : null}
           <div className="main__announcements">
             <div className="main__announcementsWrapper">
               <div className="main__ancContent">

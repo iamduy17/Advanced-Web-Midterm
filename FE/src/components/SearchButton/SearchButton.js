@@ -7,6 +7,8 @@ import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
 import axios from "axios";
 
@@ -69,7 +71,12 @@ export default function SearchButton({ idPresentation }) {
       }
     );
 
-    window.location.reload();
+    setInputValue("");
+    toast("Email is sending ... !", {
+      autoClose: 1000
+    });
+
+    //window.location.reload();
   };
 
   return (
@@ -97,9 +104,11 @@ export default function SearchButton({ idPresentation }) {
             endIcon={<SendIcon />}
             onClick={handleInviteCollab}
             style={{ marginLeft: "15px" }}
+            disabled={!inputValue}
           >
             Invite
           </Button>
+          <ToastContainer />
         </Toolbar>
       </AppBar>
     </Box>

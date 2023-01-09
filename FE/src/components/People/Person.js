@@ -43,7 +43,7 @@ function Person({ id, name, classID, role, roleUser }) {
           const newRole = getKeyByValue(roleMap, roleMap[role]);
           if (newRole == 4) {
             const token = localStorage.getItem("token");
-            const res = await axios.post(
+            await axios.post(
               API_URL + "groups/removeMember",
               { group_id: classID, account_id: id },
               {
@@ -52,7 +52,6 @@ function Person({ id, name, classID, role, roleUser }) {
                 }
               }
             );
-            console.log(res);
             window.location.reload();
           } else {
             handleChangeRole(newRole);

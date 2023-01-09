@@ -37,7 +37,7 @@ function Classes({ classData }) {
 
   const handleDeleteGroup = async () => {
     const token = localStorage.getItem("token");
-    const res = await axios.post(
+    await axios.post(
       API_URL + "groups/removeGroup",
       { group_id: classData.id, account_id: id_User },
       {
@@ -46,7 +46,6 @@ function Classes({ classData }) {
         }
       }
     );
-    console.log(res);
     window.location.reload();
   };
 

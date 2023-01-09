@@ -4,6 +4,9 @@ import "./Invitation.css";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { API_URL } from "../../config";
+import io from "socket.io-client";
+
+const socket = io.connect(API_URL);
 
 export default function Invitation({ setIsJoined }) {
   const { id } = useParams();
@@ -22,13 +25,17 @@ export default function Invitation({ setIsJoined }) {
     setIsJoined(true);
     await axios.post(`${API_URL}account_group`, account_group).then(() => {});
 
+    setIsJoined(false);
+    console.log(account_group);
+    socket.emit("memberGroup", { id_User, id });
+
     window.location.reload();
   }
 
   return (
     <div>
       <header className="header">
-        <span className="textHeader">Join your group</span>
+        <span className="textHeader">Join your group!</span>
       </header>
 
       <div className="ct">

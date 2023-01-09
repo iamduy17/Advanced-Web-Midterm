@@ -28,6 +28,21 @@ router.post("/", async (req, res) => {
 });
 
 router.post(
+  "/getByGroupID",
+  authMiddleware.PassportJWTCheckToken,
+  async (req, res) => {
+    const result = await account_groupModel.getByGroupID(
+      req.body.presentationGroupID
+    );
+    if (result) {
+      res.json(result);
+    } else {
+      res.json("error");
+    }
+  }
+);
+
+router.post(
   "/roleUser",
   authMiddleware.PassportJWTCheckToken,
   async (req, res) => {

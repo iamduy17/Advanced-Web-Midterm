@@ -7,6 +7,11 @@ module.exports = {
     if (res.length > 0) return res[0];
     return null;
   },
+  getByGroupID: async (group_id) => {
+    const res = await db.get(tbName, "group_id", group_id);
+    if (res.length > 0) return res;
+    return null;
+  },
   getAll: async () => {
     const res = await db.getAll(tbName);
     if (res.length > 0) return res;

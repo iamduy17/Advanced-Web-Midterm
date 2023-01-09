@@ -67,7 +67,7 @@ module.exports = async (email, url) => {
         address: EmailInfo.EMAIL_USER
       },
       to: email,
-      subject: "Confirm your email address",
+      subject: "Invitation to join collaborators",
       html: htmlText
     });
   } catch (error) {

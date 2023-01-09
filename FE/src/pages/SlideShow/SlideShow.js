@@ -6,6 +6,7 @@ import {
   ArrowCircleRightRounded,
   ArrowCircleLeftRounded
 } from "@mui/icons-material";
+import jwt_decode from "jwt-decode";
 
 import BootstrapButton from "react-bootstrap/Button";
 import SlideDetail from "../../components/SlideDetail/SlideDetail";
@@ -14,7 +15,6 @@ import { SocketContext } from "../../context/socket";
 import ModalQuestion from "../../components/Modals/ModalQuestion";
 import ModalChat from "../../components/Modals/ModalChat";
 import ModalVote from "../../components/Modals/ModalVote";
-import jwt_decode from "jwt-decode";
 
 import "./style.css";
 
@@ -23,12 +23,17 @@ function SlideShow() {
 
   const { id, id_slide } = useParams();
   const token = localStorage.getItem("token");
+  const data = jwt_decode(token).data;
+  const id_User = data.id;
+  const userName = data.username;
 
   const [slideType, setSlideType] = useState(1);
   const [title, setTitle] = useState("");
   const [dataChart, setDataChart] = useState([]);
   const [votings, setVotings] = useState([]);
 
+  const [dataChats, setDataChats] = useState([]);
+  const [dataQuestions, setDataQuestions] = useState([]);
   const [prevURL, setPrevURL] = useState("");
   const [nextURL, setNextURL] = useState("");
   const [isPrevShow, setIsPrevShow] = useState(true);
@@ -37,6 +42,7 @@ function SlideShow() {
   const decoded = jwt_decode(token);
 
   const userID = decoded.data.id;
+  const [isMember, setIsMember] = useState(true);
 
   const showSlide = (slideList, indexToChange) => {
     if (slideList.length == 1) {
@@ -87,6 +93,8 @@ function SlideShow() {
       });
       setOwnerID(data.Data.Owners[0].id);
       ConfigSlides(data.Data.Slides);
+      GetChatsAndQuestions(data.Data.Presentations);
+      CheckIsMember(data.Data);
     }
     loadSlides();
 
@@ -165,6 +173,57 @@ function SlideShow() {
     window.location.assign(`/`);
   };
 
+  const GetChatsAndQuestions = (data) => {
+    if (data !== undefined) {
+      let { chats, questions } = data;
+      if (chats != null && !Array.isArray(chats)) {
+        setDataChats(JSON.parse(chats));
+      }
+
+      if (questions != null && !Array.isArray(questions)) {
+        setDataQuestions(JSON.parse(questions));
+      }
+    }
+  };
+
+  const CheckIsMember = (data) => {
+    const { Owners, Collaborators } = data;
+
+    if (Owners?.length != 0) {
+      let findOwnerById = Owners.filter((item) => item.id === id_User);
+
+      if (findOwnerById.length != 0) {
+        setIsMember(false);
+        return;
+      }
+    }
+
+    if (Collaborators?.length != 0) {
+      let findCollabById = Collaborators.filter((item) => item.id === id_User);
+
+      if (findCollabById.length != 0) {
+        setIsMember(false);
+        return;
+      }
+    }
+
+    setIsMember(true);
+  };
+
+  useEffect(() => {
+    socket.emit("join_presentation_room", {
+      id_presentation: id,
+      id_User,
+      userName
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on("load_chats_and_questions", (data) => {
+      GetChatsAndQuestions(data);
+    });
+  }, [socket]);
+
   return (
     <div id="root-content">
       <div className="slideShow__contain">
@@ -194,8 +253,23 @@ function SlideShow() {
           </Button>
         </div>
         <div className="slideShow__btn-realtime-group">
-          <ModalQuestion />
-          <ModalChat />
+          <ModalQuestion
+            id_User={id_User}
+            userName={userName}
+            socket={socket}
+            dataQuestions={dataQuestions}
+            setDataQuestions={setDataQuestions}
+            id_presentation={id}
+            isMember={isMember}
+          />
+          <ModalChat
+            id_User={id_User}
+            userName={userName}
+            socket={socket}
+            dataChats={dataChats}
+            setDataChats={setDataChats}
+            id_presentation={id}
+          />
           <ModalVote slideType={slideType} votings={votings} />
         </div>
         {userID === ownerID ? (

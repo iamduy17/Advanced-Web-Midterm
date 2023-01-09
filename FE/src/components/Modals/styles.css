@@ -68,5 +68,19 @@
 .modal__single-box-question-check {
   display: flex;
   flex-direction: row;
+  align-items: center;
   width: 100%;
+}
+
+.modal__title, .modal__title-btn-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__single-box-time {
+  margin: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 200;
 }

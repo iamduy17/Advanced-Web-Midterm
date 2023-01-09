@@ -221,7 +221,10 @@ exports.RemoveGroup = async (groupID, userID) => {
 };
 
 exports.IsInGroup = async (groupID, userID) => {
-  const account_group = await accountGroupModel.getByAccountIDAndGroupID(userID, groupID);
+  const account_group = await accountGroupModel.getByAccountIDAndGroupID(
+    userID,
+    groupID
+  );
   return {
     ReturnCode: 200,
     Message: "get is in group successfully",

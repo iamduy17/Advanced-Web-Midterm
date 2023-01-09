@@ -66,6 +66,7 @@ function PresentationDetail() {
   const [presentationName, setPresentationName] = useState("");
   const [slideTypeList, setSlideTypeList] = useState(slideTypes);
   const [slideType, setSlideType] = useState(slideTypeList[0].value);
+  const [presentationGroupID, setPresentationGroupID] = useState(0);
   const [title, setTitle] = useState(slideTypeList[0].title);
   const [dataChart, setDataChart] = useState(slideTypeList[0].data);
   const [slides, setSlides] = useState([]);
@@ -80,6 +81,7 @@ function PresentationDetail() {
       });
       setPresentationName(data.Data.Presentation.name);
       addPropToSlides(data.Data.Slides);
+      setPresentationGroupID(data.Data.Presentation.group_id);
     }
     loadSlides();
   }, []);
@@ -261,8 +263,8 @@ function PresentationDetail() {
         handleErrorResponse={handleErrorResponse}
         setError={setError}
         id={id}
+        presentationGroupID={presentationGroupID}
       />
-
       <div className="slide__container">
         <div className="slide__col1">
           {slides.length !== 0 &&

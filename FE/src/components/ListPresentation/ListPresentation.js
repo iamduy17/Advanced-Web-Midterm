@@ -72,7 +72,7 @@ export default function ListPresentation() {
 
     const group_id = selected == "public" ? 0 : valueCheckBox;
 
-    const res = await axios.post(
+    await axios.post(
       `${API_URL}presentation/create`,
       { name: namePresentation, created_at: currentDate, group_id: group_id },
       {
@@ -83,7 +83,6 @@ export default function ListPresentation() {
     );
 
     window.location.reload();
-    console.log(res);
   };
 
   // Rename a spresentation
@@ -101,7 +100,7 @@ export default function ListPresentation() {
     }
     const updateTime = `${dateTime[0]} ${dateTime[1]}`;
 
-    const res = await axios.post(
+    await axios.post(
       `${API_URL}presentation/edit/${id}`,
       { name: renamePresentation, updated_at: updateTime },
       {
@@ -112,11 +111,9 @@ export default function ListPresentation() {
     );
 
     window.location.reload();
-    console.log(res);
   };
 
   const handleDelete = async (id) => {
-    console.log(id);
     await axios.post(
       `${API_URL}presentation/delete/${id}`,
       {},
@@ -223,10 +220,15 @@ export default function ListPresentation() {
             <Edit />
             <span style={{ paddingLeft: "10px" }}>Edit</span>
           </MenuItem>
-          <MenuItem onClick={() => handleDelete(props.id)}>
-            <Delete />
-            <span style={{ paddingLeft: "10px" }}>Delete</span>
-          </MenuItem>
+          {props.idOwner == IDUser ? (
+            <>
+              <MenuItem onClick={() => handleDelete(props.id)}>
+                <Delete />
+                <span style={{ paddingLeft: "10px" }}>Delete</span>
+              </MenuItem>
+            </>
+          ) : null}
+
           <MenuItem
             onClick={() => {
               setlistCollabShow(true);

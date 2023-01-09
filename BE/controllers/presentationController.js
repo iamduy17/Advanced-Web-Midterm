@@ -4,6 +4,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const presentationService = require("../services/presentationService");
 const { AuthenticationError } = require("../utils/index");
 const presentationModel = require("../models/presentationModel");
+const accountPresentationModel = require("../models/accountPresentationModel");
 
 router.get("/", authMiddleware.PassportJWTCheckToken, async (req, res) => {
   try {
@@ -153,6 +154,24 @@ router.post(
   }
 );
 
+router.post("/ConfirmAddCollaborator", async (req, res) => {
+  console.log("add collaborator with req:", { req });
+  const presentationID = req.body.presentationID;
+  const account = req.body.userID;
+
+  const account_presentation = {
+    presentation_id: presentationID,
+    account_id: account,
+    role: 2
+  };
+  const result = await accountPresentationModel.add(account_presentation);
+  if (result) {
+    res.json(result);
+  } else {
+    res.json("error");
+  }
+});
+
 router.post(
   "/removeCollaborator/:id",
   authMiddleware.PassportJWTCheckToken,
@@ -276,7 +295,10 @@ router.post(
 
       const presentationID = req.params.id;
       const questions = req.body.questions;
-      const result = await presentationService.EditQuestions(presentationID, questions);
+      const result = await presentationService.EditQuestions(
+        presentationID,
+        questions
+      );
 
       return res.json(result);
     } catch (error) {
@@ -298,7 +320,10 @@ router.post(
 
       const presentationID = req.params.id;
       const isPresenting = req.body.is_presenting;
-      const result = await presentationService.EditIsPresenting(presentationID, isPresenting);
+      const result = await presentationService.EditIsPresenting(
+        presentationID,
+        isPresenting
+      );
 
       return res.json(result);
     } catch (error) {

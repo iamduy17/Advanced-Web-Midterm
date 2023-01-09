@@ -48,8 +48,6 @@ export default function Presentations() {
   const handleCreate = async () => {
     const token = localStorage.getItem("token");
     const group_id = selected == "public" ? 0 : valueCheckBox;
-    console.log(selected);
-    console.log(valueCheckBox);
 
     await axios.post(
       `${API_URL}presentation/create`,
@@ -69,6 +67,7 @@ export default function Presentations() {
     if (value.length === 0) {
       document.getElementById("btn-save").disabled = true;
     } else {
+      // document.getElementById("btn-save").disabled = false;
       setNamePresentation(e.target.value);
     }
   };
@@ -89,7 +88,6 @@ export default function Presentations() {
 
   const handleRadioChange = (event) => {
     setValueCheckBox(event.target.value);
-    console.log(valueCheckBox);
   };
 
   const token = localStorage.getItem("token");
