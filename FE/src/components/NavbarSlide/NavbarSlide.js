@@ -97,8 +97,7 @@ export default function NavbarSlide({
       } else {
         const currentUrl = window.location.href;
         const newURL =
-          currentUrl.substring(0, currentUrl.length - 2) +
-          "/" +
+          currentUrl.substring(0, currentUrl.lastIndexOf("/") + 1) +
           data.Data.Slide.id;
         window.location.assign(newURL);
       }
